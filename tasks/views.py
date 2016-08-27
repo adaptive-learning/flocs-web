@@ -1,8 +1,8 @@
-from flocsweb import viewsets
+from rest_framework import viewsets
 from tasks.serializers import TaskSerializer
-from core.data.fixtures.tasks import TASKS
+from .models import Task
 
 
-class TasksViewSet(viewsets.ReadOnlyNonModelViewSet):
+class TasksViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = TaskSerializer
-    fixtures = TASKS
+    queryset = Task.objects.all()

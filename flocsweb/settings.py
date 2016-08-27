@@ -47,9 +47,10 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',  # OAuth
     'tasks',
     'users',
-    'core',  # just for now
     'flocsweb',
 ]
+
+APPEND_SLASH = True
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',

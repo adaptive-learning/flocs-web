@@ -63,11 +63,7 @@ db-flush:
 	python manage.py flush --noinput
 
 db-load-data:
-	python manage.py loaddata blocks/fixtures/blocks.xml
-	python manage.py loaddata blocks/fixtures/toolboxes.xml
-	python manage.py loaddata concepts/fixtures/concepts.xml
-	python manage.py loaddata tasks/fixtures/tasks.xml
-	python manage.py loaddata concepts/fixtures/instructions.json
+	python manage.py load_static_data
 
 admin:
 	python manage.py create_admin

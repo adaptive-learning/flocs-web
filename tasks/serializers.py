@@ -1,9 +1,8 @@
 from rest_framework import serializers
+from .models import Task
 
 
-class TaskSerializer(serializers.Serializer):
-    pk = serializers.IntegerField()
-    title = serializers.CharField()
-    revision = serializers.IntegerField()
-    maze_settings = serializers.JSONField(source='get_maze_settings')
-    workspace_settings = serializers.JSONField(source='get_workspace_settings')
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ('task_id', 'ref')
