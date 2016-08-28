@@ -10,6 +10,7 @@ djangorestframework==3.4.3
 flocs==0.0.4
 ipython==5.0.0
 ipython-genutils==0.1.0
+Markdown==2.6.6
 oauthlib==1.1.2
 pexpect==4.2.0
 pickleshare==0.7.3

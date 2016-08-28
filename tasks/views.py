@@ -4,5 +4,8 @@ from .models import Task
 
 
 class TasksViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This view presents tasks available in the system.
+    """
     serializer_class = TaskSerializer
     queryset = Task.objects.all()

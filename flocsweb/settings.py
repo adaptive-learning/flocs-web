@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',  # OAuth
     'tasks',
     'users',
+    'practice',
     'flocsweb',
 ]
 

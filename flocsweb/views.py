@@ -6,7 +6,7 @@ from rest_framework.exceptions import NotFound
 @api_view()
 def wrong_api_call(request):
     """
-    Serve non-existent api calls (404 error).
+    Handles non-existent API calls (404 error).
     """
     raise NotFound(detail='Wrong api call.')
 

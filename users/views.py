@@ -9,7 +9,12 @@ from .permissions import IsAdminOrSelfPostAnyone
 
 
 class UsersViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    """
+    This view presents system users.
+
+    Regular users can only access themselves. Staff members can see all the users.
+    """
+
     serializer_class = UserSerializer
     permission_classes = [IsAdminOrSelfPostAnyone]
 
@@ -20,8 +25,7 @@ class UsersViewSet(viewsets.ModelViewSet):
         user = self.request.user
         if user and user.is_staff:
             return User.objects.all()
-        else:
-            return User.objects.filter(pk=user.pk)
+        return User.objects.filter(pk=user.pk)
 
     @list_route()
     def current_user(self, request):

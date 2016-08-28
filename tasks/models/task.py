@@ -4,7 +4,8 @@ from flocsweb.mixins import ImportExportMixin
 
 
 class Task(models.Model, ImportExportMixin):
-    """ Model for a task (exercise)
+    """
+    Model for a task (exercise)
     """
     named_tuple = entities.Task
 
