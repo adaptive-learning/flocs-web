@@ -3,11 +3,11 @@
 		test test-backend test-frontend \
 		check check-backend check-frontend \
 		db-setup db-migrate db-load-data admin \
-		export-data-to-csv logs
+		export-data-to-csv
 
 # -----------------------------------------------------------
 
-update: dependencies logs db-setup
+update: dependencies db-setup
 
 # -----------------------------------------------------------
 
@@ -19,10 +19,7 @@ backend-dependencies:
 
 frontend-dependencies:
 	@echo "== Install frontend dependencies. =="
-	cd frontend && \
-	  npm update && \
-	  bower update && \
-	  grunt development-build
+	  npm update
 
 # -----------------------------------------------------------
 
@@ -34,8 +31,9 @@ test-backend:
 
 test-frontend:
 	@echo "===== Frontend tests ====="
-	cd frontend && \
-	  grunt karma
+	cd frontend
+	@echo "TBA"
+	
 
 # -----------------------------------------------------------
 
@@ -47,13 +45,13 @@ check-backend:
 
 check-frontend:
 	@echo "===== Frontend linting ====="
-	cd frontend && \
-	  grunt lint
+	cd frontend &&
+	@echo "TBA"
 
 
 # -----------------------------------------------------------
 
-db-setup: db-flush db-migrate admin db-load-data
+db-setup: db-migrate db-flush admin db-load-data
 
 db-migrate:
 	@echo "===== Set up database ====="
@@ -62,20 +60,10 @@ db-migrate:
 db-flush:
 	python manage.py flush --noinput
 
-db-load-data:
-	python manage.py load_static_data
-
 admin:
 	python manage.py create_admin
 
-# -----------------------------------------------------------
-
-logs:
-	@mkdir -p logs >/dev/null
-	touch logs/practice.log
-	touch logs/requests.log
+db-load-data:
+	python manage.py load_static_data
 
 # -----------------------------------------------------------
-
-export-data-to-csv:
-	python manage.py export_data_to_csv

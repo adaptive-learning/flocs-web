@@ -6,15 +6,15 @@ django-import-export==0.4.5
 django-lazysignup==1.0.2
 django-modeltranslation==0.10.2
 django-select-multiple-field==0.4.2
+django-webpack-loader==0.3.3
 djangorestframework==3.4.3
-flocs==0.0.4
+flocs==0.0.5
 ipython==5.0.0
 ipython-genutils==0.1.0
 Markdown==2.6.6
 oauthlib==1.1.2
 pexpect==4.2.0
 pickleshare==0.7.3
-pkg-resources==0.0.0
 prompt-toolkit==1.0.5
 ptyprocess==0.5.1
 Pygments==2.1.3
