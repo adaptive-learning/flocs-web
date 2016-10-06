@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from flocs.data import TASKS
+from flocs.data.tasks import TASKS
 from tasks.models import Task
 
 

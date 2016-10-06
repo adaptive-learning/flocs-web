@@ -11,6 +11,8 @@ from .serializers import StudentSerializer, TaskInstanceSerializer
 from .models import Student, TaskInstance
 from .permissions import IsAdminOrOwnerPostAnyone
 from tasks.models import Task
+from flocs import actions
+from flocsweb.store import open_django_store
 
 
 class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
@@ -52,19 +54,23 @@ class TaskInstancesViewSet(viewsets.ModelViewSet):
             return TaskInstance.objects.all()
         return TaskInstance.objects.filter(student__user=user)
 
-        # @detail_route(methods=['POST'])
-        # def solve_task(self):
-        #     task_instance = self.get_object()
-        #     task_instance.solved = True
-        #     task_instance.save()
-        #     return Response(status=status.HTTP_204_NO_CONTENT)
-        #
-        # @detail_route(methods=['POST'])
-        # def give_up_task(self):
-        #     task_instance = self.get_object()
-        #     task_instance.given_up = True
-        #     task_instance.save()
-        #     return Response(status=status.HTTP_204_NO_CONTENT)
+    @detail_route(methods=['POST'])
+    def solve_task(self, request, pk=None):
+        if not self.get_object().is_active:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data="This task instance is already closed.")
+        with open_django_store() as store:
+            action = actions.solve_task(pk)
+            store.stage_action(action)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @detail_route(methods=['POST'])
+    def give_up_task(self, request, pk=None):
+        if not self.get_object().is_active:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data="This task instance already closed.")
+        with open_django_store() as store:
+            action = actions.give_up_task(pk)
+            store.stage_action(action)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class PracticeViewSet(viewsets.GenericViewSet):
@@ -95,7 +101,7 @@ def start(request):
     student = _get_or_create_student(request.user)
     # TODO: call recommender system to get a suitable task for the student
     task_id = 0
-    task_instance = _get_or_create_task_instance(student, task_id)
+    task_instance = _get_or_create_task_instance(student.student_id, task_id)
     data = {
         'task_instance': reverse('task_instance-detail', args=[task_instance.pk], request=request)
     }
@@ -110,7 +116,7 @@ def start_task(request, task_id):
     Starts practicing a selected task.
     """
     student = _get_or_create_student(request.user)
-    task_instance = _get_or_create_task_instance(student, task_id)
+    task_instance = _get_or_create_task_instance(student.student_id, task_id)
     data = {
         'task_instance': reverse('task_instance-detail', args=[task_instance.pk], request=request)
     }
@@ -121,9 +127,12 @@ def _get_or_create_student(user):
     try:
         student = Student.objects.get(user=user)
     except Student.DoesNotExist:
-        # TODO: call action to create student
-        student = Student(user=user)
-        student.save()
+        with open_django_store({'user': user}) as store:
+            action = actions.create_student()
+            store.stage_action(action)
+            # done in a post_commit hook
+            # student = Student(user=user)
+            # student.save()
     return student
 
 
@@ -131,7 +140,10 @@ def _get_or_create_task_instance(student, task_id):
     try:
         task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
     except TaskInstance.DoesNotExist:
-        # TODO: call action to create task instance
-        task_instance = TaskInstance(student=student, task=Task.objects.get(task_id=task_id))
-        task_instance.save()
+        with open_django_store() as store:
+            action = actions.start_task(student_id=student.student_id, task_id=task_id)
+            store.stage_action(action)
+            # TODO: call action to create task instance
+            # task_instance = TaskInstance(student=student, task=Task.objects.get(task_id=task_id))
+            # task_instance.save()
     return task_instance

@@ -9,12 +9,19 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TaskInstanceSerializer(serializers.HyperlinkedModelSerializer):
+    solve = serializers.HyperlinkedIdentityField(
+        view_name='task_instance-solve-task',
+        read_only=True)
+    give_up = serializers.HyperlinkedIdentityField(
+        view_name='task_instance-give-up-task',
+        read_only=True)
+
     class Meta:
         model = TaskInstance
-        fields = ('url', 'task_instance_id', 'student', 'task', 'solved', 'given_up')
+        fields = ('url', 'task_instance_id', 'student', 'task', 'solved', 'given_up', 'solve', 'give_up')
 
         extra_kwargs = {
-            'url': {'view_name': 'task_instance-detail'}
+            'url': {'view_name': 'task_instance-detail'},
         }
 
     def validate(self, data):

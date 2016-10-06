@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
-from flocsweb.mixins import ImportExportMixin
+from flocsweb.mixins import ExportMixin
 from flocs.entities import Student
 
 
-class Student(models.Model, ImportExportMixin):
+class Student(models.Model, ExportMixin):
     """
     A model for a student (abstract person practicing tasks).
     """
@@ -18,8 +18,9 @@ class Student(models.Model, ImportExportMixin):
     def __str__(self):
         return '[{pk}] {username}'.format(pk=self.pk, username=self.user.username)
 
-    def from_named_tuple(cls, tuple, user):
+    @staticmethod
+    def from_named_tuple(entity_tuple, user, **kwargs):
         try:
-            return Student.objects.get(student_id=tuple.student_id)
+            return Student.objects.get(student_id=entity_tuple.student_id)
         except Student.DoesNotExist:
-            return Student(student_id=tuple.student_id, user=user)
+            return Student(student_id=entity_tuple.student_id, user=user)
