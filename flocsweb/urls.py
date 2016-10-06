@@ -37,4 +37,5 @@ urlpatterns = [
     url(r'^api/practice/', include(practice_urls)),
     url(r'^api/.*/$', 'flocsweb.views.wrong_api_call'),
     url(r'^accounts/profile', 'flocsweb.views.redirect_home'),
+    url(r'^([^a].*)?$', 'flocsweb.views.frontend_app'),
 ]

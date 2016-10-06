@@ -1,0 +1,32 @@
+{
+  "name": "flocs-web",
+  "version": "0.0.0",
+  "description": "Frontend and server part of an inteligent application for learning computer science.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adaptive-learning/flocs-web.git"
+  },
+  "author": "Jaroslav Cechak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adaptive-learning/flocs-web/issues"
+  },
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "react-hot-loader": "^1.3.0",
+    "webpack": "^1.13.2",
+    "webpack-bundle-tracker": "0.0.93",
+    "webpack-dev-server": "^1.15.0"
+  }
+}
