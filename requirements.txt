@@ -11,6 +11,7 @@ djangorestframework==3.4.3
 flocs==0.0.5
 ipython==5.0.0
 ipython-genutils==0.1.0
+jsonfield==1.0.3
 Markdown==2.6.6
 oauthlib==1.1.2
 pexpect==4.2.0

@@ -1,6 +1,7 @@
 from django.db import models
 from flocs import entities
 from flocsweb.mixins import ExportMixin
+from jsonfield import JSONField
 
 
 class Task(models.Model, ExportMixin):
@@ -9,12 +10,14 @@ class Task(models.Model, ExportMixin):
     """
     named_tuple = entities.Task
 
-    task_id = models.AutoField(primary_key=True)
+    task_id = models.CharField(max_length=256, primary_key=True)
 
-    ref = models.TextField()
+    setting = JSONField()
+
+    solution = JSONField()
 
     def __str__(self):
-        return '[{pk}] {ref}'.format(pk=self.pk, ref=self.ref)
+        return '[{pk}] {task_id}'.format(pk=self.pk, task_id=self.task_id)
 
     @staticmethod
     def from_named_tuple(entity_tuple, *args, **kwargs):

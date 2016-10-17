@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from flocsweb.mixins import ExportMixin
 from flocs.entities import Student
+from uuid import uuid4
 
 
 class Student(models.Model, ExportMixin):
@@ -11,7 +12,7 @@ class Student(models.Model, ExportMixin):
 
     named_tuple = Student
 
-    student_id = models.AutoField(primary_key=True)
+    student_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 
     user = models.OneToOneField(User)
 

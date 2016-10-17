@@ -3,6 +3,7 @@ from flocsweb.mixins import ExportMixin
 from flocs.entities import TaskInstance
 from .student import Student
 from tasks.models import Task
+from uuid import uuid4
 
 
 class TaskInstance(models.Model, ExportMixin):
@@ -12,7 +13,7 @@ class TaskInstance(models.Model, ExportMixin):
 
     named_tuple = TaskInstance
 
-    task_instance_id = models.AutoField(primary_key=True)
+    task_instance_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 
     student = models.ForeignKey(Student)
 
@@ -31,7 +32,8 @@ class TaskInstance(models.Model, ExportMixin):
         return not self.solved and not self.given_up
 
     def __str__(self):
-        return '[{pk}] {username} {ref}'.format(pk=self.pk, username=self.student.user.username, ref=self.task.ref)
+        return '[{pk}] {username} {task_id}'.format(pk=self.pk, username=self.student.user.username,
+                                                    task_id=self.task.task_id)
 
     @staticmethod
     def from_named_tuple(entity_tuple, *args, **kwargs):
@@ -45,4 +47,10 @@ class TaskInstance(models.Model, ExportMixin):
         """
         student = Student.objects.get(pk=entity_tuple.student_id)
         task = Task.objects.get(pk=entity_tuple.task_id)
-        return TaskInstance(**entity_tuple._asdict())
+        return TaskInstance(
+            task_instance_id=entity_tuple.task_instance_id,
+            student=student,
+            task=task,
+            solved=entity_tuple.solved,
+            given_up=entity_tuple.given_up
+        )

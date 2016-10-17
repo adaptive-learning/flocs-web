@@ -4,13 +4,11 @@ from rest_framework import permissions
 from rest_framework.reverse import reverse
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route, list_route, api_view, permission_classes
-from django.utils.decorators import method_decorator
+from rest_framework.decorators import detail_route, api_view, permission_classes
 from lazysignup.decorators import allow_lazy_user
 from .serializers import StudentSerializer, TaskInstanceSerializer
 from .models import Student, TaskInstance
 from .permissions import IsAdminOrOwnerPostAnyone
-from tasks.models import Task
 from flocs import actions
 from flocsweb.store import open_django_store
 
@@ -86,7 +84,7 @@ class PracticeViewSet(viewsets.GenericViewSet):
     def list(self, request):
         data = OrderedDict({
             'start practicing': reverse('practice_start', request=request),
-            'practice task with task_id=0': reverse('practice_start_task', args=['0'], request=request)
+            'practice task with task_id=three-steps-forward': reverse('practice_start_task', args=['three-steps-forward'], request=request)
         })
         return Response(data=data)
 
@@ -100,8 +98,8 @@ def start(request):
     """
     student = _get_or_create_student(request.user)
     # TODO: call recommender system to get a suitable task for the student
-    task_id = 0
-    task_instance = _get_or_create_task_instance(student.student_id, task_id)
+    task_id = 'three-steps-forward'
+    task_instance = _get_or_create_task_instance(student, task_id)
     data = {
         'task_instance': reverse('task_instance-detail', args=[task_instance.pk], request=request)
     }
@@ -130,9 +128,7 @@ def _get_or_create_student(user):
         with open_django_store({'user': user}) as store:
             action = actions.create_student()
             store.stage_action(action)
-            # done in a post_commit hook
-            # student = Student(user=user)
-            # student.save()
+        student = Student.objects.get(user=user)
     return student
 
 
@@ -143,7 +139,5 @@ def _get_or_create_task_instance(student, task_id):
         with open_django_store() as store:
             action = actions.start_task(student_id=student.student_id, task_id=task_id)
             store.stage_action(action)
-            # TODO: call action to create task instance
-            # task_instance = TaskInstance(student=student, task=Task.objects.get(task_id=task_id))
-            # task_instance.save()
+        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
     return task_instance
