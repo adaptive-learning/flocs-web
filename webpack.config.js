@@ -27,6 +27,9 @@ module.exports = {
     loaders: [
       // we pass the output from babel loader to react-hot loader
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel'], },
+
+      // load css
+      { test: /\.css$/, loader: "style-loader!css-loader" },
     ],
   },
 
