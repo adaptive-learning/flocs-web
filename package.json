@@ -16,6 +16,7 @@
     "url": "https://github.com/adaptive-learning/flocs-web/issues"
   },
   "dependencies": {
+    "flocs-visual-components": "github:adaptive-learning/flocs-visual-components",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",
