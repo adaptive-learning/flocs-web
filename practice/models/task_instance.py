@@ -1,6 +1,6 @@
 from django.db import models
 from flocsweb.mixins import ExportMixin
-from flocs.entities import TaskInstance
+from flocs.entities import TaskSession as TaskInstance
 from .student import Student
 from tasks.models import Task
 from uuid import uuid4
@@ -47,7 +47,7 @@ class TaskInstance(models.Model, ExportMixin):
         """
         student = Student.objects.get(pk=entity_tuple.student_id)
         task = Task.objects.get(pk=entity_tuple.task_id)
-        return TaskInstance(
+        return TaskSession(
             task_instance_id=entity_tuple.task_instance_id,
             student=student,
             task=task,
