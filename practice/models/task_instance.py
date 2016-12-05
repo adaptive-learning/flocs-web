@@ -1,9 +1,9 @@
 from django.db import models
 from flocsweb.mixins import ExportMixin
-from flocs.entities import TaskSession as TaskInstance
-from .student import Student
+from flocs.entities import TaskSession
 from tasks.models import Task
 from uuid import uuid4
+from .student import Student
 
 
 class TaskInstance(models.Model, ExportMixin):
@@ -11,13 +11,15 @@ class TaskInstance(models.Model, ExportMixin):
     A model for instance of the task being practised by the student.
     """
 
-    named_tuple = TaskInstance
+    named_tuple = TaskSession
 
     task_instance_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 
     student = models.ForeignKey(Student)
 
     task = models.ForeignKey(Task)
+
+    creation_timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     solved = models.BooleanField(
         default=False

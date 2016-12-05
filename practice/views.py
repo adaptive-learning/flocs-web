@@ -10,7 +10,9 @@ from .serializers import StudentSerializer, TaskInstanceSerializer
 from .models import Student, TaskInstance
 from .permissions import IsAdminOrOwnerPostAnyone
 from flocs import actions
+from flocs.recommendation import recommend_task
 from flocsweb.store import open_django_store
+from tasks.models import Task
 
 
 class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
@@ -84,7 +86,8 @@ class PracticeViewSet(viewsets.GenericViewSet):
     def list(self, request):
         data = OrderedDict({
             'start practicing': reverse('practice_start', request=request),
-            'practice task with task_id=three-steps-forward': reverse('practice_start_task', args=['three-steps-forward'], request=request)
+            'practice task with task_id=three-steps-forward': reverse('practice_start_task',
+                                                                      args=['three-steps-forward'], request=request)
         })
         return Response(data=data)
 
@@ -97,8 +100,12 @@ def start(request):
     Starts practicing a task selected by system's recommender system.
     """
     student = _get_or_create_student(request.user)
-    # TODO: call recommender system to get a suitable task for the student
-    task_id = 'three-steps-forward'
+    task = recommend_task(
+        student.to_named_tuple(),
+        list(map(lambda x: x.to_named_tuple(), Task.objects.all())),
+        []
+    )
+    task_id = task.task_id
     task_instance = _get_or_create_task_instance(student, task_id)
     data = {
         'task_instance': reverse('task_instance-detail', args=[task_instance.pk], request=request)
