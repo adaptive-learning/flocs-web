@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from flocsweb.mixins import ExportMixin
 from flocs.entities import TaskSession
@@ -19,7 +20,7 @@ class TaskInstance(models.Model, ExportMixin):
 
     task = models.ForeignKey(Task)
 
-    creation_timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+    creation_timestamp = models.DateTimeField(default=datetime.now, blank=True) 
 
     solved = models.BooleanField(
         default=False
