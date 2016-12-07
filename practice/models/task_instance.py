@@ -50,8 +50,8 @@ class TaskInstance(models.Model, ExportMixin):
         """
         student = Student.objects.get(pk=entity_tuple.student_id)
         task = Task.objects.get(pk=entity_tuple.task_id)
-        return TaskSession(
-            task_instance_id=entity_tuple.task_instance_id,
+        return TaskInstance(
+            task_instance_id=entity_tuple.task_session_id,
             student=student,
             task=task,
             solved=entity_tuple.solved,

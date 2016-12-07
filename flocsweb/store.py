@@ -42,10 +42,6 @@ entity_model_mapping = {
     TaskInstance: TaskInstanceModel,
 }
 
-dynamic_entities = {entity: LazyDatabaseDict(model) for (entity, model) in entity_model_mapping.items()}
-
-all_entities = ChainMap(dynamic_entities, STATIC_ENTITIES)
-
 
 class PersistenceHooks(Store.Hooks):
     def __init__(self, request_context):
@@ -56,5 +52,10 @@ class PersistenceHooks(Store.Hooks):
             entity_model_mapping[entity_name].from_named_tuple(entity_tuple=entity, **self.request_context).save()
 
 
+def get_all_entities():
+    dynamic_entities = {entity: LazyDatabaseDict(model) for (entity, model) in entity_model_mapping.items()}
+    return ChainMap(dynamic_entities, STATIC_ENTITIES)
+
+
 def open_django_store(request_context={}):
-    return Store.open(all_entities, hooks=PersistenceHooks(request_context))
+    return Store.open(get_all_entities(), hooks=PersistenceHooks(request_context))
