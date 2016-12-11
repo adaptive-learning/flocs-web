@@ -14,7 +14,7 @@ class TaskInstance(models.Model, ExportMixin):
 
     named_tuple = TaskSession
 
-    task_instance_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    task_session_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 
     student = models.ForeignKey(Student)
 
@@ -51,7 +51,7 @@ class TaskInstance(models.Model, ExportMixin):
         student = Student.objects.get(pk=entity_tuple.student_id)
         task = Task.objects.get(pk=entity_tuple.task_id)
         return TaskInstance(
-            task_instance_id=entity_tuple.task_session_id,
+            task_session_id=entity_tuple.task_session_id,
             student=student,
             task=task,
             solved=entity_tuple.solved,

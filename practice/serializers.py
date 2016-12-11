@@ -18,7 +18,7 @@ class TaskInstanceSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = TaskInstance
-        fields = ('url', 'task_instance_id', 'student', 'task', 'solved', 'given_up', 'solve', 'give_up')
+        fields = ('url', 'task_session_id', 'student', 'task', 'solved', 'given_up', 'solve', 'give_up')
 
         extra_kwargs = {
             'url': {'view_name': 'task_instance-detail'},
