@@ -1,9 +1,9 @@
 import React from 'react'
 import { Route } from 'react-router'
-import HomeContainer from '../containers/HomeContainer'
+import Home from '../components/Home'
 
 const routes = (
-    <Route path='/' component={HomeContainer}>
+    <Route path='/' component={Home}>
     </Route>
 );
 

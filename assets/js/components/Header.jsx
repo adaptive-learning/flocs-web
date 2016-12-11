@@ -1,33 +1,18 @@
 import React from 'react';
-import reactCSS from 'reactcss'
+import { Navbar } from 'react-bootstrap'
+import logo from 'images/logo.png'
 
+const style = {backgroundColor: 'darkblue', marginTop:0};
 
 export default class Header extends React.Component {
   render() {
-
-    const styles = reactCSS({
-      'default': {
-        title: {
-          color: 'white',
-          fontSize: '3em',
-          position: 'relative',
-          left: '5%'
-        },
-        header: {
-          background: '#00004d',
-          position: 'absolute',
-          top: '0px',
-          right: '0px',
-          left: '0px'
-        }
-      }
-    })
-
-    return (
-      <div style={ styles.header }>
-        <h1 style={ styles.title }>ROBOMISE</h1>
-      </div>
-    )
+      return (
+          <Navbar style={style}>
+              <Navbar.Header>
+                      <a href="#"><img src={ logo }/></a>
+              </Navbar.Header>
+          </Navbar>
+      )
   }
 }
 
