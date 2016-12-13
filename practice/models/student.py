@@ -20,7 +20,7 @@ class Student(models.Model, ExportMixin):
     def last_task_session(self):
         from .task_instance import TaskInstance
         try:
-            return TaskInstance.objects.filter(student=self).latest('creation_timestamp').task_instance_id
+            return TaskInstance.objects.filter(student=self).latest('creation_timestamp').task_session_id
         except TaskInstance.DoesNotExist:
             return None
 

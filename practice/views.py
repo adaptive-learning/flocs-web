@@ -10,7 +10,7 @@ from .serializers import StudentSerializer, TaskInstanceSerializer
 from .models import Student, TaskInstance
 from .permissions import IsAdminOrOwnerPostAnyone
 from flocs import actions
-from flocs.recommendation import recommend_task
+from flocs.extractors import select_task_in_fixed_order
 from flocsweb.store import open_django_store
 from tasks.models import Task
 
@@ -54,8 +54,10 @@ class TaskInstancesViewSet(viewsets.ModelViewSet):
             return TaskInstance.objects.all()
         return TaskInstance.objects.filter(student__user=user)
 
-    @detail_route(methods=['POST'])
+    @detail_route(methods=['GET', 'POST'])
     def solve_task(self, request, pk=None):
+        if request.method == 'GET':
+            return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
         if not self.get_object().is_active:
             return Response(status=status.HTTP_400_BAD_REQUEST, data="This task instance is already closed.")
         with open_django_store() as store:
@@ -63,8 +65,10 @@ class TaskInstancesViewSet(viewsets.ModelViewSet):
             store.stage_action(action)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @detail_route(methods=['POST'])
+    @detail_route(methods=['GET', 'POST'])
     def give_up_task(self, request, pk=None):
+        if request.method == 'GET':
+            return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
         if not self.get_object().is_active:
             return Response(status=status.HTTP_400_BAD_REQUEST, data="This task instance already closed.")
         with open_django_store() as store:
@@ -77,7 +81,7 @@ class PracticeViewSet(viewsets.GenericViewSet):
     """
     This page does not do anything. You can perform any of the following actions.
 
-    - start practicing task base on system's recommendation
+    - get a task id of based on system's recommendation
     - practice a specific task of your choice
 
     In case of practicing a specific task, substitute *0* for the id of the desired task.
@@ -85,43 +89,44 @@ class PracticeViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         data = OrderedDict({
-            'start practicing': reverse('practice_start', request=request),
             'practice task with task_id=three-steps-forward': reverse('practice_start_task',
-                                                                      args=['three-steps-forward'], request=request)
+                                                                      args=['three-steps-forward'], request=request),
+            'recommend': reverse('practice_recommend', request=request)
         })
         return Response(data=data)
 
 
 @allow_lazy_user
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
-def start(request):
+def recommend(request):
     """
-    Starts practicing a task selected by system's recommender system.
+    Gets recommended task for the user
     """
     student = _get_or_create_student(request.user)
-    task = recommend_task(
-        student.to_named_tuple(),
-        list(map(lambda x: x.to_named_tuple(), Task.objects.all())),
-        []
-    )
-    task_id = task.task_id
-    task_instance = _get_or_create_task_instance(student, task_id)
+    with open_django_store() as store:
+        try:
+            task_id = select_task_in_fixed_order(store.state, student.student_id)
+        except ValueError:
+            task_id = None
     data = {
-        'task_instance': reverse('task_instance-detail', args=[task_instance.pk], request=request)
+        'is_available': task_id is not None,
+        'task_id': task_id
     }
     return Response(data=data)
 
 
 @allow_lazy_user
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 @permission_classes([permissions.IsAuthenticated])
 def start_task(request, task_id):
     """
     Starts practicing a selected task.
     """
+    if request.method == 'GET':
+        return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
     student = _get_or_create_student(request.user)
-    task_instance = _get_or_create_task_instance(student.student_id, task_id)
+    task_instance = _get_or_create_task_instance(student, task_id)
     data = {
         'task_instance': reverse('task_instance-detail', args=[task_instance.pk], request=request)
     }
