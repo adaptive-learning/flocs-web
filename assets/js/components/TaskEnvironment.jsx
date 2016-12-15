@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
 
 // actions
-import { start } from '../actions/practiceActions'
+import { getTaskForEnv, start } from '../actions/practiceActions'
 
 // flocs visual components
 import { CodeEditorContainer, SpaceGameContainer, flocsActionCreators } from 'flocs-visual-components';
@@ -11,19 +11,27 @@ import { CodeEditorContainer, SpaceGameContainer, flocsActionCreators } from 'fl
 // set single task environment
 const taskEnvId = "single";
 
-@connect((state) => {
+@connect((state, props) => {
     return {
-        task: state.task.task,
-        ok: state.task.ok
-    };
+        taskId: props.routeParams.taskId
+    }
 })
 export default class TaskEnvironment extends React.Component {
-    constructor(props) {
-        super(props);
+
+    componentWillMount() {
         // Start session
-        props.dispatch(start(taskEnvId));
-        props.dispatch(flocsActionCreators.createTaskEnvironment(taskEnvId));
+        this.props.dispatch(flocsActionCreators.createTaskEnvironment(taskEnvId));
+        if (typeof this.props.taskId === 'undefined') {
+            this.props.dispatch(start(taskEnvId))
+        } else {
+            this.props.dispatch(getTaskForEnv(taskEnvId, this.props.taskId));
+        }
     }
+
+    componentWillReceiveProps(props) {
+        props.dispatch(getTaskForEnv(taskEnvId, props.taskId));
+    }
+
     render(){
         return (
             <div>

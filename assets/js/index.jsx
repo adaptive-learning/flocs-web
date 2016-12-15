@@ -7,8 +7,7 @@ import routes from './config/routes'
 import reducers from './reducers'
 import createLogger from 'redux-logger'
 import promise from 'redux-promise-middleware'
-import { syncHistoryWithStore } from 'react-router-redux'
-import { Router, Route, hashHistory } from 'react-router'
+import { Router, browserHistory } from 'react-router'
 
 // include bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -20,11 +19,9 @@ const logger = createLogger();
 
 const store = createStore(reducers, applyMiddleware(promise(), logger, thunk));
 
-const history = syncHistoryWithStore(hashHistory, store);
-
 const app = (
   <Provider store={store}>
-    <Router history={history}>
+    <Router history={browserHistory}>
       {routes}
     </Router>
   </Provider>

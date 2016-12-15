@@ -4,36 +4,66 @@ import axios from 'axios'
 const practiceUrl = "http://localhost:8000/api/practice/";
 
 import { flocsActionCreators } from 'flocs-visual-components';
-
+import { fetchTaskInstance, fetchTask } from './taskInstanceActions'
 
 export function start(taskEnvId) {
-    return function(dispatch) {
-        return fetchNextTask().then(
-            (response) => {
-                // process returned task
-                let task = {};
-                task['setting'] = jsonToObject(response.data.setting);
-                task['solution'] = jsonToObject(response.data.solution);
-                task['task_id'] = response.data.task_id;
-                // set task in environment
-                dispatch(flocsActionCreators.setTask(taskEnvId, task));
-                // start practicing
-                dispatch({type: "START", payload: task})
-            })
+    return ((dispatch) => {
+        return dispatch(recommend()).then(() =>
+            dispatch(nextTask(taskEnvId))
+        )
+    })
+}
+
+export function getTaskForEnv(taskEnvId, taskId) {
+    return ((dispatch, getState) => {
+        return dispatch(nextTask(taskEnvId, taskId)
+        ).then(() =>
+            dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskInstance.task))
+        )
+    })
+}
+
+export function solveTaskAndRecommend() {
+    return ((dispatch, getState) => {
+        return dispatch(solveTaskByUrl(getState().taskInstance.solve)
+        ).then(() =>
+            dispatch(recommend())
+        )
+    })
+}
+
+export function nextTask(taskEnvId, taskId) {
+    return ((dispatch, getState) => {
+        return dispatch(startTask(typeof taskId === "undefined" ? getState().practice.recommendation : taskId)
+        ).then(() =>
+            dispatch(fetchTaskInstance(getState().practice.taskInstanceUrl))
+        ).then(() =>
+            dispatch(fetchTask(getState().taskInstance.taskUrl))
+        ).then(() =>
+            dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskInstance.task))
+        )
+    })
+}
+
+export function recommend() {
+    return {
+        type: "RECOMMEND",
+        payload: axios.get(practiceUrl + 'recommend/')
     }
 }
 
-function fetchNextTask() {
-    return axios.post(practiceUrl + 'start/')
-        .then(function (response) {
-            const ti_url = response.data.task_instance;
-            return axios.get(ti_url)
-        }).then(function (response) {
-            const taskUrl = response.data.task;
-            return axios.get(taskUrl, {params: {format: "json"}})
-        });
+// PRIVATE
+function startTask(taskId) {
+    return {
+        type: "START_TASK",
+        payload: axios.post(practiceUrl + 'start_task/' + taskId + '/')
+    }
 }
 
-function jsonToObject(jsonStr) {
-    return JSON.parse(jsonStr.replace(/'/g, "\""));
+function solveTaskByUrl(url) {
+    return {
+        type: "SOLVE_TASK",
+        payload: axios.post(url)
+    }
 }
+
