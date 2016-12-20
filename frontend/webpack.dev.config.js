@@ -6,7 +6,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
     context: __dirname,
     entry: [
-        'webpack-dev-server/client?http://localhost:3000',
+        'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/only-dev-server',
         './js/index'
     ],
