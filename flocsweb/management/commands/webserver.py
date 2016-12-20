@@ -17,7 +17,7 @@ class Command(StaticfilesRunserverCommand):
     def start_web(self):
         self.stdout.write('>>> Starting webpack')
         self.webpack_process = subprocess.Popen(
-            ['node server.js'],
+            ['cd frontend && npm run start'],
             shell=True,
             stdin=subprocess.PIPE,
             stdout=self.stdout,

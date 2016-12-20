@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'lazysignup',
     'social.apps.django_app.default',  # OAuth
-    'webpack_loader',  # frontend
     'tasks',
     'users',
     'practice',
@@ -156,11 +155,9 @@ STATIC_URL = '/static/'
 # We do this so that django's collectstatic copies or our bundles to the
 # STATIC_ROOT or syncs them to whatever storage we use.
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'assets'),
+    os.path.join(BASE_DIR, 'frontend', 'static'),
 )
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# using webpack default loader config, no need to explicitly define
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 
 AUTHENTICATION_BACKENDS = (
   'django.contrib.auth.backends.ModelBackend',

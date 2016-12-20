@@ -4,7 +4,10 @@
   "description": "Frontend and server part of an inteligent application for learning computer science.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run clean && webpack",
+    "clean": "rm -rf static",
+    "start": "npm run build && webpack --watch --config webpack.dev.config.js"
   },
   "repository": {
     "type": "git",

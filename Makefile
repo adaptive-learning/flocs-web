@@ -7,7 +7,7 @@
 
 # -----------------------------------------------------------
 
-update: dependencies db-setup
+default: dependencies db-setup build-frontend
 
 # -----------------------------------------------------------
 
@@ -20,7 +20,7 @@ backend-dependencies:
 
 frontend-dependencies:
 	@echo "== Install frontend dependencies. =="
-	  npm update
+	cd frontend && npm update
 
 # -----------------------------------------------------------
 
@@ -68,3 +68,6 @@ db-load-data:
 	python manage.py load_static_data
 
 # -----------------------------------------------------------
+
+build-frontend:
+	cd frontend && npm run build
