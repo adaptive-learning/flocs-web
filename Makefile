@@ -34,7 +34,7 @@ test-frontend:
 	@echo "===== Frontend tests ====="
 	cd frontend
 	@echo "TBA"
-	
+
 
 # -----------------------------------------------------------
 
@@ -52,7 +52,7 @@ check-frontend:
 
 # -----------------------------------------------------------
 
-db-setup: db-migrate db-flush admin db-load-data
+db-setup: db-migrate db-load-data
 
 db-migrate:
 	@echo "===== Set up database ====="
