@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'webpack_loader',
     'import_export',
     'rest_framework',
     'lazysignup',
@@ -158,6 +159,13 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'frontend', 'static'),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
+
+# Webpack-Django communication when development
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json')
+    }
+}
 
 AUTHENTICATION_BACKENDS = (
   'django.contrib.auth.backends.ModelBackend',

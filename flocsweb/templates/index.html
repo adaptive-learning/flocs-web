@@ -1,3 +1,4 @@
+{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,6 +8,6 @@
 
   <body>
     <div id="flocsApp"></div>
-    <script type="text/javascript" src="/static/bundles/main.js"></script>
+    {% render_bundle 'main' %}
   </body>
 </html>
