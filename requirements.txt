@@ -1,12 +1,13 @@
 decorator==4.0.10
 defusedxml==0.4.1
 diff-match-patch==20121119
+dj-database-url==0.4.1
 Django==1.8.2
 django-import-export==0.4.5
 django-lazysignup==1.0.2
 django-modeltranslation==0.10.2
 django-select-multiple-field==0.4.2
-django-webpack-loader==0.4.1
+django-webpack-loader==0.3.3
 djangorestframework==3.4.3
 flocs==0.0.8
 ipython==5.0.0
