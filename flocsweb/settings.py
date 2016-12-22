@@ -22,6 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '34r0-rk47e3-ka+3d+@!@e+%a9qr##6duf0t(!#1sm$&zw&8!y'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
 
 ON_STAGING = os.getenv('ON_STAGING', "False") == "True"
