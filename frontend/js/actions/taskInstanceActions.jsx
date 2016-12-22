@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 // TODO: factor out to store
-const taskInstanceUrl = "http://localhost:8000/api/task_instances/";
-const taskUrl = "http://localhost:8000/api/tasks/";
+const taskInstanceUrl = "/api/task_instances/";
+const taskUrl = "/api/tasks/";
 
 export function fetchTaskInstance(url) {
     return {

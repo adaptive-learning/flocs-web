@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // TODO: factor out to store
-const practiceUrl = "http://localhost:8000/api/practice/";
+const practiceUrl = "/api/practice/";
 
 import { flocsActionCreators } from 'flocs-visual-components';
 import { fetchTaskInstance, fetchTask } from './taskInstanceActions'
