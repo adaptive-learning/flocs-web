@@ -19,7 +19,7 @@ export default class TasksTableContainer extends React.Component {
 
   render(){
     return (
-      <TasksTable tasks={this.props.tasks} urlBase="/task/" />
+      <TasksTable tasks={this.props.tasks} urlBase="/task-preview/" />
     );
   }
 }

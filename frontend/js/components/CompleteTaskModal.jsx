@@ -31,9 +31,11 @@ export default class CompleteTaskModal extends React.Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Link to={`/task/${this.props.recommended}`}>
-                            <Button bsStyle="primary" > Jít na další </Button>
-                        </Link>
+                        { this.props.recommended && (
+                          <Link to={`/task/${this.props.recommended}`}>
+                              <Button bsStyle="primary" > Jít na další </Button>
+                          </Link>
+                        )}
                     </Modal.Footer>
 
                 </Modal.Dialog>
