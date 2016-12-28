@@ -4,7 +4,6 @@ import { recommend } from '../actions/practiceActions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-
 @connect((store) => {
     return {
         recommended: store.practice.recommendation

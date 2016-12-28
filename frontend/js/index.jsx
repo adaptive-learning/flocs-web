@@ -17,7 +17,7 @@ import './config/axiosConfig'
 
 const logger = createLogger();
 
-const store = createStore(reducers, applyMiddleware(promise(), logger, thunk));
+const store = createStore(reducers, applyMiddleware(promise(), thunk, logger));
 
 const app = (
   <Provider store={store}>
