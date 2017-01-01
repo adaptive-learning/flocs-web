@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Col } from 'react-bootstrap';
-import { CodeEditorContainer, SpaceGameContainer, flocsSelector, flocsActionCreators } from 'flocs-visual-components';
+import { TaskEnvironmentContainer, flocsSelector, flocsActionCreators } from 'flocs-visual-components';
 import { getTaskForEnv, start } from '../actions/practiceActions';
 import CompleteTaskModal from '../components/CompleteTaskModal';
 
@@ -14,10 +13,8 @@ const taskEnvId = "single";
     solved: state.practice.stage === "ATTEMPTED" ? flocsSelector.getGameState(state, "single").stage == "solved" : false,
   }
 })
-export default class TaskEnvironment extends React.Component {
-
+export default class PracticeContainer extends React.Component {
   componentWillMount() {
-    this.props.dispatch(flocsActionCreators.createTaskEnvironment(taskEnvId));
     this.props.dispatch(getTaskForEnv(taskEnvId, this.props.taskId));
   }
 
@@ -30,12 +27,7 @@ export default class TaskEnvironment extends React.Component {
   render(){
     return (
       <div>
-        <Col xs={6} md={6}>
-            <CodeEditorContainer taskEnvironmentId={taskEnvId}/>
-        </Col>
-        <Col xs={6} md={6}>
-            <SpaceGameContainer taskEnvironmentId={taskEnvId}/>
-        </Col>
+        <TaskEnvironmentContainer taskEnvironmentId={taskEnvId} />
         { this.props.solved && (
           <CompleteTaskModal />
         )}
