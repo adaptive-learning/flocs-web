@@ -7,7 +7,7 @@ import Header from './Header'
 export default class Main extends React.Component {
     render() {
         return (
-            <Grid>
+            <Grid fluid>
                 <Row>
                     <Header/>
                 </Row>
