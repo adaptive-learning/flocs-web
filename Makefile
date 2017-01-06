@@ -24,6 +24,11 @@ frontend-dependencies:
 
 # -----------------------------------------------------------
 
+start:
+	python manage.py webserver
+
+# -----------------------------------------------------------
+
 test: test-backend test-frontend
 
 test-backend:
