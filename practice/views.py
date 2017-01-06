@@ -146,12 +146,10 @@ def _get_or_create_student(user):
 
 def _get_or_create_task_instance(student, task_id):
     try:
-        # FIXME: why it requires solved and given_up to be False?
-        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
+        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id)
     except TaskInstance.DoesNotExist:
         with open_django_store() as store:
             action = actions.start_task(student_id=student.student_id, task_id=task_id)
             store.stage_action(action)
-        # FIXME: why it requires solved and given_up to be False?
-        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
+        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id)
     return task_instance
