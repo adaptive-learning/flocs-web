@@ -126,7 +126,7 @@ def start_task(request, task_id):
     if request.method == 'GET':
         return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
     student = _get_or_create_student(request.user)
-    task_instance = _get_or_create_task_instance(student, task_id)
+    task_instance = _get_or_create_unfinished_task_session(student, task_id)
     data = {
         'task_instance': reverse('task_instance-detail', args=[task_instance.pk], request=request)
     }
@@ -144,12 +144,14 @@ def _get_or_create_student(user):
     return student
 
 
-def _get_or_create_task_instance(student, task_id):
+def _get_or_create_unfinished_task_session(student, task_id):
     try:
-        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id)
+        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
+        # TODO: check if the task session is not too old, in which case finish
+        # it and start a new one
     except TaskInstance.DoesNotExist:
         with open_django_store() as store:
             action = actions.start_task(student_id=student.student_id, task_id=task_id)
             store.stage_action(action)
-        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id)
+        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
     return task_instance
