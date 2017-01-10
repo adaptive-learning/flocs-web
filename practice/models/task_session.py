@@ -7,9 +7,9 @@ from uuid import uuid4
 from .student import Student
 
 
-class TaskInstance(models.Model, ExportMixin):
+class TaskSession(models.Model, ExportMixin):
     """
-    A model for instance of the task being practised by the student.
+    A model for session of the task being practised by the student.
     """
 
     named_tuple = TaskSession
@@ -50,7 +50,7 @@ class TaskInstance(models.Model, ExportMixin):
         """
         student = Student.objects.get(pk=entity_tuple.student_id)
         task = Task.objects.get(pk=entity_tuple.task_id)
-        return TaskInstance(
+        return TaskSession(
             task_session_id=entity_tuple.task_session_id,
             student=student,
             task=task,

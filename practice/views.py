@@ -6,8 +6,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, api_view, permission_classes
 from lazysignup.decorators import allow_lazy_user
-from .serializers import StudentSerializer, TaskInstanceSerializer
-from .models import Student, TaskInstance
+from .serializers import StudentSerializer, TaskSessionSerializer
+from .models import Student, TaskSession
 from .permissions import IsAdminOrOwnerPostAnyone
 from flocs import actions
 from flocs.extractors import select_task_in_fixed_order
@@ -35,14 +35,14 @@ class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
         return Student.objects.filter(user=user)
 
 
-class TaskInstancesViewSet(viewsets.ModelViewSet):
+class TaskSessionsViewSet(viewsets.ModelViewSet):
     """
-    This view presents task instances.
+    This view presents task session instances.
 
     Regular users can only access their own instances. Staff members can see all the instances.
     """
 
-    serializer_class = TaskInstanceSerializer
+    serializer_class = TaskSessionSerializer
     permission_classes = [permissions.IsAuthenticated, IsAdminOrOwnerPostAnyone]
 
     def get_queryset(self):
@@ -51,15 +51,15 @@ class TaskInstancesViewSet(viewsets.ModelViewSet):
         """
         user = self.request.user
         if user and user.is_staff:
-            return TaskInstance.objects.all()
-        return TaskInstance.objects.filter(student__user=user)
+            return TaskSession.objects.all()
+        return TaskSession.objects.filter(student__user=user)
 
     @detail_route(methods=['GET', 'POST'])
     def solve_task(self, request, pk=None):
         if request.method == 'GET':
             return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
         if not self.get_object().is_active:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data="This task instance is already closed.")
+            return Response(status=status.HTTP_400_BAD_REQUEST, data="This task session is already closed.")
         with open_django_store() as store:
             action = actions.solve_task(pk)
             store.stage_action(action)
@@ -70,7 +70,7 @@ class TaskInstancesViewSet(viewsets.ModelViewSet):
         if request.method == 'GET':
             return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
         if not self.get_object().is_active:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data="This task instance already closed.")
+            return Response(status=status.HTTP_400_BAD_REQUEST, data="This task session is already closed.")
         with open_django_store() as store:
             action = actions.give_up_task(pk)
             store.stage_action(action)
@@ -126,9 +126,9 @@ def start_task(request, task_id):
     if request.method == 'GET':
         return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
     student = _get_or_create_student(request.user)
-    task_instance = _get_or_create_unfinished_task_session(student, task_id)
+    task_session = _get_or_create_unfinished_task_session(student, task_id)
     data = {
-        'task_instance': reverse('task_instance-detail', args=[task_instance.pk], request=request)
+        'task_session': reverse('task_session-detail', args=[task_session.pk], request=request)
     }
     return Response(data=data)
 
@@ -146,12 +146,12 @@ def _get_or_create_student(user):
 
 def _get_or_create_unfinished_task_session(student, task_id):
     try:
-        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
+        task_session = TaskSession.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
         # TODO: check if the task session is not too old, in which case finish
         # it and start a new one
-    except TaskInstance.DoesNotExist:
+    except TaskSession.DoesNotExist:
         with open_django_store() as store:
             action = actions.start_task(student_id=student.student_id, task_id=task_id)
             store.stage_action(action)
-        task_instance = TaskInstance.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
-    return task_instance
+        task_session = TaskSession.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
+    return task_session

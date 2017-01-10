@@ -26,7 +26,7 @@ router = DefaultRouter()
 router.register(r'users', users_views.UsersViewSet, base_name='user')
 router.register(r'tasks', tasks_views.TasksViewSet, base_name='task')
 router.register(r'students', practice_views.StudentsViewSet, base_name='student')
-router.register(r'task_instances', practice_views.TaskInstancesViewSet, base_name='task_instance')
+router.register(r'task_sessions', practice_views.TaskSessionsViewSet, base_name='task_session')
 router.register(r'practice', practice_views.PracticeViewSet, base_name='practice')
 
 urlpatterns = [

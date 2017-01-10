@@ -1,12 +1,12 @@
 import axios from 'axios'
 
 // TODO: factor out to store
-const taskInstanceUrl = "/api/task_instances/";
+const taskSessionUrl = "/api/task_sessions/";
 const taskUrl = "/api/tasks/";
 
-export function fetchTaskInstance(url) {
+export function fetchTaskSession(url) {
     return {
-        type: "FETCH_TASK_INSTANCE",
+        type: "FETCH_TASK_SESSION",
         payload: axios.get(url)
     }
 }

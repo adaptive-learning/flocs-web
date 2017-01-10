@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Student, TaskInstance
+from .models import Student, TaskSession
 
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
@@ -8,20 +8,20 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'student_id', 'user')
 
 
-class TaskInstanceSerializer(serializers.HyperlinkedModelSerializer):
+class TaskSessionSerializer(serializers.HyperlinkedModelSerializer):
     solve = serializers.HyperlinkedIdentityField(
-        view_name='task_instance-solve-task',
+        view_name='task_session-solve-task',
         read_only=True)
     give_up = serializers.HyperlinkedIdentityField(
-        view_name='task_instance-give-up-task',
+        view_name='task_session-give-up-task',
         read_only=True)
 
     class Meta:
-        model = TaskInstance
+        model = TaskSession
         fields = ('url', 'task_session_id', 'student', 'task', 'solved', 'given_up', 'solve', 'give_up')
 
         extra_kwargs = {
-            'url': {'view_name': 'task_instance-detail'},
+            'url': {'view_name': 'task_session-detail'},
         }
 
     def validate(self, data):

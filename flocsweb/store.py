@@ -1,9 +1,9 @@
 from collections import ChainMap, MutableMapping
 from flocs.store import Store
-from practice.models import Student as StudentModel, TaskInstance as TaskInstanceModel
+from practice.models import Student as StudentModel, TaskSession as TaskSessionModel
 from flocs.state import STATIC_ENTITIES
 from flocs.entities import Student
-from flocs.entities import TaskSession as TaskInstance
+from flocs.entities import TaskSession
 
 
 class LazyDatabaseDict(MutableMapping):
@@ -39,7 +39,7 @@ class LazyDatabaseDict(MutableMapping):
 
 entity_model_mapping = {
     Student: StudentModel,
-    TaskInstance: TaskInstanceModel,
+    TaskSession: TaskSessionModel,
 }
 
 

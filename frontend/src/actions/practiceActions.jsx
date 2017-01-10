@@ -4,7 +4,7 @@ import axios from 'axios'
 const practiceUrl = "/api/practice/";
 
 import { flocsActionCreators } from 'flocs-visual-components';
-import { fetchTaskInstance, fetchTask } from './taskInstanceActions'
+import { fetchTaskSession, fetchTask } from './taskSessionActions'
 
 export function start(taskEnvId) {
     return ((dispatch) => {
@@ -18,14 +18,14 @@ export function getTaskForEnv(taskEnvId, taskId) {
     return ((dispatch, getState) => {
         return dispatch(nextTask(taskEnvId, taskId)
         ).then(() =>
-            dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskInstance.task))
+            dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskSession.task))
         )
     })
 }
 
 export function solveTaskAndRecommend() {
     return ((dispatch, getState) => {
-        return dispatch(solveTaskByUrl(getState().taskInstance.solve)
+        return dispatch(solveTaskByUrl(getState().taskSession.solve)
         ).then(() =>
             dispatch(recommend())
         )
@@ -36,11 +36,11 @@ export function nextTask(taskEnvId, taskId) {
     return ((dispatch, getState) => {
         return dispatch(startTask(typeof taskId === "undefined" ? getState().practice.recommendation : taskId)
         ).then(() =>
-            dispatch(fetchTaskInstance(getState().practice.taskInstanceUrl))
+            dispatch(fetchTaskSession(getState().practice.taskSessionUrl))
         ).then(() =>
-            dispatch(fetchTask(getState().taskInstance.taskUrl))
+            dispatch(fetchTask(getState().taskSession.taskUrl))
         ).then(() =>
-            dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskInstance.task))
+            dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskSession.task))
         )
     })
 }

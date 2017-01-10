@@ -1,14 +1,14 @@
 import React from 'react';
 
 
-export function taskInstanceReducer(state={
+export function taskSessionReducer(state={
     id: null,
     taskUrl: null,
     solve: null,
     task: {},
 }, action) {
     switch (action.type) {
-        case "FETCH_TASK_INSTANCE_FULFILLED": {
+        case "FETCH_TASK_SESSION_FULFILLED": {
             return {...state,
                 id: action.payload.data.task_session_id,
                 taskUrl: action.payload.data.task,
