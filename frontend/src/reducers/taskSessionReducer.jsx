@@ -20,14 +20,14 @@ export function taskSessionReducer(state={
             let task = {};
             task['setting'] = jsonToObject(action.payload.data.setting);
             task['solution'] = jsonToObject(action.payload.data.solution);
-            task['task_id'] = action.payload.data.task_id;
+            task['taskId'] = action.payload.data.task_id;
             return {...state, task: task}
         }
         case "GET_TASK_FULFILLED": {
             let task = {};
             task['setting'] = jsonToObject(action.payload.data.setting);
             task['solution'] = jsonToObject(action.payload.data.solution);
-            task['task_id'] = action.payload.data.task_id;
+            task['taskId'] = action.payload.data.task_id;
             return {...state, task: task}
         }
     }
