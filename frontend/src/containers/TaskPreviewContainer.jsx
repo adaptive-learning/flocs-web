@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { TaskEnvironment, flocsActionCreators } from 'flocs-visual-components';
+import { TaskEnvironmentContainer, flocsActionCreators } from 'flocs-visual-components';
 
 import { getTaskForEnv } from '../actions/practiceActions'
 
@@ -28,7 +28,7 @@ export default class TaskPreviewContainer extends React.Component {
 
     render(){
       return (
-        <TaskEnvironment taskEnvironmentId={taskEnvId} />
+        <TaskEnvironmentContainer taskEnvironmentId={taskEnvId} />
       )
     }
 }

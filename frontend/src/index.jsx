@@ -8,6 +8,7 @@ import reducers from './reducers'
 import createLogger from 'redux-logger'
 import promise from 'redux-promise-middleware'
 import { Router, browserHistory } from 'react-router'
+import { FlocsProvider } from 'flocs-visual-components';
 
 // include bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -21,9 +22,11 @@ const store = createStore(reducers, applyMiddleware(promise(), thunk, logger));
 
 const app = (
   <Provider store={store}>
-    <Router history={browserHistory}>
-      {routes}
-    </Router>
+    <FlocsProvider>
+      <Router history={browserHistory}>
+        {routes}
+      </Router>
+    </FlocsProvider>
   </Provider>
 );
 
