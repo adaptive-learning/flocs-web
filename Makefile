@@ -33,7 +33,8 @@ test: test-backend test-frontend
 
 test-backend:
 	@echo "===== Backend tests ====="
-	python manage.py test --traceback
+	pytest
+	# python manage.py test --traceback
 
 test-frontend:
 	@echo "===== Frontend tests ====="
