@@ -1,4 +1,5 @@
-from collections import ChainMap, Mapping
+from collections import ChainMap
+from collections.abc import Mapping
 from practice.models import Student as StudentModel, TaskSession as TaskSessionModel
 from flocs.store import Store
 from flocs.state import STATIC_ENTITIES, EntityMapping
