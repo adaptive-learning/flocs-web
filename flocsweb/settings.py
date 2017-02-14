@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'users',
     'practice',
     'flocsweb',
-    'flocsweb.tests',  # TODO: use this only for tests
 ]
 
 APPEND_SLASH = True

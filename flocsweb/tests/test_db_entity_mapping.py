@@ -6,7 +6,7 @@ from flocsweb.tests.models import Entity
 
 @pytest.mark.django_db
 class TestDbEntityMapping(TestEntityMapping):
-    """Tests from core to ensure expected behavior of DbEntityMapping
+    """ Tests from core to ensure expected behavior of DbEntityMapping
     """
     entity_mapping_class = DbEntityMapping
 
