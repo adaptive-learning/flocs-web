@@ -24,7 +24,10 @@ class DbEntityMapping(Mapping):
         assert data or model
         self.data = data or {}
         self.model = model or self.model_mapping[list(data.values())[0].__class__]
-        self.manager = manager or self.model.objects
+        # Note that the manager can be also an empty QuerySet
+        self.manager = self.model.objects if manager is None else manager
+
+
 
     @classmethod
     def from_list(cls, entity_list):
@@ -55,7 +58,6 @@ class DbEntityMapping(Mapping):
         return entity
 
     def __iter__(self):
-        print('model is', self.model)
         for entity in self.manager.all():
             yield entity.pk
 
@@ -63,12 +65,11 @@ class DbEntityMapping(Mapping):
         return self.manager.count()
 
     def __eq__(self, other):
-        print('eq')
-        print(self.to_dict(), other.to_dict())
         return self.to_dict() == other.to_dict()
 
     def filter(self, **kwargs):
-        return DbEntityMapping(model=self.model, manager=self.manager.filter(**kwargs))
+        filtered_mapping = DbEntityMapping(model=self.model, manager=self.manager.filter(**kwargs))
+        return filtered_mapping
 
     def to_dict(self):
         return {key: self[key] for key in iter(self)}
