@@ -10,7 +10,7 @@ from .serializers import StudentSerializer, TaskSessionSerializer
 from .models import Student, TaskSession
 from .permissions import IsAdminOrOwnerPostAnyone
 from flocs import actions
-from flocs.extractors import select_task_in_fixed_order
+from flocs.extractors import select_task_fixed_then_random
 from flocsweb.store import open_django_store
 from tasks.models import Task
 
@@ -106,7 +106,7 @@ def recommend(request):
     student = _get_or_create_student(request.user)
     with open_django_store() as store:
         try:
-            task_id = select_task_in_fixed_order(store.state, student.student_id)
+            task_id = select_task_fixed_then_random(store.state, student.student_id)
         except ValueError:
             task_id = None
     data = {

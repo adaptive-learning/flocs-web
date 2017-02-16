@@ -1,3 +1,4 @@
+from warnings import warn
 from collections.abc import Mapping
 from flocs.state import EntityMap
 
@@ -28,6 +29,10 @@ class DbEntityMap(Mapping):
             raise KeyError(str(exc))
 
     def __iter__(self):
+        if (len(self) > 500):
+            # TODO: use logging?
+            warn('Iterating through a long query set of {model} ({count} items)'
+                .format(model=self.model_class, count=len(self)))
         for db_entity in self.querySet:
             yield db_entity.pk
 
@@ -35,7 +40,7 @@ class DbEntityMap(Mapping):
         return self.querySet.count()
 
     def __repr__(self):
-        return 'DbEntityMapping({querySet})'.format(querySet=self.querySet)
+        return 'DbEntityMap({querySet})'.format(querySet=self.querySet)
 
     @property
     def model_class(self):
@@ -46,9 +51,19 @@ class DbEntityMap(Mapping):
         return self.model_class.named_tuple
 
     def set(self, entity):
-        ''' Return a new EntityMap from self and the given entity
-        '''
+        """ Return a new EntityMap from self and the given entity
+        """
         return EntityMap(self).set(entity)
+
+    @property
+    def original_entities(self):
+        # if something changed we would have created EntityMap
+        return self
+
+    @property
+    def modified_entities(self):
+        # if something changed we would have created EntityMap
+        return {}
 
     def filter(self, **kwargs):
         return DbEntityMap(querySet=self.querySet.filter(**kwargs))
