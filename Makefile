@@ -16,7 +16,6 @@ dependencies: backend-dependencies frontend-dependencies
 backend-dependencies:
 	@echo "== Install Python dependencies. =="
 	pip install -r requirements.txt
-	pip install --upgrade flocs
 
 frontend-dependencies:
 	@echo "== Install frontend dependencies. =="

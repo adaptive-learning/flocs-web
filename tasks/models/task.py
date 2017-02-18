@@ -11,9 +11,9 @@ class Task(models.Model, ExportMixin):
     named_tuple = entities.Task
 
     task_id = models.CharField(max_length=256, primary_key=True)
-
+    category_id = models.CharField(max_length=256, default='uncategorized')
+        # TODO: replace by a category once we introduce Category model
     setting = JSONField()
-
     solution = JSONField()
 
     def __str__(self):
