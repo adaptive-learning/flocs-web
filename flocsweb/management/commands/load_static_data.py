@@ -7,7 +7,13 @@ class Command(BaseCommand):
     help = "Loads static data into the database, if it has not been done yet."
 
     def handle(self, *args, **options):
+        self.stdout.write('----------------------------')
+        self.stdout.write('Loading tasks')
+        self.stdout.write('----------------------------')
         for task_tuple in tasks:
-            if not Task.objects.filter(**task_tuple._asdict()):
-                Task.from_named_tuple(task_tuple).save()
-                self.stdout.write(task_tuple.__str__() + " has been loaded.")
+            task = Task.from_named_tuple(task_tuple)
+            task.save()
+            self.stdout.write('Loaded task: {task}'.format(task=task))
+        self.stdout.write('----------------------------')
+        self.stdout.write('Loaded {n} tasks'.format(n=len(tasks)))
+        self.stdout.write('----------------------------')

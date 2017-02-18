@@ -17,7 +17,7 @@ class Task(models.Model, ExportMixin):
     solution = JSONField()
 
     def __str__(self):
-        return '[{pk}] {task_id}'.format(pk=self.pk, task_id=self.task_id)
+        return self.task_id
 
     @staticmethod
     def from_named_tuple(entity_tuple, *args, **kwargs):
