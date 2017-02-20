@@ -5,9 +5,6 @@ import reducers from './reducers'
 import { Router, browserHistory } from 'react-router'
 import { FlocsProvider } from 'flocs-visual-components';
 
-// include bootstrap
-import 'bootstrap/dist/css/bootstrap.css';
-
 // axios config
 import './config/axiosConfig'
 

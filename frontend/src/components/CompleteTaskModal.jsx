@@ -1,46 +1,45 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap'
+import Dialog from 'material-ui/Dialog';
 import { Link } from 'react-router'
-
 import { connect } from 'react-redux'
+import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
 
 // actions
 import { solveTaskAndRecommend, nextTask } from '../actions/practiceActions'
 
-@connect((store) => {
-    return {
-        recommended: store.practice.recommendation
-    }
+// TODO separate logic and presentation (component and container)
+@connect((state, props) => {
+  return {
+    ...props,
+    recommended: state.practice.recommendation
+  }
 })
 export default class CompleteTaskModal extends React.Component {
-
-    componentDidMount() {
-        this.props.dispatch(solveTaskAndRecommend())
-    }
-
-    render() {
-        return (
-            <div className="static-modal">
-                <Modal.Dialog>
-                    <Modal.Header>
-                        <Modal.Title>Výborně!</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        Úloha vyřešena
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        { this.props.recommended && (
-                          <Link to={`/task/${this.props.recommended}`}>
-                              <Button bsStyle="primary" > Jít na další </Button>
-                          </Link>
-                        )}
-                    </Modal.Footer>
-
-                </Modal.Dialog>
-            </div>
-        )
+  render() {
+    const message = 'Výborně, úloha vyřešena!';
+    if (this.props.position !== 'modal') {
+      if (!this.props.open) {
+        return null;
+      }
+      return (
+        <div>
+          <div>{message}</div>
+          <div>
+            <NextTaskButtonContainer />
+          </div>
+        </div>
+      );
+    };
+    return (
+      <Dialog
+        title={message}
+        actions={[<NextTaskButtonContainer />]}
+        open={this.props.open}
+        contentStyle={{ textAlign: 'center' }}
+        actionsContainerStyle={{ textAlign: 'center' }}
+      >
+      </Dialog>
+    );
   }
 }
 
