@@ -14,7 +14,7 @@ class TestDbEntityMap(TestEntityMap):
     @staticmethod
     def create_entity_map(*entities):
         for entity in entities:
-            DbEntity.from_named_tuple(entity).save()
+            DbEntity.import_entity(entity)
         querySet = DbEntity.objects.filter(pk__in=[e.entity_id for e in entities])
         return DbEntityMap(querySet=querySet)
 

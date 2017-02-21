@@ -20,7 +20,7 @@ class Task(models.Model, ExportMixin):
         return self.task_id
 
     @staticmethod
-    def from_named_tuple(entity_tuple, *args, **kwargs):
+    def import_entity(entity_tuple, *args, **kwargs):
         """
         Imports attribute values from named tuple and uses them as a input for constructor.
         Args:
@@ -29,4 +29,6 @@ class Task(models.Model, ExportMixin):
         Returns: Instance of the class with the given data in attributes.
 
         """
-        return Task(**entity_tuple._asdict())
+        task = Task(**entity_tuple._asdict())
+        task.save()
+        return task

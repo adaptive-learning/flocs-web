@@ -20,7 +20,7 @@ class TaskSession(models.Model, ExportMixin):
 
     task = models.ForeignKey(Task)
 
-    creation_timestamp = models.DateTimeField(default=datetime.now, blank=True) 
+    creation_timestamp = models.DateTimeField(default=datetime.now, blank=True)
 
     solved = models.BooleanField(
         default=False
@@ -39,7 +39,7 @@ class TaskSession(models.Model, ExportMixin):
                                                     task_id=self.task.task_id)
 
     @staticmethod
-    def from_named_tuple(entity_tuple, *args, **kwargs):
+    def import_entity(entity_tuple, *args, **kwargs):
         """
         Imports attribute values from named tuple and uses them as a input for constructor.
         Args:
@@ -48,12 +48,6 @@ class TaskSession(models.Model, ExportMixin):
         Returns: Instance of the class with the given data in attributes.
 
         """
-        student = Student.objects.get(pk=entity_tuple.student_id)
-        task = Task.objects.get(pk=entity_tuple.task_id)
-        return TaskSession(
-            task_session_id=entity_tuple.task_session_id,
-            student=student,
-            task=task,
-            solved=entity_tuple.solved,
-            given_up=entity_tuple.given_up
-        )
+        task_session = TaskSession(**entity_tuple._asdict())
+        task_session.save()
+        return task_session

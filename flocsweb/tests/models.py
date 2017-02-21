@@ -14,5 +14,7 @@ class DbEntity(models.Model, ExportMixin):
         return 'id={pk}'.format(pk=self.pk)
 
     @staticmethod
-    def from_named_tuple(entity_tuple):
-        return DbEntity(**entity_tuple._asdict())
+    def import_entity(entity_tuple):
+        db_entity = DbEntity(**entity_tuple._asdict())
+        db_entity.save()
+        return db_entity

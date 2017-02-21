@@ -18,7 +18,7 @@ class PersistenceHooks(Store.Hooks):
 
     def post_commit(self, state, diff, actions):
         for entity_name, entity_id, entity in diff:
-            model_mapping[entity_name].from_named_tuple(entity_tuple=entity, **self.request_context).save()
+            model_mapping[entity_name].import_entity(entity_tuple=entity, **self.request_context)
 
 
 def get_all_entities():
