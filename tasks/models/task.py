@@ -1,14 +1,13 @@
 from django.db import models
 from flocs import entities
-from flocsweb.mixins import ExportMixin
+from flocsweb.mixins import ImportExportMixin
 from jsonfield import JSONField
 
 
-class Task(models.Model, ExportMixin):
+class Task(models.Model, ImportExportMixin):
+    """ Model for a task (problem) to be solved by students
     """
-    Model for a task (exercise)
-    """
-    named_tuple = entities.Task
+    entity_class = entities.Task
 
     task_id = models.CharField(max_length=256, primary_key=True)
     category_id = models.CharField(max_length=256, default='uncategorized')
@@ -18,17 +17,3 @@ class Task(models.Model, ExportMixin):
 
     def __str__(self):
         return self.task_id
-
-    @staticmethod
-    def import_entity(entity_tuple, *args, **kwargs):
-        """
-        Imports attribute values from named tuple and uses them as a input for constructor.
-        Args:
-            entity_tuple: named tuple with all the fields required by any of the class' constructor
-
-        Returns: Instance of the class with the given data in attributes.
-
-        """
-        task = Task(**entity_tuple._asdict())
-        task.save()
-        return task

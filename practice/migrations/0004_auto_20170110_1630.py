@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('student', models.ForeignKey(to='practice.Student')),
                 ('task', models.ForeignKey(to='tasks.Task')),
             ],
-            bases=(models.Model, flocsweb.mixins.ExportMixin),
+            bases=(models.Model, flocsweb.mixins.ImportExportMixin),
         ),
         migrations.RemoveField(
             model_name='taskinstance',

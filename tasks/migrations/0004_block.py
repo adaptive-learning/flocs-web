@@ -17,6 +17,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('block_id', models.CharField(primary_key=True, serialize=False, max_length=256)),
             ],
-            bases=(models.Model, flocsweb.mixins.ExportMixin),
+            bases=(models.Model, flocsweb.mixins.ImportExportMixin),
         ),
     ]

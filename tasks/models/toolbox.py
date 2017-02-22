@@ -1,26 +1,16 @@
 from django.db import models
 from flocs import entities
-from flocsweb.mixins import ExportMixin
+from flocsweb.mixins import ImportExportMixin
 from . import Block
 
 
-class Toolbox(models.Model, ExportMixin):
+class Toolbox(models.Model, ImportExportMixin):
     """ Model for a toolbox of Blockly blocks
     """
-    named_tuple = entities.Toolbox
+    entity_class = entities.Toolbox
 
     toolbox_id = models.CharField(max_length=256, primary_key=True)
     blocks = models.ManyToManyField(Block)
 
     def __str__(self):
         return self.toolbox_id
-
-    @staticmethod
-    def import_entity(entity_tuple, *args, **kwargs):
-        attributes = entity_tuple._asdict()
-        del attributes['block_ids']
-        toolbox = Toolbox(**attributes)
-        toolbox.save()
-        blocks = Block.objects.filter(pk__in=entity_tuple.block_ids)
-        toolbox.blocks.add(*blocks)
-        return toolbox

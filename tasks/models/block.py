@@ -1,20 +1,14 @@
 from django.db import models
 from flocs import entities
-from flocsweb.mixins import ExportMixin
+from flocsweb.mixins import ImportExportMixin
 
 
-class Block(models.Model, ExportMixin):
+class Block(models.Model, ImportExportMixin):
     """ Model for a Blockly block
     """
-    named_tuple = entities.Block
+    entity_class = entities.Block
 
     block_id = models.CharField(max_length=256, primary_key=True)
 
     def __str__(self):
         return self.block_id
-
-    @staticmethod
-    def import_entity(entity_tuple, *args, **kwargs):
-        block = Block(**entity_tuple._asdict())
-        block.save()
-        return block

@@ -1,19 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
-from flocsweb.mixins import ExportMixin
-from flocs.entities import Student as Student_tuple
+from flocsweb.mixins import ImportExportMixin
+from flocs import entities
 from uuid import uuid4
 
 
-class Student(models.Model, ExportMixin):
+class Student(models.Model, ImportExportMixin):
+    """ Represents a learner (person practicing tasks)
     """
-    A model for a student (abstract person practicing tasks).
-    """
-
-    named_tuple = Student_tuple
+    entity_class = entities.Student
 
     student_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-
     user = models.OneToOneField(User)
 
     @property
@@ -28,9 +25,9 @@ class Student(models.Model, ExportMixin):
         return '[{pk}] {username}'.format(pk=self.pk, username=self.user.username)
 
     @staticmethod
-    def import_entity(entity_tuple, user=None, **kwargs):
+    def import_entity(entity, user=None, **kwargs):
         if user is None:
-            user = Student.objects.get(student_id=entity_tuple.student_id).user
-        student = Student(**entity_tuple._asdict(), user=user)
+            user = Student.objects.get(student_id=entity.student_id).user
+        student = Student(**entity._asdict(), user=user)
         student.save()
         return student

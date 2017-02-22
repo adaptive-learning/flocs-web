@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('student_id', models.UUIDField(serialize=False, editable=False, default=uuid.uuid4, primary_key=True)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
-            bases=(models.Model, flocsweb.mixins.ExportMixin),
+            bases=(models.Model, flocsweb.mixins.ImportExportMixin),
         ),
         migrations.CreateModel(
             name='TaskInstance',
@@ -32,6 +32,6 @@ class Migration(migrations.Migration):
                 ('student', models.ForeignKey(to='practice.Student')),
                 ('task', models.ForeignKey(to='tasks.Task')),
             ],
-            bases=(models.Model, flocsweb.mixins.ExportMixin),
+            bases=(models.Model, flocsweb.mixins.ImportExportMixin),
         ),
     ]

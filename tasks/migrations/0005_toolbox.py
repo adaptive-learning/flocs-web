@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
                 ('toolbox_id', models.CharField(max_length=256, primary_key=True, serialize=False)),
                 ('blocks', models.ManyToManyField(to='tasks.Block')),
             ],
-            bases=(models.Model, flocsweb.mixins.ExportMixin),
+            bases=(models.Model, flocsweb.mixins.ImportExportMixin),
         ),
     ]

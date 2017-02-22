@@ -23,7 +23,8 @@ class DbEntityMap(Mapping):
 
     def __getitem__(self, entity_id):
         try:
-            entity = self.query_set.get(pk=entity_id).to_named_tuple()
+            db_entity = self.query_set.get(pk=entity_id)
+            entity = db_entity.to_namedtuple()
             return entity
         except self.model_class.DoesNotExist as exc:
             raise KeyError(str(exc))
@@ -48,7 +49,7 @@ class DbEntityMap(Mapping):
 
     @property
     def entity_class(self):
-        return self.model_class.named_tuple
+        return self.model_class.entity_class
 
     def set(self, entity):
         """ Return a new EntityMap from self and the given entity

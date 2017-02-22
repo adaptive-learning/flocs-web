@@ -19,6 +19,6 @@ class Migration(migrations.Migration):
                 ('setting', jsonfield.fields.JSONField()),
                 ('solution', jsonfield.fields.JSONField()),
             ],
-            bases=(models.Model, flocsweb.mixins.ExportMixin),
+            bases=(models.Model, flocsweb.mixins.ImportExportMixin),
         ),
     ]
