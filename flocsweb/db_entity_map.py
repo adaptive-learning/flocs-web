@@ -7,13 +7,13 @@ class DbEntityMap(Mapping):
         providing flocs.EntityMap interface
     """
 
-    def __init__(self, querySet=None):
-        self.querySet = querySet
+    def __init__(self, query_set=None):
+        self.query_set = query_set
 
     @classmethod
     def for_model(cls, model):
-        querySet = model.objects.all()
-        return cls(querySet)
+        query_set = model.objects.all()
+        return cls(query_set)
 
     @classmethod
     def from_list(cls, entity_list):
@@ -23,7 +23,7 @@ class DbEntityMap(Mapping):
 
     def __getitem__(self, entity_id):
         try:
-            entity = self.querySet.get(pk=entity_id).to_named_tuple()
+            entity = self.query_set.get(pk=entity_id).to_named_tuple()
             return entity
         except self.model_class.DoesNotExist as exc:
             raise KeyError(str(exc))
@@ -33,18 +33,18 @@ class DbEntityMap(Mapping):
             # TODO: use logging?
             warn('Iterating through a long query set of {model} ({count} items)'
                 .format(model=self.model_class, count=len(self)))
-        for db_entity in self.querySet:
+        for db_entity in self.query_set:
             yield db_entity.pk
 
     def __len__(self):
-        return self.querySet.count()
+        return self.query_set.count()
 
     def __repr__(self):
-        return 'DbEntityMap({querySet})'.format(querySet=self.querySet)
+        return 'DbEntityMap({query_set})'.format(query_set=self.query_set)
 
     @property
     def model_class(self):
-        return self.querySet.model
+        return self.query_set.model
 
     @property
     def entity_class(self):
@@ -66,4 +66,4 @@ class DbEntityMap(Mapping):
         return {}
 
     def filter(self, **kwargs):
-        return DbEntityMap(querySet=self.querySet.filter(**kwargs))
+        return DbEntityMap(query_set=self.query_set.filter(**kwargs))

@@ -15,8 +15,8 @@ class TestDbEntityMap(TestEntityMap):
     def create_entity_map(*entities):
         for entity in entities:
             DbEntity.import_entity(entity)
-        querySet = DbEntity.objects.filter(pk__in=[e.entity_id for e in entities])
-        return DbEntityMap(querySet=querySet)
+        query_set = DbEntity.objects.filter(pk__in=[e.entity_id for e in entities])
+        return DbEntityMap(query_set=query_set)
 
     def test_set_puts_db_at_the_end(self):
         initial_entity_map = self.create_entity_map(e1)
