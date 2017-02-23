@@ -2,6 +2,7 @@ from django.db import models
 from flocs import entities
 from flocsweb.mixins import ImportExportMixin
 from jsonfield import JSONField
+from . import Category
 
 
 class Task(models.Model, ImportExportMixin):
@@ -10,8 +11,7 @@ class Task(models.Model, ImportExportMixin):
     entity_class = entities.Task
 
     task_id = models.CharField(max_length=256, primary_key=True)
-    category_id = models.CharField(max_length=256, default='uncategorized')
-        # TODO: replace by a category once we introduce Category model
+    category = models.ForeignKey(Category, null=True, default=None)
     setting = JSONField()
     solution = JSONField()
 
