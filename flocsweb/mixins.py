@@ -29,17 +29,20 @@ class ImportExportMixin(object):
         return self.entity_class(**field_value_map)  # pylint:disable=not-callable
 
     @classmethod
-    def import_entity(cls, entity, *args, **kwargs):
+    def import_entity(cls, entity, **web_attributes):
         """ Create a db entity from given entity and store it in DB
         If the entity is already present in DB, it will be updated.
+        If the db entity has some attributes which are web-specific (e.g. user),
+        they must be specified as additional keyword arguments.
 
         Args:
             entity: namedtuple with _asdict method
+            web_attributes: attributes of DB model which are not part of entity
 
         Returns:
             created or updated DB entity
         """
-        attributes = entity._asdict()
+        attributes = {**web_attributes, **entity._asdict()}
         ids_attribute_names = [name for name in attributes if name.endswith('_ids')]
         for ids_attribute_name in ids_attribute_names:
             del attributes[ids_attribute_name]

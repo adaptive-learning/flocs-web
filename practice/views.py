@@ -137,7 +137,7 @@ def _get_or_create_student(user):
     try:
         student = Student.objects.get(user=user)
     except Student.DoesNotExist:
-        with open_django_store({'user': user}) as store:
+        with open_django_store(user=user) as store:
             action = actions.create_student()
             store.stage_action(action)
         student = Student.objects.get(user=user)

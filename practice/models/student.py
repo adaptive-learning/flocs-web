@@ -24,10 +24,8 @@ class Student(models.Model, ImportExportMixin):
     def __str__(self):
         return '[{pk}] {username}'.format(pk=self.pk, username=self.user.username)
 
-    @staticmethod
-    def import_entity(entity, user=None, **kwargs):
+    @classmethod
+    def import_entity(cls, entity, user=None, **kwargs):
         if user is None:
-            user = Student.objects.get(student_id=entity.student_id).user
-        student = Student(**entity._asdict(), user=user)
-        student.save()
-        return student
+            user = cls.objects.get(student_id=entity.student_id).user
+        return super().import_entity(entity, user=user, **kwargs)

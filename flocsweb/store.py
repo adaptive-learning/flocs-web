@@ -28,6 +28,13 @@ def get_all_entities():
     return ChainMap(dynamic_entities, STATIC_ENTITIES)
 
 
-# TODO: fix request_context={} -> use None instead and resolve in body
-def open_django_store(request_context={}):
-    return Store.open(get_all_entities(), hooks=PersistenceHooks(request_context))
+def open_django_store(**request_context):
+    """ Return store as a context manager
+
+    You can set additional attributes from request context, such as user, to be
+    considered by store.
+    """
+    request_context = request_context or {}
+    persistence_hooks = PersistenceHooks(request_context)
+    store_context_manager = Store.open(entities=get_all_entities(), hooks=persistence_hooks)
+    return store_context_manager
