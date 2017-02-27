@@ -1,7 +1,10 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import logo from 'images/logo.png'
 
+
+@muiThemeable()
 export default class Header extends React.Component {
   render() {
     const logoImg = (
@@ -19,7 +22,7 @@ export default class Header extends React.Component {
         title={logoImg}
         iconClassNameRight="muidocs-icon-navigation-expand-more"
         style={{
-          backgroundColor: 'darkblue',
+          backgroundColor: this.props.muiTheme.palette.primary1Color,
           margin: 0,
         }}
         onLeftIconButtonTouchTap={this.props.onMenuIconTouchTap}
