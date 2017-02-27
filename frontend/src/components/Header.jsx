@@ -1,18 +1,29 @@
 import React from 'react';
-import { Navbar } from 'react-bootstrap'
+import AppBar from 'material-ui/AppBar';
 import logo from 'images/logo.png'
-
-const style = {backgroundColor: 'darkblue', margin: 0};
 
 export default class Header extends React.Component {
   render() {
-      return (
-          <Navbar style={style}>
-              <Navbar.Header>
-                      <a href="#"><img src={ logo }/></a>
-              </Navbar.Header>
-          </Navbar>
-      )
+    const logoImg = (
+      <img
+        src={ logo }
+        style={{
+          height: '100%',
+          padding: 14,
+          boxSizing: 'border-box',
+        }}
+      />
+    );
+    return (
+      <AppBar
+        title={logoImg}
+        iconClassNameRight="muidocs-icon-navigation-expand-more"
+        style={{
+          backgroundColor: 'darkblue',
+          margin: 0,
+        }}
+        onLeftIconButtonTouchTap={this.props.onMenuIconTouchTap}
+      />
+    );
   }
 }
-
