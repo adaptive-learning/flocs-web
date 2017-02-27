@@ -1,17 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import NextTaskButton from '../components/NextTaskButton';
+import { getRecommendedTask } from '../selectors/practice';
 
 function getProps(state) {
-  // TODO: if the recommendation is same as the current task, discard it
-  let task = null;
-  const taskId = state.practice.recommendation;
-  if (taskId) {
-    task = {
-      taskId,
-      url: `task/${taskId}`
-    };
-  }
+  const task = getRecommendedTask(state);
   return { task };
 }
 

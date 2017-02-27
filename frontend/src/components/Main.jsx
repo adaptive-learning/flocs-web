@@ -10,7 +10,7 @@ export default class Main extends React.Component {
       <div>
         <HeaderContainer />
         <MenuContainer />
-        <div style={{ position: 'absolute', top: 81, bottom: 0, left: 0, right: 0 }}>
+        <div style={{ position: 'absolute', top: 64, bottom: 0, left: 0, right: 0 }}>
           { this.props.children }
         </div>
       </div>
