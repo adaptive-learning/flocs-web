@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import Divider from 'material-ui/Divider';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import { recommend, getTaskForEnv } from '../actions/practiceActions'
 import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
 import PracticeContainer from '../containers/PracticeContainer';
+import neuronsBackgroundPath from 'images/neurons-tile.png';
+
 
 @connect((store) => {
     return {
         recommended: store.practice.recommendation
     }
 })
+@muiThemeable()
 export default class Home extends React.Component {
 
   componentDidMount() {
@@ -22,38 +22,65 @@ export default class Home extends React.Component {
   }
 
   render() {
+      console.log('theme', this.props.muiTheme);
       if (this.props.recommended == undefined) {
           return null
       }
       return (
         <div style={longPageStyle}>
-          <Paper style={paperStyle}>
-            <div>
+          <section style={{ ...slideStyle, height: '85vh', backgroundColor: this.props.muiTheme.palette.canvasColor, color: '#fff' }} >
+            <div style={slideContentStyle}>
+              <h2>Prozkoumej tajemný vesmír</h2>
+              <h2>a posbírej všechny diamanty</h2>
+              <p>TBA: demo vesmirneho sveta s tlacitky vlevo-dopredu-doprava</p>
+            </div>
+          </section>
+
+          <section style={{...slideStyle, backgroundColor: this.props.muiTheme.palette.primary1Color }} >
+            <div style={slideContentStyle}>
+              <h2>Nauč se ovládat vesmírnou loď</h2>
+              <h2>pomocí počítačových programů</h2>
               <PracticeContainer
                 taskEnvironmentId="home"
-                containerStyle={{ position: 'relative', height: 320, border: '5px solid #999' }}
-                taskCompletionDialogPosition="below"
+                containerStyle={{ position: 'relative', height: 400, width: 900, margin: '0 auto', border: '2px solid #777' }}
+                taskCompletionDialogPosition="hidden"
               />
             </div>
-            <Divider style={{ marginTop: 20, marginBottom: 20 }} />
-            <Card>
-              <CardTitle title="Prozkoumej vesmír a posbírej všechny diamanty!" />
-            </Card>
-            <Card>
-              <CardTitle title="Nauč se ovládat vesmírnou loď pomocí počítačových programů" />
-            </Card>
-            <Card>
-              <CardTitle title="Hra je poháněna umělou inteligencí, díky které se hra přizpůsobuje tvým dovednostem" />
-            </Card>
-            <Card>
-              <CardTitle title="Aplikaci vyvíjí tým Adaptabilního učení na Fakultě informatiky Masarykovy Univerzity" />
-            </Card>
-            <Card>
-              <CardText>
-                <NextTaskButtonContainer />
-              </CardText>
-            </Card>
-          </Paper>
+          </section>
+
+          <section
+            style={{
+              ...slideStyle,
+              backgroundImage: `url(${neuronsBackgroundPath})`,
+            }}
+          >
+            <div style={slideContentStyle}>
+              <h2>Hra je poháněna umělou inteligencí,</h2>
+              <h2>díky které se hra přizpůsobuje tvým dovednostem</h2>
+            </div>
+          </section>
+
+          <section style={{...slideStyle, backgroundColor: this.props.muiTheme.palette.primary1Color }} >
+            <div style={slideContentStyle}>
+              <h2>Aplikaci vyvíjí tým Adaptabilního učení</h2>
+              <h2>na Fakultě informatiky Masarykovy Univerzity</h2>
+            </div>
+          </section>
+
+          <section
+            style={{
+              ...slideStyle,
+              backgroundImage: `url(/static/images/background-space.png)`,
+              backgroundSize: '500px auto',
+              backgroundColor: '#111122',
+              color: '#fff',
+            }}
+          >
+            <div style={slideContentStyle}>
+              <h2>Vyleť do vesmíru!</h2>
+              <NextTaskButtonContainer />
+            </div>
+          </section>
         </div>
       )
   }
@@ -65,12 +92,18 @@ const longPageStyle = {
   margin: 0,
 };
 
-const paperStyle = {
-  maxWidth: 1000,
-  margin: '20px auto',
-  padding: 10,
-  textAlign: 'center',
-  display: 'block',
+const slideStyle = {
+  width: '100%',
+  padding: '0 7%',
+  display: 'table',
+  margin: 0,
+  height: '100vh',
 };
 
-
+const slideContentStyle = {
+  display: 'table-cell',
+  verticalAlign: 'middle',
+  maxWidth: 1000,
+  margin: '20px auto',
+  textAlign: 'center',
+};

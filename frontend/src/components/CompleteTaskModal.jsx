@@ -16,6 +16,9 @@ import { solveTaskAndRecommend, nextTask } from '../actions/practiceActions'
 })
 export default class CompleteTaskModal extends React.Component {
   render() {
+    if (this.props.position === 'hidden') {
+      return null;
+    }
     const message = 'Výborně, úloha vyřešena!';
     if (this.props.position !== 'modal') {
       if (!this.props.open) {
