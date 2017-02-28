@@ -26,37 +26,44 @@ export default class Home extends React.Component {
           return null
       }
       return (
-        <Paper style={paperStyle}>
-          <div>
-            <PracticeContainer
-              taskEnvironmentId="home"
-              containerStyle={{ position: 'relative', height: 320, border: '5px solid #999' }}
-              taskCompletionDialogPosition="below"
-            />
-          </div>
-          <Divider style={{ marginTop: 20, marginBottom: 20 }} />
-          <Card>
-            <CardTitle title="Prozkoumej vesmír a posbírej všechny diamanty!" />
-          </Card>
-          <Card>
-            <CardTitle title="Nauč se ovládat vesmírnou loď pomocí počítačových programů" />
-          </Card>
-          <Card>
-            <CardTitle title="Hra je poháněna umělou inteligencí, díky které se hra přizpůsobuje tvým dovednostem" />
-          </Card>
-          <Card>
-            <CardTitle title="Aplikaci vyvíjí tým Adaptabilního učení na Fakultě informatiky Masarykovy Univerzity" />
-          </Card>
-          <Card>
-            <CardText>
-              <NextTaskButtonContainer />
-            </CardText>
-          </Card>
-        </Paper>
+        <div style={longPageStyle}>
+          <Paper style={paperStyle}>
+            <div>
+              <PracticeContainer
+                taskEnvironmentId="home"
+                containerStyle={{ position: 'relative', height: 320, border: '5px solid #999' }}
+                taskCompletionDialogPosition="below"
+              />
+            </div>
+            <Divider style={{ marginTop: 20, marginBottom: 20 }} />
+            <Card>
+              <CardTitle title="Prozkoumej vesmír a posbírej všechny diamanty!" />
+            </Card>
+            <Card>
+              <CardTitle title="Nauč se ovládat vesmírnou loď pomocí počítačových programů" />
+            </Card>
+            <Card>
+              <CardTitle title="Hra je poháněna umělou inteligencí, díky které se hra přizpůsobuje tvým dovednostem" />
+            </Card>
+            <Card>
+              <CardTitle title="Aplikaci vyvíjí tým Adaptabilního učení na Fakultě informatiky Masarykovy Univerzity" />
+            </Card>
+            <Card>
+              <CardText>
+                <NextTaskButtonContainer />
+              </CardText>
+            </Card>
+          </Paper>
+        </div>
       )
   }
 }
 
+const longPageStyle = {
+  width: '100%',
+  height: '100%',
+  margin: 0,
+};
 
 const paperStyle = {
   maxWidth: 1000,
