@@ -12,6 +12,7 @@ export default class Main extends React.Component {
           backgroundImage: `url(/static/images/background-space.png)`,
           backgroundSize: '500px auto',
           backgroundColor: '#111122',
+          paddingBottom: 5,
         }}
       >
         <HeaderContainer />

@@ -16,6 +16,7 @@ export function tasksReducer(state={}, action) {
 function parseTask(taskData) {
   const task = {
     taskId: taskData['task_id'],
+    categoryId: taskData['category'],
     url: taskData.url,
     setting: jsonToObject(taskData.setting),
     solution: jsonToObject(taskData.setting),

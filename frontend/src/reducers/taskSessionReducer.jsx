@@ -16,19 +16,15 @@ export function taskSessionReducer(state={
             }
         }
         case "FETCH_TASK_FULFILLED": {
-            // process returned task
-            let task = {};
-            task['setting'] = jsonToObject(action.payload.data.setting);
-            task['solution'] = jsonToObject(action.payload.data.solution);
-            task['taskId'] = action.payload.data.task_id;
-            return {...state, task: task}
-        }
-        case "GET_TASK_FULFILLED": {
-            let task = {};
-            task['setting'] = jsonToObject(action.payload.data.setting);
-            task['solution'] = jsonToObject(action.payload.data.solution);
-            task['taskId'] = action.payload.data.task_id;
-            return {...state, task: task}
+            const taskData = action.payload.data;
+            const task = {
+              taskId: taskData['task_id'],
+              categoryId: taskData['category'],
+              url: taskData.url,
+              setting: jsonToObject(taskData.setting),
+              solution: jsonToObject(taskData.setting),
+            };
+            return { ...state, task }
         }
     }
 
