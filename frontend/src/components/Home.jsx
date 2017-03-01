@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import muiThemeable from 'material-ui/styles/muiThemeable';
+import { SpaceGameContainer } from 'flocs-visual-components';
 import { recommend, getTaskForEnv } from '../actions/practiceActions'
 import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
 import PracticeContainer from '../containers/PracticeContainer';
@@ -17,12 +18,12 @@ import neuronsBackgroundPath from 'images/neurons-tile.png';
 export default class Home extends React.Component {
 
   componentDidMount() {
-    this.props.dispatch(getTaskForEnv('home', 'turning-right'));
+    this.props.dispatch(getTaskForEnv('home-commands', 'diamond-on-right'));
+    this.props.dispatch(getTaskForEnv('home-program', 'turning-right'));
     this.props.dispatch(recommend());
   }
 
   render() {
-      console.log('theme', this.props.muiTheme);
       if (this.props.recommended == undefined) {
           return null
       }
@@ -32,7 +33,10 @@ export default class Home extends React.Component {
             <div style={slideContentStyle}>
               <h2>Prozkoumej tajemný vesmír</h2>
               <h2>a posbírej všechny diamanty</h2>
-              <p>TBA: demo vesmirneho sveta s tlacitky vlevo-dopredu-doprava</p>
+              <SpaceGameContainer
+                taskEnvironmentId="home-commands"
+                controls={['fly', 'left', 'right', 'reset']}
+              />
             </div>
           </section>
 
@@ -41,7 +45,7 @@ export default class Home extends React.Component {
               <h2>Nauč se ovládat vesmírnou loď</h2>
               <h2>pomocí počítačových programů</h2>
               <PracticeContainer
-                taskEnvironmentId="home"
+                taskEnvironmentId="home-program"
                 containerStyle={{ position: 'relative', height: 400, width: 900, margin: '0 auto', border: '2px solid #777' }}
                 taskCompletionDialogPosition="hidden"
               />
