@@ -24,7 +24,11 @@ from practice import urls as practice_urls
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'users', users_views.UsersViewSet, base_name='user')
-router.register(r'tasks', tasks_views.TasksViewSet, base_name='task')
+router.register(r'tasks', tasks_views.TaskViewSet, base_name='task')
+router.register(r'categories', tasks_views.CategoryViewSet, base_name='category')
+router.register(r'levels', tasks_views.LevelViewSet, base_name='level')
+router.register(r'toolboxes', tasks_views.ToolboxViewSet, base_name='toolbox')
+router.register(r'blocks', tasks_views.BlockViewSet, base_name='block')
 router.register(r'students', practice_views.StudentsViewSet, base_name='student')
 router.register(r'task_sessions', practice_views.TaskSessionsViewSet, base_name='task_session')
 router.register(r'practice', practice_views.PracticeViewSet, base_name='practice')
