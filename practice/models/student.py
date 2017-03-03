@@ -14,7 +14,7 @@ class Student(models.Model, ImportExportMixin):
     user = models.OneToOneField(User)
 
     @property
-    def last_task_session(self):
+    def last_task_session_id(self):
         from .task_session import TaskSession
         try:
             return TaskSession.objects.filter(student=self).latest('creation_timestamp').task_session_id
