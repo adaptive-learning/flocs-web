@@ -18,7 +18,7 @@ import neuronsBackgroundPath from 'images/neurons-tile.png';
 export default class Home extends React.Component {
 
   componentDidMount() {
-    this.props.dispatch(getTaskForEnv('home-commands', 'diamond-on-right'));
+    this.props.dispatch(getTaskForEnv('home-commands', 'beware-of-asteroid'));
     this.props.dispatch(getTaskForEnv('home-program', 'turning-right'));
     this.props.dispatch(recommend());
   }
