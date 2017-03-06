@@ -6,13 +6,6 @@ const practiceUrl = "/api/practice/";
 import { flocsActionCreators } from 'flocs-visual-components';
 import { fetchTaskSession, fetchTask } from './taskSessionActions'
 
-export function start(taskEnvId) {
-    return ((dispatch) => {
-        return dispatch(recommend()).then(() =>
-            dispatch(nextTask(taskEnvId))
-        )
-    })
-}
 
 export function getTaskForEnv(taskEnvId, taskId) {
     return ((dispatch, getState) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { TaskEnvironmentContainer, flocsSelector, flocsActionCreators } from 'flocs-visual-components';
-import { getTaskForEnv, start, solveTaskAndRecommend } from '../actions/practiceActions';
+import { getTaskForEnv, solveTaskAndRecommend } from '../actions/practiceActions';
 import CompleteTaskModal from '../components/CompleteTaskModal';
 
 function getProps(state, props) {
