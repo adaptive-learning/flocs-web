@@ -3,6 +3,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import { Link } from 'react-router';
+import { Text } from 'flocs-visual-components';
 
 
 export default class Menu extends React.Component {
@@ -26,24 +27,24 @@ export default class Menu extends React.Component {
         <MenuItem
           containerElement={<Link to="/" />}
         >
-          Home
+          <Text id="Overview" />
         </MenuItem>
         {this.props.recommendedTask !== null &&
           <MenuItem
             containerElement={<Link to={this.props.recommendedTask.url} />}
           >
-            Practice
+            <Text id="Practice" />
           </MenuItem>
         }
         <MenuItem
           containerElement={<Link to="/tasks" />}
         >
-          Tasks
+          <Text id="Tasks" />
         </MenuItem>
         <MenuItem
           containerElement={<Link to="/task-editor" />}
         >
-          Task Editor
+          <Text id="Task Editor" />
         </MenuItem>
       </Drawer>
     );
