@@ -6,6 +6,7 @@ import { getRecommendedTask } from '../selectors/practice';
 
 
 @connect(state => ({
+  mode: state.menu.mode,
   open: state.menu.open,
   recommendedTask: getRecommendedTask(state)
 }), {
@@ -20,6 +21,7 @@ class MenuContainer extends React.Component {
   render(){
     return (
       <Menu
+        mode={this.props.mode}
         open={this.props.open}
         setOpen={this.setOpen}
         recommendedTask={this.props.recommendedTask}
