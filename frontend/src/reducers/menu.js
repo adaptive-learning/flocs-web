@@ -1,3 +1,5 @@
+import { LOCATION_CHANGE } from 'react-router-redux';
+
 const initialState = {
   open: false,
 };
@@ -8,6 +10,11 @@ export default function menuReducer(state = initialState, action) {
       return {
         ...state,
         open: action.payload.open,
+      };
+    case LOCATION_CHANGE:
+      return {
+        ...state,
+        open: false,
       };
   }
   return state;

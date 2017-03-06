@@ -1,4 +1,3 @@
-import { routerReducer } from 'react-router-redux';
 import { practiceReducer } from './practiceReducer';
 import { taskSessionReducer } from './taskSessionReducer';
 import { tasksReducer } from './tasksReducer';
@@ -9,8 +8,6 @@ const reducers = {
   taskSession: taskSessionReducer,
   practice: practiceReducer,
   menu: menuReducer,
-  routing: routerReducer
 };
 
 export default reducers;
-
