@@ -4,9 +4,6 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
 
-// actions
-import { solveTaskAndRecommend, nextTask } from '../actions/practiceActions'
-
 // TODO separate logic and presentation (component and container)
 @connect((state, props) => {
   return {

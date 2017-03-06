@@ -9,7 +9,7 @@ export function getRecommendedTask(state) {
   if (taskId) {
     task = {
       taskId,
-      url: `task/${taskId}`
+      url: `/task/${taskId}`
     };
   }
   return task;

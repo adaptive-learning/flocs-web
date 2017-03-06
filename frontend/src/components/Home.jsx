@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { SpaceGameContainer } from 'flocs-visual-components';
-import { recommend, getTaskForEnv } from '../actions/practiceActions'
+import { SpaceGameContainer, TaskEnvironmentContainer } from 'flocs-visual-components';
+import { recommend, setTask } from '../actions/practiceActions'
 import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
-import PracticeContainer from '../containers/PracticeContainer';
 import neuronsBackgroundPath from 'images/neurons-tile.png';
 
 
@@ -18,8 +17,8 @@ import neuronsBackgroundPath from 'images/neurons-tile.png';
 export default class Home extends React.Component {
 
   componentDidMount() {
-    this.props.dispatch(getTaskForEnv('home-commands', 'beware-of-asteroid'));
-    this.props.dispatch(getTaskForEnv('home-program', 'turning-right'));
+    this.props.dispatch(setTask('home-commands', 'beware-of-asteroid'));
+    this.props.dispatch(setTask('home-program', 'turning-right'));
     this.props.dispatch(recommend());
   }
 
@@ -44,11 +43,17 @@ export default class Home extends React.Component {
             <div style={slideContentStyle}>
               <h2>Nauč se ovládat vesmírnou loď</h2>
               <h2>pomocí počítačových programů</h2>
-              <PracticeContainer
-                taskEnvironmentId="home-program"
-                containerStyle={{ position: 'relative', height: 400, width: 900, margin: '0 auto', border: '2px solid #777' }}
-                taskCompletionDialogPosition="hidden"
-              />
+              <div
+                style={{
+                  position: 'relative',
+                  height: 350,
+                  width: 800,
+                  margin: '0 auto',
+                  border: '2px solid #777'
+                }}
+              >
+                <TaskEnvironmentContainer taskEnvironmentId="home-program" />
+              </div>
             </div>
           </section>
 

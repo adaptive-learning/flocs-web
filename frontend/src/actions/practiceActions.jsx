@@ -7,14 +7,30 @@ import { flocsActionCreators } from 'flocs-visual-components';
 import { fetchTaskSession, fetchTask } from './taskSessionActions'
 
 
-export function getTaskForEnv(taskEnvId, taskId) {
-    return ((dispatch, getState) => {
-        return dispatch(nextTask(taskEnvId, taskId)
-        ).then(() =>
-            dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskSession.task))
-        )
-    })
+export function startPractice(taskEnvId, taskId) {
+  return ((dispatch, getState) => {
+    return dispatch(startTask(typeof taskId === "undefined" ? getState().practice.recommendation : taskId)
+    ).then(() =>
+        dispatch(fetchTaskSession(getState().practice.taskSessionUrl))
+    ).then(() =>
+        dispatch(fetchTask(getState().taskSession.taskUrl))
+    ).then(() =>
+        dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskSession.task))
+    )
+  });
 }
+
+
+export function setTask(taskEnvId, taskId) {
+  return ((dispatch, getState) => {
+    return dispatch(fetchTask(`/api/tasks/${taskId}`)).then(
+      // TODO: unhack - no task session is actualy created on server, so avoid
+      // passing data through task session state
+      () => dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskSession.task))
+    );
+  });
+}
+
 
 export function solveTaskAndRecommend() {
     return ((dispatch, getState) => {
@@ -25,18 +41,6 @@ export function solveTaskAndRecommend() {
     })
 }
 
-export function nextTask(taskEnvId, taskId) {
-    return ((dispatch, getState) => {
-        return dispatch(startTask(typeof taskId === "undefined" ? getState().practice.recommendation : taskId)
-        ).then(() =>
-            dispatch(fetchTaskSession(getState().practice.taskSessionUrl))
-        ).then(() =>
-            dispatch(fetchTask(getState().taskSession.taskUrl))
-        ).then(() =>
-            dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskSession.task))
-        )
-    })
-}
 
 export function recommend() {
     return {

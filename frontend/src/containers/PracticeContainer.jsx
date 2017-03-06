@@ -15,7 +15,7 @@ function getProps(state, props) {
 @connect(getProps)
 export default class PracticeContainer extends React.Component {
   componentWillReceiveProps(props) {
-    if (props.solved) {
+    if (!this.props.solved && props.solved) {
       this.props.dispatch(solveTaskAndRecommend())
     }
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { TaskEnvironmentContainer, flocsSelector, flocsActionCreators } from 'flocs-visual-components';
-import { getTaskForEnv, solveTaskAndRecommend } from '../actions/practiceActions';
+import { startPractice } from '../actions/practiceActions';
 import PracticeContainer from '../containers/PracticeContainer';
 
 const practiceTaskEnvironmentId = 'single';
@@ -12,15 +12,15 @@ function getProps(state, props) {
   };
 }
 
-@connect(getProps, { getTaskForEnv })
+@connect(getProps, { startPractice })
 export default class PracticePage extends React.Component {
   componentWillMount() {
-    this.props.getTaskForEnv(practiceTaskEnvironmentId, this.props.taskId);
+    this.props.startPractice(practiceTaskEnvironmentId, this.props.taskId);
   }
 
   componentWillReceiveProps(props) {
     if (props.taskId !== this.props.taskId) {
-      this.props.getTaskForEnv(practiceTaskEnvironmentId, props.taskId);
+      this.props.startPractice(practiceTaskEnvironmentId, props.taskId);
     }
   }
 
