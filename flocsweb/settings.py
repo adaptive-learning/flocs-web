@@ -30,7 +30,7 @@ ON_PRODUCTION = os.getenv('ON_AL', "False") == "True" and not ON_STAGING
 DEVELOPMENT = not ON_STAGING and not ON_PRODUCTION
 DEBUG = (not ON_PRODUCTION) or (os.getenv('DJANGO_DEBUG', "False") == "True")
 ALLOWED_HOSTS = [
-    '.thran.cz'
+    '.robomise.cz'
 ]
 
 # Application definition
@@ -124,13 +124,13 @@ LANGUAGES = [
 ]
 if ON_PRODUCTION:
     LANGUAGE_DOMAINS = {
-        'cs': 'flocs.thran.cz',
-        'en': 'en.flocs.thran.cz',
+        'cs': 'robomise.cz',
+        'en': 'en.robomise.cz',
     }
 elif ON_STAGING:
     LANGUAGE_DOMAINS = {
-        'cs': 'staging.flocs.thran.cz',
-        'en': 'en.staging.flocs.thran.cz',
+        'cs': 'staging.robomise.cz',
+        'en': 'en.staging.robomise.cz',
     }
 else:
     LANGUAGE_DOMAINS = {
