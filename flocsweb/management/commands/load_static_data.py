@@ -1,12 +1,13 @@
 from django.core.management.base import BaseCommand
-from flocs.data import levels, tasks, blocks, categories, toolboxes
-from tasks.models import Level, Block, Toolbox, Category, Task
+from flocs.data import instructions, levels, tasks, blocks, categories, toolboxes
+from tasks.models import Instruction, Level, Block, Toolbox, Category, Task
 
 
 class Command(BaseCommand):
     help = "Loads static data into the database, if it has not been done yet."
 
     def handle(self, *args, **options):
+        self.load_model(Instruction, instructions)
         self.load_model(Level, levels)
         self.load_model(Block, blocks)
         self.load_model(Toolbox, toolboxes)

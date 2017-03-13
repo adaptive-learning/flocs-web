@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from .models import Task, Block, Category, Level, Toolbox
+from .models import Instruction, Task, Block, Category, Level, Toolbox
+
+class InstructionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Instruction
+        fields = ('instruction_id',)
 
 
 class TaskSerializer(serializers.ModelSerializer):

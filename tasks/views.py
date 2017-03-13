@@ -1,6 +1,15 @@
 from rest_framework import viewsets
-from tasks.serializers import TaskSerializer, CategorySerializer, LevelSerializer, ToolboxSerializer, BlockSerializer
-from .models import Task, Category, Level, Toolbox, Block
+from tasks.serializers import InstructionSerializer, TaskSerializer, CategorySerializer, \
+                              LevelSerializer, ToolboxSerializer, BlockSerializer
+from .models import Instruction, Task, Category, Level, Toolbox, Block
+
+
+class InstructionViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This view presents instructions available in the system.
+    """
+    serializer_class = InstructionSerializer
+    queryset = Instruction.objects.all()
 
 
 class TaskViewSet(viewsets.ReadOnlyModelViewSet):

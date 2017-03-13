@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from flocsweb.mixins import ImportExportMixin
 from flocs import entities
 from uuid import uuid4
+from tasks.models import Instruction
 
 
 class Student(models.Model, ImportExportMixin):
@@ -12,6 +13,8 @@ class Student(models.Model, ImportExportMixin):
 
     student_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     user = models.OneToOneField(User)
+    seen_instructions = models.ManyToManyField(Instruction, through='SeenInstruction')
+
 
     @property
     def last_task_session_id(self):
@@ -29,3 +32,11 @@ class Student(models.Model, ImportExportMixin):
         if user is None:
             user = cls.objects.get(student_id=entity.student_id).user
         return super().import_entity(entity, user=user, **kwargs)
+
+
+class SeenInstruction(models.Model, ImportExportMixin):
+    entity_class = entities.SeenInstruction
+
+    seen_instruction_id = models.UUIDField(primary_key=True, default=uuid4)
+    student = models.ForeignKey(Student)
+    instruction = models.ForeignKey(Instruction)

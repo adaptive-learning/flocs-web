@@ -88,11 +88,14 @@ class PracticeViewSet(viewsets.GenericViewSet):
     """
 
     def list(self, request):
-        data = OrderedDict({
-            'practice task with task_id=three-steps-forward': reverse('practice_start_task',
-                                                                      args=['three-steps-forward'], request=request),
-            'recommend': reverse('practice_recommend', request=request)
-        })
+        data = OrderedDict([
+            ('start_task (example)',
+                reverse('practice_start_task', args=['three-steps-forward'], request=request)),
+            ('see_instruction',
+                reverse('practice_see_instruction', request=request)),
+            ('recommend',
+                reverse('practice_recommend', request=request)),
+        ])
         return Response(data=data)
 
 
@@ -131,6 +134,23 @@ def start_task(request, task_id):
         'task_session': reverse('task_session-detail', args=[task_session.pk], request=request)
     }
     return Response(data=data)
+
+
+@allow_lazy_user
+@api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
+def see_instruction(request):
+    """
+    Student was presented an instruction
+    """
+    if request.method == 'GET':
+        return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
+    with open_django_store() as store:
+        action = actions.see_instruction(
+            student_id=request.data['student_id'],
+            instruction_id=request.data['instruction_id'])
+        store.stage_action(action)
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 def _get_or_create_student(user):

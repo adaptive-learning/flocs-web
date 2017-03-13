@@ -2,10 +2,9 @@ from rest_framework import serializers
 from .models import Student, TaskSession
 
 
-class StudentSerializer(serializers.HyperlinkedModelSerializer):
+class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ('url', 'student_id', 'user')
 
 
 class TaskSessionSerializer(serializers.HyperlinkedModelSerializer):

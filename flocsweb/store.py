@@ -9,6 +9,7 @@ from .db_entity_map import DbEntityMap
 model_mapping = {
     entities.Student: practice.models.Student,
     entities.TaskSession: practice.models.TaskSession,
+    entities.SeenInstruction: practice.models.SeenInstruction,
 }
 
 
