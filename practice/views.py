@@ -89,6 +89,8 @@ class PracticeViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         data = OrderedDict([
+            ('get_or_create_student',
+                reverse('practice_get_or_create_student', request=request)),
             ('start_task (example)',
                 reverse('practice_start_task', args=['three-steps-forward'], request=request)),
             ('see_instruction',
@@ -115,6 +117,23 @@ def recommend(request):
     data = {
         'is_available': task_id is not None,
         'task_id': task_id
+    }
+    return Response(data=data)
+
+
+@allow_lazy_user
+@api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
+def get_or_create_student(request):
+    """
+    Return a student object for current user
+    """
+    if request.method == 'GET':
+        return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
+    student = _get_or_create_student(request.user)
+    student_url = reverse('student-detail', args=[student.pk], request=request)
+    data = {
+        'student_url': student_url,
     }
     return Response(data=data)
 
