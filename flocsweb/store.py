@@ -2,6 +2,7 @@ from collections import ChainMap
 from flocs.store import Store
 from flocs.state import STATIC_ENTITIES   # TODO: remove this import
 from flocs import entities
+from flocsweb.models import Action
 import practice.models
 from .db_entity_map import DbEntityMap
 
@@ -10,6 +11,7 @@ model_mapping = {
     entities.Student: practice.models.Student,
     entities.TaskSession: practice.models.TaskSession,
     entities.SeenInstruction: practice.models.SeenInstruction,
+    entities.Action: Action,
 }
 
 
@@ -17,7 +19,7 @@ class PersistenceHooks(Store.Hooks):
     def __init__(self, request_context):
         self.request_context = request_context
 
-    def post_commit(self, state, diff, actions):
+    def post_commit(self, state, diff):
         for entity_name, entity_id, entity in diff:
             model_mapping[entity_name].import_entity(entity=entity, **self.request_context)
 

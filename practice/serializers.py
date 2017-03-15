@@ -2,11 +2,6 @@ from rest_framework import serializers
 from .models import Student, TaskSession
 
 
-class StudentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Student
-
-
 class TaskSessionSerializer(serializers.HyperlinkedModelSerializer):
     solve = serializers.HyperlinkedIdentityField(
         view_name='task_session-solve-task',
@@ -30,3 +25,9 @@ class TaskSessionSerializer(serializers.HyperlinkedModelSerializer):
         if data['solved'] and data['given_up']:
             raise serializers.ValidationError("A task cannot be solved and given up at the same time.")
         return data
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    task_sessions = TaskSessionSerializer(many=True)
+    class Meta:
+        model = Student

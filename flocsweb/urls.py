@@ -20,8 +20,10 @@ from users import views as users_views
 from tasks import views as tasks_views
 from practice import views as practice_views
 from practice import urls as practice_urls
+from . import views
 
 # Create a router and register our viewsets with it.
+
 router = DefaultRouter()
 router.register(r'users', users_views.UsersViewSet, base_name='user')
 router.register(r'tasks', tasks_views.TaskViewSet, base_name='task')
@@ -33,6 +35,7 @@ router.register(r'instructions', tasks_views.InstructionViewSet, base_name='inst
 router.register(r'students', practice_views.StudentsViewSet, base_name='student')
 router.register(r'task_sessions', practice_views.TaskSessionsViewSet, base_name='task_session')
 router.register(r'practice', practice_views.PracticeViewSet, base_name='practice')
+router.register(r'actions', views.ActionsViewSet)
 
 urlpatterns = [
     url(r'^api/auth/', include('rest_framework.urls',
