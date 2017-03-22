@@ -31,13 +31,15 @@ def get_all_entities():
     return ChainMap(dynamic_entities, STATIC_ENTITIES)
 
 
-def open_django_store(**request_context):
+def open_django_store(request=None):
     """ Return store as a context manager
 
     You can set additional attributes from request context, such as user, to be
     considered by store.
     """
-    request_context = request_context or {}
-    persistence_hooks = PersistenceHooks(request_context)
+    request_context = {}
+    if request is not None:
+        request_context['user'] = request.user
+    persistence_hooks = PersistenceHooks(request_context=request_context)
     store_context_manager = Store.open(entities=get_all_entities(), hooks=persistence_hooks)
     return store_context_manager

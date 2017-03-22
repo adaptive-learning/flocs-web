@@ -42,11 +42,22 @@ class ImportExportMixin(object):
         Returns:
             created or updated DB entity
         """
-        attributes = {**web_attributes, **entity._asdict()}
+        attributes = entity._asdict()
+        db_field_names = cls._meta.get_all_field_names()
+        # add relevant web attributes
+        for key, value in web_attributes.items():
+            if key in db_field_names and key not in attributes:
+                attributes[key] = value
+        # filter many-to-many relationships
         ids_attribute_names = [name for name in attributes if name.endswith('_ids')]
         for ids_attribute_name in ids_attribute_names:
             del attributes[ids_attribute_name]
-        db_entity = cls(**attributes)
+        try:
+            db_entity = cls(**attributes)
+        except TypeError as exc:
+            msg_tpl = 'Cannot import entity {e} due to model-entity mismatch'
+            msg = msg_tpl.format(e=entity)
+            raise TypeError(msg) from exc
         db_entity.save()
         for ids_attribute_name in ids_attribute_names:
             related_entity_ids = getattr(entity, ids_attribute_name)

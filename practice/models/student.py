@@ -14,6 +14,7 @@ class Student(models.Model, ImportExportMixin):
     student_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     user = models.OneToOneField(User)
     seen_instructions = models.ManyToManyField(Instruction, through='SeenInstruction')
+    credits = models.IntegerField(default=0)
 
 
     @property
@@ -29,10 +30,7 @@ class Student(models.Model, ImportExportMixin):
 
     @classmethod
     def import_entity(cls, entity, user=None, **kwargs):
-        # TODO: fix importing students (make sure they receive user from request)
-        print('trying to import entity student', entity, user)
-        if user is None:
-            user = cls.objects.get(student_id=entity.student_id).user
+        user = user or cls.objects.get(student_id=entity.student_id).user
         return super().import_entity(entity, user=user, **kwargs)
 
 
