@@ -68,3 +68,6 @@ class DbEntityMap(Mapping):
 
     def filter(self, **kwargs):
         return DbEntityMap(query_set=self.query_set.filter(**kwargs))
+
+    def order_by(self, *fields):
+        return DbEntityMap(query_set=self.query_set.order_by(*fields))

@@ -1,6 +1,7 @@
 from collections import ChainMap
+from flocs.context import dynamic
 from flocs.store import Store
-from flocs.state import STATIC_ENTITIES   # TODO: remove this import
+from flocs.state import State, default_entities
 from flocs import entities
 from flocsweb.models import Action
 import practice.models
@@ -14,6 +15,13 @@ model_mapping = {
     entities.Action: Action,
 }
 
+db_entities = ChainMap({
+  entity_class: DbEntityMap.for_model(model)
+  for (entity_class, model) in model_mapping.items()
+}, default_entities)
+
+db_state = State(entities=db_entities).add_context(dynamic)
+
 
 class PersistenceHooks(Store.Hooks):
     def __init__(self, request_context):
@@ -22,13 +30,6 @@ class PersistenceHooks(Store.Hooks):
     def post_commit(self, state, diff):
         for entity_name, entity_id, entity in diff:
             model_mapping[entity_name].import_entity(entity=entity, **self.request_context)
-
-
-def get_all_entities():
-    dynamic_entities = {
-        entity: DbEntityMap.for_model(model)
-        for (entity, model) in model_mapping.items()}
-    return ChainMap(dynamic_entities, STATIC_ENTITIES)
 
 
 def open_django_store(request=None):
@@ -41,5 +42,5 @@ def open_django_store(request=None):
     if request is not None:
         request_context['user'] = request.user
     persistence_hooks = PersistenceHooks(request_context=request_context)
-    store_context_manager = Store.open(entities=get_all_entities(), hooks=persistence_hooks)
+    store_context_manager = Store.open(state=db_state, hooks=persistence_hooks)
     return store_context_manager

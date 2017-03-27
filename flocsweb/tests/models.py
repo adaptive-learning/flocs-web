@@ -1,7 +1,7 @@
 """Fake models for tests
 """
 from django.db import models
-from flocs.tests.test_state import Entity
+from flocs.tests.test_entity_map import Entity
 from flocsweb.mixins import ImportExportMixin
 
 class DbEntity(models.Model, ImportExportMixin):

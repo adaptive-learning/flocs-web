@@ -1,8 +1,9 @@
 from django.conf import settings
 import pytest
-from flocs.tests.test_state import TestEntityMap, e1, e2
+from flocs.tests.test_entity_map import TestEntityMap, e1, e2
 from flocsweb.store import DbEntityMap
 from flocsweb.tests.models import DbEntity
+
 
 @pytest.mark.django_db
 class TestDbEntityMap(TestEntityMap):

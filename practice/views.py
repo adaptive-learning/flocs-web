@@ -6,13 +6,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, api_view, permission_classes
 from lazysignup.decorators import allow_lazy_user
+from flocs import actions, recommendation
+from flocsweb.store import open_django_store
+from tasks.models import Task
 from .serializers import StudentSerializer, TaskSessionSerializer
 from .models import Student, TaskSession
 from .permissions import IsAdminOrOwnerPostAnyone
-from flocs import actions
-from flocs.extractors import select_task_fixed_then_random
-from flocsweb.store import open_django_store
-from tasks.models import Task
 
 
 class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
@@ -108,10 +107,10 @@ def recommend(request):
     """
     Gets recommended task for the user
     """
-    student = _get_or_create_student(request.user)
+    student = _get_or_create_student(request)
     with open_django_store() as store:
         try:
-            task_id = select_task_fixed_then_random(store.state, student.student_id)
+            task_id = recommendation.fixed_then_random(store.state, student.student_id)
         except ValueError:
             task_id = None
     data = {
@@ -130,7 +129,7 @@ def get_or_create_student(request):
     """
     if request.method == 'GET':
         return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
-    student = _get_or_create_student(request.user)
+    student = _get_or_create_student(request)
     student_url = reverse('student-detail', args=[student.pk], request=request)
     data = {
         'student_url': student_url,
@@ -147,7 +146,7 @@ def start_task(request, task_id):
     """
     if request.method == 'GET':
         return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
-    student = _get_or_create_student(request.user)
+    student = _get_or_create_student(request)
     task_session = _get_or_create_unfinished_task_session(student, task_id)
     data = {
         'task_session': reverse('task_session-detail', args=[task_session.pk], request=request)
@@ -165,21 +164,23 @@ def see_instruction(request):
     if request.method == 'GET':
         return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
     with open_django_store() as store:
-        action = actions.see_instruction(
-            student_id=request.data['student_id'],
-            instruction_id=request.data['instruction_id'])
+        action = actions.create(
+            type='see-instruction',
+            data={
+                'student-id': request.data['student_id'],
+                'instruction-id': request.data['instruction_id']})
         store.stage_action(action)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-def _get_or_create_student(user):
+def _get_or_create_student(request):
     try:
-        student = Student.objects.get(user=user)
+        student = Student.objects.get(user=request.user)
     except Student.DoesNotExist:
-        with open_django_store(user=user) as store:
-            action = actions.create_student()
+        with open_django_store(request=request) as store:
+            action = actions.create(type='create-student', data={})
             store.stage_action(action)
-        student = Student.objects.get(user=user)
+        student = Student.objects.get(user=request.user)
     return student
 
 
@@ -190,7 +191,9 @@ def _get_or_create_unfinished_task_session(student, task_id):
         # it and start a new one
     except TaskSession.DoesNotExist:
         with open_django_store() as store:
-            action = actions.start_task(student_id=student.student_id, task_id=task_id)
+            action = actions.create(
+                type='start-task',
+                data={'student-id': student.student_id, 'task-id': task_id})
             store.stage_action(action)
         task_session = TaskSession.objects.get(student=student, task__task_id=task_id, solved=False, given_up=False)
     return task_session

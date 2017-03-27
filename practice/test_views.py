@@ -19,6 +19,7 @@ class PracticeViewsTests(TestCase):
         POST /api/practice/start_task/one-step-forward/
         GET /api/practice/recommend/
         """
+        self.client.post(reverse('practice_get_or_create_student'))
         first_recommendation = get_recommendation(self.client)
         start_task(self.client, task_id=first_recommendation['task_id'])
         next_recommendation = get_recommendation(self.client)
