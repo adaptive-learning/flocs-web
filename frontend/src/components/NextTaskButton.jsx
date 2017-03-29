@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
-import { TaskName } from 'flocs-visual-components';
+import TaskName from './TaskName';
 
 
 export default function NextTaskButton({ task }) {

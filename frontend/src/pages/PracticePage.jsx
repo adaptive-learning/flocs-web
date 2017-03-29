@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TaskEnvironmentContainer, flocsSelector, flocsActionCreators } from 'flocs-visual-components';
 import { startPractice } from '../actions/practiceActions';
 import PracticeContainer from '../containers/PracticeContainer';
 

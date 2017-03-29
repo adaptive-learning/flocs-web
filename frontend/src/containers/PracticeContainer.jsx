@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TaskEnvironmentContainer, flocsSelector, flocsActionCreators } from 'flocs-visual-components';
+import TaskEnvironmentContainer from './TaskEnvironmentContainer';
+import { getGameState } from '../selectors/gameState' ;
 import { getTaskForEnv, solveTaskAndRecommend } from '../actions/practiceActions';
 import CompleteTaskModal from '../components/CompleteTaskModal';
 
@@ -8,7 +9,7 @@ function getProps(state, props) {
   return {
     taskEnvironmentId: props.taskEnvironmentId,
     taskCompletionDialogPosition: props.taskCompletionDialogPosition,
-    solved: state.practice.stage === "ATTEMPTED" ? flocsSelector.getGameState(state, props.taskEnvironmentId).stage == "solved" : false,
+    solved: state.practice.stage === "ATTEMPTED" ? getGameState(state, props.taskEnvironmentId).stage == "solved" : false,
   }
 }
 

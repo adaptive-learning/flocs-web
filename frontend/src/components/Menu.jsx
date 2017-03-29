@@ -5,7 +5,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { Link } from 'react-router';
-import { Text } from 'flocs-visual-components';
+import Text from '../localization/Text';
 
 
 @muiThemeable()

@@ -1,6 +1,5 @@
 var path = require("path")
 var webpack = require('webpack')
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 var BundleTracker = require('webpack-bundle-tracker');
 
 
@@ -19,11 +18,6 @@ module.exports = {
 
     plugins: [
         new BundleTracker({filename: './webpack-stats.json'}),
-        new CopyWebpackPlugin([
-            { from: 'node_modules/flocs-visual-components/lib/static/images'
-                , to: 'images'
-            }
-        ])
     ],
 
     module: {
@@ -53,10 +47,10 @@ module.exports = {
     },
 
     resolve: {
-        modulesDirectories: ['node_modules', 'bower_components'],
+        modulesDirectories: ['node_modules'],
         extensions: ['', '.js', '.jsx'],
         alias:{
-            images: path.resolve('./images')
+            images: path.resolve('./assets/images')
         }
     }
 }

@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { SpaceGameContainer, TaskEnvironmentContainer } from 'flocs-visual-components';
+import SpaceGameContainer from '../containers/SpaceGameContainer';
+import TaskEnvironmentContainer from '../containers/TaskEnvironmentContainer';
 import { recommend, setTask } from '../actions/practiceActions'
 import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
 import neuronsBackgroundPath from 'images/neurons-tile.png';

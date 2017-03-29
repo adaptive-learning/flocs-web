@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import { TaskEditorContainer } from 'flocs-visual-components';
+import TaskEditorContainer from '../containers/TaskEditorContainer';
 import MainContainer from '../containers/MainContainer';
 import Home from '../components/Home';
 import PracticePage from '../pages/PracticePage';

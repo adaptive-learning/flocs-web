@@ -3,7 +3,7 @@ import axios from 'axios'
 // TODO: factor out to store
 const practiceUrl = "/api/practice/";
 
-import { flocsActionCreators } from 'flocs-visual-components';
+import { setTask as setTaskInTaskEnvironment } from './taskEnvironment';
 import { fetchTaskSession, fetchTask } from './taskSessionActions'
 
 
@@ -15,7 +15,7 @@ export function startPractice(taskEnvId, taskId) {
     ).then(() =>
         dispatch(fetchTask(getState().taskSession.taskUrl))
     ).then(() =>
-        dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskSession.task))
+        dispatch(setTaskInTaskEnvironment(taskEnvId, getState().taskSession.task))
     )
   });
 }
@@ -26,7 +26,7 @@ export function setTask(taskEnvId, taskId) {
     return dispatch(fetchTask(`/api/tasks/${taskId}`)).then(
       // TODO: unhack - no task session is actualy created on server, so avoid
       // passing data through task session state
-      () => dispatch(flocsActionCreators.setTask(taskEnvId, getState().taskSession.task))
+      () => dispatch(setTaskInTaskEnvironment(taskEnvId, getState().taskSession.task))
     );
   });
 }

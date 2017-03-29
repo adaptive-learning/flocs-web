@@ -10,7 +10,7 @@ export function seeInstruction(instructionId) {
     const data = {
       type: 'see-instruction',
       data: {
-        'student-id': state.flocsComponents.student.studentId, // TODO: use selector
+        'student-id': state.student.studentId, // TODO: use selector
         'instruction-id': instructionId,
       },
     };
