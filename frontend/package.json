@@ -67,13 +67,16 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2",
     "webpack-bundle-tracker": "0.0.93",
-    "webpack-dev-server": "1.15.0"
+    "webpack-dev-server": "1.15.0",
+    "@kadira/storybook": "^2.21.0"
   },
   "scripts": {
     "clean": "rm -rf static",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src examples",
     "build": "npm run clean && webpack",
-    "start": "npm run build && node webpack-dev-server.js"
+    "start": "npm run build && node webpack-dev-server.js",
+    "storybook": "start-storybook --dont-track -p 6006",
+    "build-storybook": "build-storybook"
   }
 }
