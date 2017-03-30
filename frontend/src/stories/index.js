@@ -1,5 +1,6 @@
 import React from 'react';
 import { storiesOf, action, linkTo, addDecorator } from '@kadira/storybook';
+import { muiTheme } from 'storybook-addon-material-ui';
 import Welcome from './Welcome';
 import BlocklyEditor from '../components/BlocklyEditor';
 import CodeEditor from '../components/CodeEditor';
@@ -12,8 +13,12 @@ import TaskEnvironmentContainer from '../containers/TaskEnvironmentContainer';
 import { parseSpaceWorld } from '../core/spaceWorldDescription';
 import { globalConfiguration, configureStore } from '../config';
 import { setTask, setEditorType } from '../actions/taskEnvironment';
+import { theme } from '../theme';
 
 globalConfiguration();
+
+addDecorator(muiTheme([theme]));
+
 const store = configureStore();
 addDecorator((story) => (
   <FlocsProvider store={store}>

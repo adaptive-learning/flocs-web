@@ -10,7 +10,11 @@ export { theme };
 export function initGlobalTheme() {
   // Needed for material-ui onTouchTap
   // http://stackoverflow.com/a/34015469/988941
-  injectTapEventPlugin();
+  try {
+    injectTapEventPlugin();
+  } catch (e) {
+    // Supress error in case the TapEventPlugin was already injected
+  }
   setGlobalFonts();
 }
 

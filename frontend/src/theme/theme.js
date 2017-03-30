@@ -1,4 +1,3 @@
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {
   grey400, grey600, grey700,
   amber500, amber700, amber100,
@@ -8,7 +7,8 @@ import {
 import { fade } from 'material-ui/utils/colorManipulator';
 
 
-const theme = getMuiTheme({
+const theme = {
+  themeName: 'Flocs Theme',
   fontFamily: 'Roboto, sans-serif',
   borderRadius: 2,
   palette: {
@@ -34,7 +34,7 @@ const theme = getMuiTheme({
     thumbOffColor: grey400,
     trackOffColor: grey600,
   },
-});
+};
 
 
 export default theme;
