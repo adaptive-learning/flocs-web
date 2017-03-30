@@ -14,10 +14,7 @@ export function solveTask(taskSessionId) {
         'task-session-id': taskSessionId,
       }),
     };
-    return {
-      type: SOLVE_TASK,
-      payload: axios.post('/api/actions/', data),
-    };
+    return axios.post('/api/actions/', data);
   });
 }
 

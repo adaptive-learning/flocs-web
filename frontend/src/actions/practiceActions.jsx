@@ -35,9 +35,9 @@ export function setTask(taskEnvId, taskId) {
 
 export function solveTaskAndRecommend() {
     return ((dispatch, getState) => {
-        return dispatch(solveTask(getState().taskSession.id));
-        // TODO: .then(() => dispatch(recommend()))
-    })
+        return dispatch(solveTask(getState().taskSession.id))
+          .then(() => dispatch(recommend()));
+    });
 }
 
 
