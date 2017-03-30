@@ -5,6 +5,7 @@ const practiceUrl = "/api/practice/";
 
 import { setTask as setTaskInTaskEnvironment } from './taskEnvironment';
 import { fetchTaskSession, fetchTask } from './taskSessionActions'
+import { solveTask } from './actions';
 
 
 export function startPractice(taskEnvId, taskId) {
@@ -34,10 +35,8 @@ export function setTask(taskEnvId, taskId) {
 
 export function solveTaskAndRecommend() {
     return ((dispatch, getState) => {
-        return dispatch(solveTaskByUrl(getState().taskSession.solve)
-        ).then(() =>
-            dispatch(recommend())
-        )
+        return dispatch(solveTask(getState().taskSession.id));
+        // TODO: .then(() => dispatch(recommend()))
     })
 }
 
@@ -56,11 +55,3 @@ function startTask(taskId) {
         payload: axios.post(practiceUrl + 'start_task/' + taskId + '/')
     }
 }
-
-function solveTaskByUrl(url) {
-    return {
-        type: "SOLVE_TASK",
-        payload: axios.post(url)
-    }
-}
-

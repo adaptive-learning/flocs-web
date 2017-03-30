@@ -3,19 +3,34 @@
  */
 
 import axios from 'axios';
+import { SOLVE_TASK } from '../action-types';
+
+
+export function solveTask(taskSessionId) {
+  return ((state, dispatch) => {
+    const data = {
+      type: 'solve-task',
+      data: JSON.stringify({
+        'task-session-id': taskSessionId,
+      }),
+    };
+    return {
+      type: SOLVE_TASK,
+      payload: axios.post('/api/actions/', data),
+    };
+  });
+}
 
 
 export function reportSeenInstruction(instructionId) {
   return ((state, dispatch) => {
     const data = {
       type: 'see-instruction',
-      data: {
+      data: JSON.stringify({
         'student-id': state.student.studentId, // TODO: use selector
         'instruction-id': instructionId,
-      },
+      }),
     };
-    axios.post('/api/actions/', data),
+    return axios.post('/api/actions/', data);
   });
-
 }
-

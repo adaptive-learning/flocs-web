@@ -3,16 +3,10 @@ from .models import Student, TaskSession
 
 
 class TaskSessionSerializer(serializers.HyperlinkedModelSerializer):
-    solve = serializers.HyperlinkedIdentityField(
-        view_name='task_session-solve-task',
-        read_only=True)
-    give_up = serializers.HyperlinkedIdentityField(
-        view_name='task_session-give-up-task',
-        read_only=True)
 
     class Meta:
         model = TaskSession
-        fields = ('url', 'task_session_id', 'student', 'task', 'solved', 'given_up', 'solve', 'give_up')
+        fields = ('url', 'task_session_id', 'student', 'task', 'solved', 'given_up')
 
         extra_kwargs = {
             'url': {'view_name': 'task_session-detail'},

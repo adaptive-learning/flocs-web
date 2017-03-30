@@ -53,28 +53,6 @@ class TaskSessionsViewSet(viewsets.ModelViewSet):
             return TaskSession.objects.all()
         return TaskSession.objects.filter(student__user=user)
 
-    @detail_route(methods=['GET', 'POST'])
-    def solve_task(self, request, pk=None):
-        if request.method == 'GET':
-            return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
-        if not self.get_object().is_active:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data="This task session is already closed.")
-        with open_django_store() as store:
-            action = actions.solve_task(pk)
-            store.stage_action(action)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    @detail_route(methods=['GET', 'POST'])
-    def give_up_task(self, request, pk=None):
-        if request.method == 'GET':
-            return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
-        if not self.get_object().is_active:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data="This task session is already closed.")
-        with open_django_store() as store:
-            action = actions.give_up_task(pk)
-            store.stage_action(action)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 class PracticeViewSet(viewsets.GenericViewSet):
     """

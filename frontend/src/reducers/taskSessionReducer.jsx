@@ -12,7 +12,6 @@ export function taskSessionReducer(state={
             return {...state,
                 id: action.payload.data.task_session_id,
                 taskUrl: action.payload.data.task,
-                solve: action.payload.data.solve,
             }
         }
         case "FETCH_TASK_FULFILLED": {
