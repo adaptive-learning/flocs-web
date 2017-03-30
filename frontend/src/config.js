@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import createPromiseMiddleware from 'redux-promise-middleware';
 import createLoggerMiddleware from 'redux-logger';
 import rootReducer from './reducers';
+import { getLocalizationSetting } from './localization';
 import { initGlobalBlockly } from './core/blockly';
 import { initGlobalTheme } from './theme';
 
@@ -15,10 +16,14 @@ export function globalConfiguration() {
 
 
 export function configureStore(initialState) {
+  const initialStateWithLocalization = {
+    ...initialState,
+    intl: getLocalizationSetting(),
+  };
   const promise = createPromiseMiddleware();
   const logger = createLoggerMiddleware();
   const middleware = applyMiddleware(promise, thunk, logger);
-  const store = createStore(rootReducer, initialState);
+  const store = createStore(rootReducer, initialStateWithLocalization, middleware);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
