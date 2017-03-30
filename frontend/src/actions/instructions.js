@@ -9,9 +9,10 @@ export function showInstructions() {
 }
 
 
-export function seenInstruction(index) {
+export function seenInstruction(instructionId) {
   return {
     type: SEEN_INSTRUCTION,
-    payload: { index },
+    payload: { instructionId },
   };
+  // TODO: report seen instruction
 }

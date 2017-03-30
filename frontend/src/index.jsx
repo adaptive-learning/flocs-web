@@ -1,21 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import routes from './config/routes'
-import reducers from './reducers'
-import { initGlobalBlockly } from './core/blockly';
-import { initGlobalTheme } from './theme';
 import FlocsProvider from './FlocsProvider';
+import { globalConfiguration, configureStore } from './config';
 
-// axios config
-import './config/axiosConfig'
+// axios config - TODO: move to config.js
+import './config/axiosConfig';
 
-// global initializations
-initGlobalTheme();
-initGlobalBlockly();
-
+globalConfiguration();
+const store = configureStore();
 
 const app = (
-  <FlocsProvider router reducers={reducers}>
+  <FlocsProvider store={store} router>
     {routes}
   </FlocsProvider>
 );

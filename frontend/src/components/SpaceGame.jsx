@@ -59,7 +59,7 @@ SpaceGame.propTypes = {
   taskId: PropTypes.string,
   gameState: PropTypes.object.isRequired,
   actionsLimit: PropTypes.object,
-  onControlClicked: PropTypes.func.isRequired,
+  onControlClicked: PropTypes.func,
   controls: PropTypes.array,
   width: PropTypes.number,
 };
