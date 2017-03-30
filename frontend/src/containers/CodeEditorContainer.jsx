@@ -29,7 +29,7 @@ CodeEditorWrapper.propTypes = {
 
 function mapStateToProps(state, props) {
   const { taskEnvironmentId } = props;
-  const taskEnvironment = state.flocsComponents.taskEnvironments[taskEnvironmentId];
+  const taskEnvironment = state.taskEnvironments[taskEnvironmentId];
   const code = taskEnvironment.code;
   return { taskEnvironmentId, code };
 }
