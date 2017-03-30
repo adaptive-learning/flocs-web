@@ -6,9 +6,12 @@ import CodeEditor from '../components/CodeEditor';
 import FlocsProvider from '../FlocsProvider';
 import SpaceGame from '../components/SpaceGame';
 import TasksTable from '../components/TasksTable';
+import SpaceGameContainer from '../containers/SpaceGameContainer';
 import TaskEditorContainer from '../containers/TaskEditorContainer';
+import TaskEnvironmentContainer from '../containers/TaskEnvironmentContainer';
 import { parseSpaceWorld } from '../core/spaceWorldDescription';
 import { globalConfiguration, configureStore } from '../config';
+import { setTask, setEditorType } from '../actions/taskEnvironment';
 
 globalConfiguration();
 const store = configureStore();
@@ -125,11 +128,85 @@ storiesOf('SpaceGame', module)
       controls={['fly', 'left', 'right', 'reset']}
       onControlClicked={action('onControlClicked')}
     />
-  ));
+  ))
+  .add('SpaceGameContainer', () => {
+    const task = {
+      taskId: 'two-steps-forward',
+      categoryId: 'moves',
+      setting: {
+        fields: parseSpaceWorld(`
+          |b |b |b |b |b |
+          |k |k |k |k |k |
+          |k |k |kS|k |k |`),
+      },
+    };
+    store.dispatch(setTask('demo', task));
+    return (
+      <SpaceGameContainer
+        taskEnvironmentId="demo"
+        controls={['fly', 'left', 'right', 'reset']}
+      />
+    );
+  });
 
 
-storiesOf('TaskEditorContainer', module)
-  .add('default', () => (
+storiesOf('TaskEnvironment', module)
+  .add('default', () => {
+    const task = {
+      taskId: 'two-steps-forward',
+      categoryId: 'moves',
+      setting: {
+        fields: parseSpaceWorld(`
+          |b |b |b |b |b |
+          |k |k |k |k |k |
+          |k |k |kS|k |k |`),
+      },
+    };
+    store.dispatch(setTask('demo', task));
+    return (
+      <TaskEnvironmentContainer taskEnvironmentId="demo" />
+    );
+  })
+  .add('all controls', () => {
+    const task = {
+      taskId: 'two-steps-forward',
+      categoryId: 'moves',
+      setting: {
+        fields: parseSpaceWorld(`
+          |b |b |b |b |b |
+          |k |k |k |k |k |
+          |k |k |kS|k |k |`),
+      },
+    };
+    store.dispatch(setTask('demo', task));
+    return (
+      <TaskEnvironmentContainer
+        taskEnvironmentId="demo"
+        controls={['fly', 'left', 'right', 'shoot', 'run', 'reset']}
+      />
+    );
+  })
+  .add('code editor', () => {
+    const task = {
+      taskId: 'two-steps-forward',
+      categoryId: 'moves',
+      setting: {
+        fields: parseSpaceWorld(`
+          |b |b |b |b |b |
+          |k |k |k |k |k |
+          |k |k |kS|k |k |`),
+      },
+    };
+    store.dispatch(setTask('demo-code-editor', task));
+    store.dispatch(setEditorType('demo-code-editor', 'code'));
+    return (
+      <TaskEnvironmentContainer taskEnvironmentId="demo-code-editor" />
+    );
+  });
+
+
+storiesOf('TaskEditor', module)
+  .add('TaskEditorContainer', () => (
     <TaskEditorContainer />
   ));
 
