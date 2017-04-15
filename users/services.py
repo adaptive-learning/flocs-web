@@ -1,9 +1,17 @@
+from lazysignup.decorators import allow_lazy_user
 from lazysignup.utils import is_lazy_user
 from lazysignup.models import LazyUser
 from lazysignup.signals import converted
 from django.contrib.auth.models import User
 from django.contrib.auth import login as djangologin, logout as djangologout
 from django.contrib.auth import authenticate
+
+
+@allow_lazy_user
+def get_or_create_user(request):
+    """ Return a current user and create one if it doesn't exist
+    """
+    return request.user
 
 
 def create_or_convert(user, username, email, first_name, password):

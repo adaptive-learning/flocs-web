@@ -1,11 +1,8 @@
 from json import loads
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
-from lazysignup.decorators import allow_lazy_user
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import mixins
 from flocs import actions
@@ -33,18 +30,6 @@ def redirect_home(request):
 def frontend_app(request, *_):
     return render(request, 'index.html')
 
-# TODO: move to user app
-@allow_lazy_user
-@api_view(['GET', 'POST'])
-def get_or_create_user(request):
-    """ Return a current user and creates one if not exists
-
-    Creating a new "lazy user" is delegated to django-lazysignup library
-    """
-    if request.method == 'GET':
-        return Response("Use POST method.", status=status.HTTP_204_NO_CONTENT)
-    return Response(request.user)
-
 
 class ActionsViewSet(mixins.CreateModelMixin,
                      mixins.ListModelMixin,
@@ -61,8 +46,8 @@ class ActionsViewSet(mixins.CreateModelMixin,
         action_type = serializer.validated_data['type']
         action_data = loads(serializer.validated_data['data'])
         with open_django_store(request=self.request) as store:
-            action = actions.create(type=action_type, data=action_data)
-            store.add(action)
+            intent = actions.create(type=action_type, data=action_data)
+            action = store.add(intent)
         # The Action is already created, but calling serializer.save() is still
         # necessary, because rest framework needs to have been passed the
         # created action somehow in order to return it to the client

@@ -26,7 +26,6 @@ urlpatterns = [
     url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
-    url(r'^api/get-or-create-user/$', 'flocsweb.views.get_or_create_user'),
     url(r'^api/.*/$', 'flocsweb.views.wrong_api_call'),
     url(r'^accounts/profile', 'flocsweb.views.redirect_home'),
     url(r'^([^a].*)?$', 'flocsweb.views.frontend_app'),

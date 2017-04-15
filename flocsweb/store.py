@@ -3,13 +3,15 @@ from flocs.context import dynamic
 from flocs.store import Store
 from flocs.state import State, default
 from flocs import entities
-from flocsweb.models import Action
+from users.services import get_or_create_user
 import practice.models
+from flocsweb.models import Action
 from .db_entity_map import DbEntityMap
 
 
 model_mapping = {
     entities.Student: practice.models.Student,
+    entities.Session: practice.models.Session,
     entities.TaskSession: practice.models.TaskSession,
     entities.SeenInstruction: practice.models.SeenInstruction,
     entities.Action: Action,
@@ -40,7 +42,7 @@ def open_django_store(request=None):
     """
     request_context = {}
     if request is not None:
-        request_context['user'] = request.user
+        request_context['user'] = get_or_create_user(request)
     persistence_hooks = PersistenceHooks(request_context=request_context)
     store_context_manager = Store.open(state=db_state, hooks=persistence_hooks)
     return store_context_manager
