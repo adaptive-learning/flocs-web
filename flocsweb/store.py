@@ -1,7 +1,7 @@
 from collections import ChainMap
 from flocs.context import dynamic
 from flocs.store import Store
-from flocs.state import State, default_entities
+from flocs.state import State, default
 from flocs import entities
 from flocsweb.models import Action
 import practice.models
@@ -16,9 +16,9 @@ model_mapping = {
 }
 
 db_entities = ChainMap({
-  entity_class: DbEntityMap.for_model(model)
-  for (entity_class, model) in model_mapping.items()
-}, default_entities)
+    entity_class: DbEntityMap.for_model(model)
+    for (entity_class, model) in model_mapping.items()
+}, default.entities)
 
 db_state = State(entities=db_entities).add_context(dynamic)
 
@@ -28,7 +28,7 @@ class PersistenceHooks(Store.Hooks):
         self.request_context = request_context
 
     def post_commit(self, state, diff):
-        for entity_name, entity_id, entity in diff:
+        for entity_name, _entity_id, entity in diff:
             model_mapping[entity_name].import_entity(entity=entity, **self.request_context)
 
 

@@ -13,12 +13,6 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = ('url', 'task_id', 'category', 'setting', 'solution')
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Category
-        fields = ('url', 'category_id', 'level', 'toolbox')
-
-
 class LevelSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Level
@@ -37,3 +31,10 @@ class ToolboxSerializer(serializers.ModelSerializer):
     class Meta:
         model = Toolbox
         fields = ('url', 'toolbox_id', 'blocks')
+
+
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    toolbox = ToolboxSerializer()
+    class Meta:
+        model = Category
+        fields = ('url', 'category_id', 'level', 'toolbox')

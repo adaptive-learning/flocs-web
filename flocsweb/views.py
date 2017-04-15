@@ -1,10 +1,9 @@
+from json import loads
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
-from json import loads
 from lazysignup.decorators import allow_lazy_user
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import NotFound, ValidationError
-from rest_framework.views import APIView
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
@@ -61,13 +60,9 @@ class ActionsViewSet(mixins.CreateModelMixin,
         """
         action_type = serializer.validated_data['type']
         action_data = loads(serializer.validated_data['data'])
-        if action_type == 'create-student' and hasattr(self.request.user, 'student'):
-            raise ValidationError('Student already created for this user')
         with open_django_store(request=self.request) as store:
-            action = actions.create(
-                type=action_type,
-                data=action_data)
-            store.stage_action(action)
+            action = actions.create(type=action_type, data=action_data)
+            store.add(action)
         # The Action is already created, but calling serializer.save() is still
         # necessary, because rest framework needs to have been passed the
         # created action somehow in order to return it to the client

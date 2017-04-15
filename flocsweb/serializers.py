@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Action
-from .store import open_django_store
 
 
 class ActionSerializer(serializers.HyperlinkedModelSerializer):

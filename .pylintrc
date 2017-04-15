@@ -35,7 +35,10 @@ max-module-lines=200
 [VARIABLES]
 # do not check for unused import in __init__ files
 init-import=no
-dummy-variables-rgx=(_+[a-zA-Z0-9]*?$)|dummy
+dummy-variables-rgx=(_+[a-zA-Z0-9_]*?$)|dummy
 
 [MASTER]
 load-plugins=pylint_django
+
+[DESIGN]
+max-parents=15
