@@ -21,7 +21,7 @@ export function taskSessionReducer(state={
               categoryId: taskData['category'],
               url: taskData.url,
               setting: jsonToObject(taskData.setting),
-              solution: jsonToObject(taskData.setting),
+              solution: jsonToObject(taskData.solution),
             };
             return { ...state, task }
         }
