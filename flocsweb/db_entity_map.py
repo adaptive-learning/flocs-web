@@ -37,6 +37,9 @@ class DbEntityMap(Mapping):
         for db_entity in self.query_set:
             yield db_entity.pk
 
+    def __contains__(self, entity_id):
+        return self.query_set.filter(pk=entity_id).exists()
+
     def __len__(self):
         return self.query_set.count()
 
@@ -71,3 +74,14 @@ class DbEntityMap(Mapping):
 
     def order_by(self, *fields):
         return DbEntityMap(query_set=self.query_set.order_by(*fields))
+
+    def first(self):
+        db_entity = self.query_set.first()
+        return  db_entity.to_namedtuple() if db_entity else None
+
+    def last(self):
+        db_entity = self.query_set.last()
+        return  db_entity.to_namedtuple() if db_entity else None
+
+    def exists(self):
+        return self.query_set.exists()
