@@ -16,15 +16,6 @@ class Student(models.Model, ImportExportMixin):
     seen_instructions = models.ManyToManyField(Instruction, through='SeenInstruction')
     credits = models.IntegerField(default=0)
 
-
-    @property
-    def last_task_session_id(self):
-        from .task_session import TaskSession
-        try:
-            return TaskSession.objects.filter(student=self).latest('creation_timestamp').task_session_id
-        except TaskSession.DoesNotExist:
-            return None
-
     def __str__(self):
         return '[{pk}] {username}'.format(pk=self.pk, username=self.user.username)
 
