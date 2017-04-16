@@ -41,9 +41,15 @@ class StudentTaskSerializer(serializers.Serializer):
     time = serializers.DurationField()
 
 
+class RecommendationSerializer(serializers.Serializer):
+    available = serializers.BooleanField()
+    task_id = serializers.CharField()
+
+
 class PracticeOverviewSerializer(serializers.Serializer):
     level = serializers.IntegerField()
     credits = serializers.IntegerField()
     active_credits = serializers.IntegerField()
     instructions = StudentInstructionSerializer(many=True)
     tasks = StudentTaskSerializer(many=True)
+    recommendation = RecommendationSerializer()
