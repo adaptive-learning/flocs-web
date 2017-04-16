@@ -21,7 +21,29 @@ class TaskSessionSerializer(serializers.HyperlinkedModelSerializer):
         return data
 
 
-class StudentSerializer(serializers.ModelSerializer):
-    task_sessions = TaskSessionSerializer(many=True)
+class StudentSerializer(serializers.HyperlinkedModelSerializer):
+    practice_overview = serializers.HyperlinkedIdentityField(
+        view_name='student-practice-overview',
+        read_only=True)
+
     class Meta:
         model = Student
+
+
+class StudentInstructionSerializer(serializers.Serializer):
+    instruction_id = serializers.CharField()
+    seen = serializers.BooleanField()
+
+
+class StudentTaskSerializer(serializers.Serializer):
+    task_id = serializers.CharField()
+    solved = serializers.BooleanField()
+    time = serializers.DurationField()
+
+
+class PracticeOverviewSerializer(serializers.Serializer):
+    level = serializers.IntegerField()
+    credits = serializers.IntegerField()
+    active_credits = serializers.IntegerField()
+    instructions = StudentInstructionSerializer(many=True)
+    tasks = StudentTaskSerializer(many=True)
