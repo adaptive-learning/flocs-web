@@ -9,12 +9,5 @@ class ActionSerializer(serializers.HyperlinkedModelSerializer):
         read_only_fields = ('randomness', 'version')
 
     def create(self, validated_data):
-        """ Create a new action (if not already stored) and return it
-        """
-        if 'action_id' in validated_data:
-            action, created = Action.objects.get_or_create(
-                action_id=validated_data['action_id'],
-                defaults=validated_data,
-            )
-            return action
-        return Action.create(**validated_data)
+        action = Action(**validated_data)
+        return action

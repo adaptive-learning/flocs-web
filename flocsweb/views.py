@@ -45,6 +45,12 @@ class ActionsViewSet(mixins.CreateModelMixin,
         """
         action_type = serializer.validated_data['type']
         action_data = loads(serializer.validated_data['data'])
+
+        # inject student
+        user = self.request.user
+        if hasattr(user, 'student'):
+            action_data['student_id'] = user.student.student_id
+
         with open_django_store(request=self.request) as store:
             intent = actions.create(type=action_type, data=action_data)
             action = store.add(intent)
