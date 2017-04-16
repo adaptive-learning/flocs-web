@@ -11,7 +11,7 @@ class Task(models.Model, ImportExportMixin):
     entity_class = entities.Task
 
     task_id = models.CharField(max_length=256, primary_key=True)
-    category = models.ForeignKey(Category, null=True, default=None)
+    category = models.ForeignKey(Category, null=True, default=None, related_name='tasks')
     setting = JSONField()
     solution = JSONField()
 

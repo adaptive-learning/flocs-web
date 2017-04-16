@@ -13,28 +13,29 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = ('url', 'task_id', 'category', 'setting', 'solution')
 
 
-class LevelSerializer(serializers.HyperlinkedModelSerializer):
+class LevelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Level
         fields = ('url', 'level_id', 'credits')
 
 
-class BlockSerializer(serializers.HyperlinkedModelSerializer):
+class BlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = Block
         fields = ('url', 'block_id')
 
 
 class ToolboxSerializer(serializers.ModelSerializer):
-    blocks = BlockSerializer(many=True)
+    blocks = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Toolbox
         fields = ('url', 'toolbox_id', 'blocks')
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
-    toolbox = ToolboxSerializer()
+class CategorySerializer(serializers.ModelSerializer):
+    tasks = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
     class Meta:
         model = Category
-        fields = ('url', 'category_id', 'level', 'toolbox')
+        fields = ('url', 'category_id', 'level', 'toolbox', 'tasks')
