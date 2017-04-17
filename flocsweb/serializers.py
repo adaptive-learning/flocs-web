@@ -8,7 +8,7 @@ class ActionSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Action
-        read_only_fields = ('randomness', 'version')
+        read_only_fields = ('time', 'randomness', 'version')
 
     def create(self, validated_data):
         action = Action(**validated_data)

@@ -1,7 +1,7 @@
 from random import randint
+from uuid import uuid4
 from django.db import models
 from flocsweb.mixins import ImportExportMixin
-from uuid import uuid4
 from jsonfield import JSONField
 from flocs import entities
 
@@ -16,7 +16,7 @@ class Action(models.Model, ImportExportMixin):
 
     action_id = models.UUIDField(primary_key=True, default=uuid4)
     type = models.CharField(max_length=100)
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField()
     randomness = models.IntegerField(default=generate_random_integer)
     version = models.CharField(max_length=100)
     data = JSONField()
