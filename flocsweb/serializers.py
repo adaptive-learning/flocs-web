@@ -4,6 +4,8 @@ from .models import Action
 
 class ActionSerializer(serializers.HyperlinkedModelSerializer):
     action_id = serializers.ReadOnlyField()
+    data = serializers.JSONField()
+
     class Meta:
         model = Action
         read_only_fields = ('randomness', 'version')
