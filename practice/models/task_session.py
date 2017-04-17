@@ -15,7 +15,6 @@ class TaskSession(models.Model, ImportExportMixin):
     task_session_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     student = models.ForeignKey(Student, related_name='task_sessions')
     task = models.ForeignKey(Task)
-    creation_timestamp = models.DateTimeField(default=datetime.now, blank=True)  # TODO: remove this field
     solved = models.BooleanField(default=False)
     given_up = models.BooleanField(default=False)
     start = models.DateTimeField(default=datetime.now)
