@@ -1,19 +1,19 @@
-import { SET_STUDENT, } from '../action-types';
+import { START_SESSION_FULFILLED,
+         UPDATE_STUDENT_FULFILLED } from '../action-types';
 
 
-const initialState = {
-  seenInstructions: [],
-};
-
-
-export function reduceStudent(state = initialState, action) {
+export default function reduceStudent(state = {}, action) {
   switch (action.type) {
-    case SET_STUDENT:
+    case START_SESSION_FULFILLED:
       return {
         ...state,
-        studentId: action.payload['student_id'],
-        seenInstructions: action.payload['seen_instructions'],
-        taskSessions: action.payload['task_sessions'],
+        id: action.payload.studentId,
+      };
+    case UPDATE_STUDENT_FULFILLED:
+      return {
+        ...state,
+        credits: action.payload.credits,
+        practiceOverviewUrl: action.payload.practiceOverviewUrl,
       };
     default:
       return state;

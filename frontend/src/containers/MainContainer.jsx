@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Main from '../components/Main';
-import { getOrCreateStudent } from '../actions/student';
+// import { getOrCreateStudent } from '../actions/student';
+import { fetchStaticData, startSession } from '../actions/api';
 
 
 @connect(state => ({
 }), {
-  getOrCreateStudent,
+  fetchStaticData,
+  startSession,
 })
 class MainContainer extends React.Component {
   constructor(props) {
@@ -16,8 +18,14 @@ class MainContainer extends React.Component {
   }
 
   componentWillMount() {
-    console.log('will mount -> TODO: load student info');
-    this.props.getOrCreateStudent();
+    // console.log('will mount -> TODO: load student info');
+    // this.props.getOrCreateStudent();
+  }
+
+  componentDidMount() {
+    this.props.fetchStaticData();
+    this.props.startSession();
+    // TODO: load practice overview (with recommendation...)
   }
 
   render() {

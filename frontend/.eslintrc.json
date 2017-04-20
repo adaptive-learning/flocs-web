@@ -19,6 +19,8 @@
     },
     "rules": {
       "spaced-comment": 1,
+      "default-case": 0,
+      "dot-notation": 0,
       "no-mixed-operators": 0,
       "no-use-before-define": [1, "nofunc"],
       "no-unused-vars": [1, {"varsIgnorePattern": "^_"}],
