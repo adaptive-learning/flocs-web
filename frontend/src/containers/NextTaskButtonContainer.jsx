@@ -11,9 +11,6 @@ function getProps(state) {
 @connect(getProps)
 class NextTaskButtonContainer extends React.Component {
   render() {
-    if (!this.props.task) {
-      return null;
-    }
     return (
       <NextTaskButton task={this.props.task} />
     );

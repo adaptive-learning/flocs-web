@@ -1,16 +1,15 @@
-export function getPractice(state) {
-  return state.practice;
+export function getRecommendation(state) {
+  return state.recommendation;
 }
 
+
 export function getRecommendedTask(state) {
-  const practice = getPractice(state);
-  let task = null;
-  const taskId = state.practice.recommendation;
-  if (taskId) {
-    task = {
-      taskId,
-      url: `/task/${taskId}`
-    };
+  const recommendation = getRecommendation(state);
+  const { task, available } = recommendation;
+  const taskId = task;  // TODO: make a single convention about naming id attributes
+  if (!available) {
+    return null;
   }
-  return task;
+  const url = `/task/${taskId}`;
+  return { taskId, url };
 }

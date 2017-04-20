@@ -1,34 +1,38 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import App from '../components/App';
-// import { getOrCreateStudent } from '../actions/student';
 import { fetchStaticData, startSession } from '../actions/api';
 
 
+const propTypes = {
+  loading: PropTypes.bool.isRequired,
+  children: PropTypes.node,
+  fetchStaticData: PropTypes.func,
+  startSession: PropTypes.func,
+};
+
+
+const defaultProps = {
+  loading: true,
+};
+
+
 @connect(state => ({
+  loading: state.app.loading,  // TODO: use a selector
 }), {
   fetchStaticData,
   startSession,
 })
 class AppContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.setOpen = this.props.setOpenMenu.bind(this);
-    console.log('constructor');
-  }
-
-  componentWillMount() {
-    // console.log('will mount -> TODO: load student info');
-    // this.props.getOrCreateStudent();
-  }
-
   componentDidMount() {
     this.props.fetchStaticData();
     this.props.startSession();
-    // TODO: load practice overview (with recommendation...)
   }
 
   render() {
+    if (this.props.loading) {
+      return null;
+    }
     return (
       <App>
         { this.props.children }
@@ -36,5 +40,8 @@ class AppContainer extends React.Component {
     );
   }
 }
+
+AppContainer.propTypes = propTypes;
+AppContainer.defaultProps = defaultProps;
 
 export default AppContainer;

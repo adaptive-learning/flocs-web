@@ -5,11 +5,20 @@ import TaskName from './TaskName';
 
 
 export default function NextTaskButton({ task }) {
+  let visibility = 'hidden';
+  let taskId = '';
+  let url = '#';
+  console.log('task is', task);
+  if (task !== null) {
+    visibility = true;
+    taskId = task.taskId;
+    url = task.url;
+  }
   return (
-    <span style={{ display: 'inline-block' }}>
+    <span style={{ visibility, display: 'inline-block' }}>
       <div> Doporučená úloha:</div>
-      <Link to={task.url}>
-        <RaisedButton label={<TaskName taskId={task.taskId} />} primary={true} />
+      <Link to={url}>
+        <RaisedButton label={<TaskName taskId={taskId} />} primary={true} />
       </Link>
     </span>
   );
@@ -17,5 +26,5 @@ export default function NextTaskButton({ task }) {
 
 
 NextTaskButton.propTypes = {
-  task: PropTypes.object.isRequired,
+  task: PropTypes.object,
 };

@@ -41,11 +41,22 @@ export function setTaskSession(taskEnvironmentId, taskSession) {
 }
 
 
+// TODO: remove in favor of setTask[byId]
 export function setTask(taskEnvironmentId, task) {
   return {
     type: SET_TASK,
     payload: { taskEnvironmentId, task },
   };
+}
+
+
+export function setTaskById(taskEnvironmentId, taskId) {
+  // TODO: store only taskId in task environment to avoid redundant data in
+  // store
+  return ((dispatch, getState) => {
+    const task = getState().tasks[taskId];
+    return dispatch(setTask(taskEnvironmentId, task));
+  });
 }
 
 

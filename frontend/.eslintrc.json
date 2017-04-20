@@ -30,6 +30,7 @@
       "quote-props": 0,
       "react/require-extension": 0,
       "react/jsx-boolean-value": 0,
+      "react/prefer-stateless-function": 0,
       "import/prefer-default-export": 0
     }
 }
