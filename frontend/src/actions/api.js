@@ -4,6 +4,7 @@
 
 import axios from 'axios';
 import { FETCH_STATIC_DATA,
+         FETCH_PRACTICE_OVERVIEW,
          UPDATE_STUDENT,
          START_SESSION } from '../action-types';
 
@@ -31,7 +32,9 @@ export function startSession() {
       type: START_SESSION,
       payload: postAction('start-session').then(parseStartSessionResponse),
     };
-    return dispatch(action).then(() => dispatch(updateStudent()));
+    return dispatch(action)
+      .then(() => dispatch(updateStudent()))
+      .then(() => dispatch(fetchPraticeOverview()));
   };
 }
 
@@ -62,10 +65,22 @@ function updateStudent() {
 }
 
 
+function fetchPraticeOverview() {
+  return (dispatch, getState) => dispatch({
+    type: FETCH_PRACTICE_OVERVIEW,
+    payload: axios.get(getPracticeOverviewUrl(getState())).then(parsePracticeOverviewResponse),
+  });
+}
+
+
 // TODO: move to selectors
 function getStudentUrl(state) {
   const { id } = state.student;
   return `/api/students/${id}/`;
+}
+
+function getPracticeOverviewUrl(state) {
+  return state.student.practiceOverviewUrl;
 }
 
 
@@ -75,5 +90,17 @@ function parseStudentResponse(response) {
     credits: data['credits'],
     seenInstructions: data['seen_instructions'],
     practiceOverviewUrl: data['practice_overview'],
+  };
+}
+
+
+function parsePracticeOverviewResponse(response) {
+  const { data } = response;
+  return {
+    level: data['level'],
+    credits: data['credits'],
+    activeCredits: data['active_credits'],
+    tasks: data['tasks'],
+    recommendation: data['recommendation'],
   };
 }
