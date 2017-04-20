@@ -6,6 +6,7 @@ import reduceCategories from './categories';
 import reduceTasks from './tasks';
 import reduceInstructions from './instructions';
 import reduceStudent from './student';
+import reduceRecommendation from './recommendation';
 
 
 import reduceTaskEnvironments from './taskEnvironments';
@@ -22,6 +23,7 @@ export const reducers = combineReducers({
   instructions: reduceInstructions,
   // TODO: reducers for other entities
   student: reduceStudent,
+  recommendation: reduceRecommendation,
 
   taskEnvironments: reduceTaskEnvironments,
   taskEditor: reduceTaskEditor,
