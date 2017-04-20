@@ -4,7 +4,7 @@ import HeaderContainer from '../containers/HeaderContainer';
 import MenuContainer from '../containers/MenuContainer';
 
 
-export default class Main extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
       <div

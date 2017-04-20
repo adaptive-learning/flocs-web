@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Main from '../components/Main';
+import App from '../components/App';
 // import { getOrCreateStudent } from '../actions/student';
 import { fetchStaticData, startSession } from '../actions/api';
 
@@ -10,7 +10,7 @@ import { fetchStaticData, startSession } from '../actions/api';
   fetchStaticData,
   startSession,
 })
-class MainContainer extends React.Component {
+class AppContainer extends React.Component {
   constructor(props) {
     super(props);
     // this.setOpen = this.props.setOpenMenu.bind(this);
@@ -30,11 +30,11 @@ class MainContainer extends React.Component {
 
   render() {
     return (
-      <Main>
+      <App>
         { this.props.children }
-      </Main>
+      </App>
     );
   }
 }
 
-export default MainContainer;
+export default AppContainer;
