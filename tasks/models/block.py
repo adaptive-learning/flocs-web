@@ -9,6 +9,10 @@ class Block(models.Model, ImportExportMixin):
     entity_class = entities.Block
 
     block_id = models.CharField(max_length=256, primary_key=True)
+    order = models.SmallIntegerField()
+
+    class Meta:
+        ordering = ['order']
 
     def __str__(self):
         return self.block_id
