@@ -9,6 +9,8 @@ export default {
   'Practice': 'Trénink',
   'Previous': 'Předchozí',
 
+  'not tackled': 'neřešeno',
+
   'task.arrow': 'Šipka',
   'task.beware-of-asteroid': 'Pozor na asteroid',
   'task.big-slalom': 'Velký slalom',

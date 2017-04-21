@@ -1,15 +1,22 @@
-import { FETCH_STATIC_DATA_FULFILLED } from '../action-types';
+import { FETCH_STATIC_DATA_FULFILLED,
+         UPDATE_STUDENT_FULFILLED } from '../action-types';
 
 const initial = {
-  loading: true,
+  staticDataLoaded: false,
+  studentLoaded: false,
 };
 
-export default function reduceStudent(state = initial, action) {
+export default function reduceApp(state = initial, action) {
   switch (action.type) {
     case FETCH_STATIC_DATA_FULFILLED:
       return {
         ...state,
-        loading: false,
+        staticDataLoaded: true,
+      };
+    case UPDATE_STUDENT_FULFILLED:
+      return {
+        ...state,
+        studentLoaded: true,
       };
     default:
       return state;

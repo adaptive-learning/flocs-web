@@ -65,7 +65,7 @@ function updateStudent() {
 }
 
 
-function fetchPraticeOverview() {
+export function fetchPraticeOverview() {
   return (dispatch, getState) => dispatch({
     type: FETCH_PRACTICE_OVERVIEW,
     payload: axios.get(getPracticeOverviewUrl(getState())).then(parsePracticeOverviewResponse),

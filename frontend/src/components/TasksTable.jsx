@@ -5,64 +5,18 @@ import { Card, CardTitle, CardText } from 'material-ui/Card';
 import { GridList, GridTile } from 'material-ui/GridList';
 import TaskName from './TaskName';
 import { theme } from '../theme';
+import { translate } from '../localization';
 
-// TODO: unhardcode categories
-/* eslint-disable quote-props */
-const categories = {
-  moves: {
-    categoryId: 'moves',
-    levelId: 1,
-  },
-  world: {
-    categoryId: 'world',
-    levelId: 2,
-  },
-  repeat: {
-    categoryId: 'repeat',
-    levelId: 3,
-  },
-  'while': {
-    categoryId: 'while',
-    levelId: 4,
-  },
-  loops: {
-    categoryId: 'loops',
-    levelId: 5,
-  },
-  'if': {
-    categoryId: 'if',
-    levelId: 6,
-  },
-  comparing: {
-    categoryId: 'comparing',
-    levelId: 7,
-  },
-  'if-else': {
-    categoryId: 'if-else',
-    levelId: 8,
-  },
-  'final-challenge': {
-    categoryId: 'final-challenge',
-    levelId: 9,
-  },
-  uncategorized: {
-    categoryId: 'uncategorized',
-    levelId: 10,
-  },
-};
 
-export default function TaskTable({ urlBase, tasks }) {
-  const allCategoryIds = Object.keys(categories);
-  const compareCategoryIds = (a, b) => categories[a].levelId - categories[b].levelId;
-  const sortedCategoryIds = allCategoryIds.sort(compareCategoryIds);
+export default function TaskTable({ urlBase, tasksInCategories }) {
   return (
     <div>
-      { sortedCategoryIds.map(categoryId =>
+      { tasksInCategories.map(({ category, tasks }) =>
         <CategoryTasks
-          key={categoryId}
+          key={category.id}
           urlBase={urlBase}
-          category={categories[categoryId]}
-          tasks={tasks.filter(task => task.categoryId === categoryId)}
+          category={category}
+          tasks={tasks}
         />)
       }
     </div>
@@ -71,7 +25,7 @@ export default function TaskTable({ urlBase, tasks }) {
 
 TaskTable.propTypes = {
   urlBase: PropTypes.string,
-  tasks: PropTypes.array.isRequired,
+  tasksInCategories: PropTypes.array.isRequired,
 };
 
 TaskTable.defaultProps = {
@@ -86,8 +40,8 @@ function CategoryTasks({ category, tasks, urlBase }) {
   return (
     <Card style={{ margin: 10 }}>
       <CardTitle
-        title={<FormattedMessage id={`category.${category.categoryId}`} />}
-        subtitle={`Level ${category.levelId}`}
+        title={<FormattedMessage id={`category.${category.id}`} />}
+        subtitle={`Level ${category.level}`}
       />
       <CardText>
         <GridList
@@ -99,14 +53,15 @@ function CategoryTasks({ category, tasks, urlBase }) {
           }}
         >
           {tasks.map((task) => (
-            <Link key={task.taskId} to={`${urlBase}${task.taskId}`}>
+            <Link key={task.id} to={`${urlBase}${task.id}`}>
               <GridTile
-                title={<TaskName taskId={task.taskId} />}
-                subtitle={'2:30'}
+                title={<TaskName taskId={task.id} />}
+                subtitle={formatSolvingTime(task.time)}
               >
                 <div
                   style={{
-                    backgroundColor: theme.palette.primary3Color,
+                    backgroundColor:
+                      (task.solved) ? theme.palette.successColor : theme.palette.primary3Color,
                     width: '100%',
                     height: '100%',
                   }}
@@ -126,3 +81,16 @@ CategoryTasks.propTypes = {
   tasks: PropTypes.array.isRequired,
   urlBase: PropTypes.string,
 };
+
+
+function formatSolvingTime(time) {
+  if (time == null) {
+    return translate('not tackled');
+  }
+  // remove hours part if 0
+  const parts = time.split(':');
+  if (parts[0] === '00') {
+    return parts.slice(1).join(':');
+  }
+  return time;
+}

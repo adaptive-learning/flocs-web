@@ -2,24 +2,35 @@ import React from 'react';
 import { connect } from 'react-redux';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import TasksTable from '../components/TasksTable';
-import { fetchTasks } from '../actions/tasks';
+import { fetchPraticeOverview } from '../actions/api';
 
 
 function mapStateToProps(state) {
   return {
-    tasks: Object.values(state.tasks),
+    tasks: state.tasks,
+    categories: state.categories,
   };
 }
 
 
-@connect(mapStateToProps, { fetchTasks })
+@connect(mapStateToProps, { fetchPraticeOverview })
 @muiThemeable()
 export default class TasksTableContainer extends React.Component {
   componentWillMount() {
-    this.props.fetchTasks();
+    this.props.fetchPraticeOverview();
   }
 
   render() {
+    const { tasks, categories } = this.props;
+    const allCategoryIds = Object.keys(categories);
+    const compareCategoryIds = (a, b) => categories[a].level - categories[b].level;
+    const orderedCategoryIds = allCategoryIds.sort(compareCategoryIds);
+    const tasksInCategories = orderedCategoryIds.map(categoryId => ({
+      category: categories[categoryId],
+      tasks: categories[categoryId].tasks.map(id => tasks[id]),
+    }));
+
+    // TODO: move styling to a component
     const longPageContentStyle = {
       maxWidth: 1200,
       margin: '20px auto',
@@ -27,7 +38,7 @@ export default class TasksTableContainer extends React.Component {
     };
     return (
       <div style={longPageContentStyle}>
-        <TasksTable tasks={this.props.tasks} urlBase="/task/" />
+        <TasksTable tasksInCategories={tasksInCategories} urlBase="/task/" />
       </div>
     );
   }

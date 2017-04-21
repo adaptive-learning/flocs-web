@@ -2,10 +2,11 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import App from '../components/App';
 import { fetchStaticData, startSession } from '../actions/api';
+import { isLoaded } from '../selectors/app';
 
 
 const propTypes = {
-  loading: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
   children: PropTypes.node,
   fetchStaticData: PropTypes.func,
   startSession: PropTypes.func,
@@ -13,12 +14,12 @@ const propTypes = {
 
 
 const defaultProps = {
-  loading: true,
+  loaded: false,
 };
 
 
 @connect(state => ({
-  loading: state.app.loading,  // TODO: use a selector
+  loaded: isLoaded(state),
 }), {
   fetchStaticData,
   startSession,
@@ -30,7 +31,7 @@ class AppContainer extends React.Component {
   }
 
   render() {
-    if (this.props.loading) {
+    if (!this.props.loaded) {
       return null;
     }
     return (
