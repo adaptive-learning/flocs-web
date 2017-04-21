@@ -14,16 +14,13 @@ def get_or_create_user(request):
     return request.user
 
 
-def create_or_convert(user, username, email, first_name, password):
+def create_or_convert(user, email, first_name, password):
     """
     Creates a new user unless the current user is lazy one. In that case the
     lazy user is converted and user details are updated.
     """
-    # possible exceptions should be catched by REST framework
-    # check is username is still available
-    # qs = User.objects.filter(username=username)
-    # if qs:
-    #    return None
+    # usernames do not allow whole range of characters, so we generate them from email
+    username = email
     if user and is_lazy_user(user):
         user.username = username
         user.email = email

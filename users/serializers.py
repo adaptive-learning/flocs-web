@@ -12,7 +12,7 @@ class IsSocialUserField(serializers.Field):
     """
 
     def to_representation(self, obj):
-        return UserSocialAuth.objects.filter(user=obj) or False
+        return UserSocialAuth.objects.filter(user=obj).exists()
 
 
 class IsLazyUserField(serializers.Field):
@@ -35,23 +35,23 @@ class ProvidersField(serializers.Field):
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     user_id = serializers.IntegerField(read_only=True, source='id')
-    username = serializers.RegexField(
+    is_lazy_user = IsLazyUserField(read_only=True, source='*')
+    is_social_user = IsSocialUserField(read_only=True, source='*')
+    providers = ProvidersField(read_only=True, source='*')
+    email = serializers.RegexField(
         regex=r'[\w@+.-]*',
         max_length=30,
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
-    is_lazy_user = IsLazyUserField(read_only=True, source='*')
-    is_social_user = IsSocialUserField(read_only=True, source='*')
-    providers = ProvidersField(read_only=True, source='*')
 
     class Meta:
         model = User
         fields = ('url', 'user_id', 'username', 'password', 'email', 'first_name', 'is_staff', 'is_authenticated',
                   'is_lazy_user', 'is_social_user', 'providers')
-        read_only_fields = ('is_staff', 'user_id', 'is_authenticated')
+        read_only_fields = ('user_id', 'username', 'is_staff', 'is_authenticated')
         extra_kwargs = {
             'password': {'write_only': True},
-            'first_name': {'max_length': 30, 'required': False},
+            'first_name': {'max_length': 30},
         }
 
     def create(self, validated_data):
@@ -60,8 +60,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         """
         return create_or_convert(
             user=self.context['request'].user,
-            username=validated_data['username'],
             email=validated_data['email'],
-            first_name=validated_data.get('first_name'),
+            first_name=validated_data['first_name'],
             password=validated_data['password']
         )
