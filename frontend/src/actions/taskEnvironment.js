@@ -23,6 +23,7 @@ import { getColor, getPosition, isSolved, isDead, getGameStage } from '../select
 import { interpretRoboAst, interpretRoboCode, InterpreterError } from '../core/roboCodeInterpreter';
 import { parseTaskSourceText } from '../core/taskSourceParser';
 import { downloadTextFile, loadTextFile } from '../utils/files';
+import { startTask } from '../actions/api';
 
 
 export function createTaskEnvironment(taskEnvironmentId) {
@@ -32,6 +33,13 @@ export function createTaskEnvironment(taskEnvironmentId) {
   };
 }
 
+
+export function startTaskInTaskEnvironment(taskEnvironmentId, taskId) {
+  return (dispatch => {
+    dispatch(setTaskById(taskEnvironmentId, taskId));
+    return dispatch(startTask(taskId));
+  });
+}
 
 export function setTaskSession(taskEnvironmentId, taskSession) {
   return {

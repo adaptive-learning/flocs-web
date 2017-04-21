@@ -8,7 +8,6 @@ import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
 @connect((state, props) => {
   return {
     ...props,
-    recommended: state.practice.recommendation
   }
 })
 export default class CompleteTaskModal extends React.Component {

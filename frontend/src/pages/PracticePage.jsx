@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startPractice } from '../actions/practiceActions';
 import PracticeContainer from '../containers/PracticeContainer';
 
-const practiceTaskEnvironmentId = 'single';
 
 function getProps(state, props) {
   return {
@@ -11,18 +9,8 @@ function getProps(state, props) {
   };
 }
 
-@connect(getProps, { startPractice })
+@connect(getProps)
 export default class PracticePage extends React.Component {
-  componentWillMount() {
-    this.props.startPractice(practiceTaskEnvironmentId, this.props.taskId);
-  }
-
-  componentWillReceiveProps(props) {
-    if (props.taskId !== this.props.taskId) {
-      this.props.startPractice(practiceTaskEnvironmentId, props.taskId);
-    }
-  }
-
   render() {
     return (
       <div
@@ -34,10 +22,11 @@ export default class PracticePage extends React.Component {
           right: 0,
         }}
       >
-        <PracticeContainer taskEnvironmentId={practiceTaskEnvironmentId} />
+        <PracticeContainer
+          taskEnvironmentId="practice-page"
+          taskId={this.props.taskId}
+        />
       </div>
     );
   }
 }
-
-

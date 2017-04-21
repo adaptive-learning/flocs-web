@@ -6,7 +6,8 @@ import axios from 'axios';
 import { FETCH_STATIC_DATA,
          FETCH_PRACTICE_OVERVIEW,
          UPDATE_STUDENT,
-         START_SESSION } from '../action-types';
+         START_SESSION,
+         START_TASK } from '../action-types';
 
 
 export function fetchStaticData() {
@@ -39,6 +40,17 @@ export function startSession() {
 }
 
 
+export function startTask(taskId) {
+  return dispatch => {
+    const action = {
+      type: START_TASK,
+      payload: postAction('start-task', {'task-id': taskId}).then(parseStartTaskResponse),
+    };
+    return dispatch(action);
+  };
+}
+
+
 function postAction(type, data = {}) {
   const requestData = {
     type,
@@ -53,6 +65,14 @@ function parseStartSessionResponse(response) {
   return {
     studentId: data['student_id'],
     sessionId: data['session_id'],
+  };
+}
+
+
+function parseStartTaskResponse(response) {
+  const data = response.data.data;  // response data -> action data
+  return {
+    taskSessionId: data['task_session_id'],
   };
 }
 
