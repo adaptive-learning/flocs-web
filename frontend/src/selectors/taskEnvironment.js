@@ -2,6 +2,8 @@ import { countActions } from '../core/roboCodeSyntaxChecker';
 import { generateSpaceWorldText } from '../core/spaceWorldDescription';
 import { stripIndentation } from '../utils/text';
 import { initialTaskEnvironment } from '../reducers/taskEnvironments';
+import { getCategoryId } from '../selectors/task';
+import { getToolboxId } from '../selectors/category';
 
 export function getTaskEnvironment(state, taskEnvironmentId) {
   const taskEnvironment = state.taskEnvironments[taskEnvironmentId];
@@ -19,9 +21,21 @@ export function getTask(state, taskEnvironmentId) {
 
 export function getTaskId(state, taskEnvironmentId) {
   const task = getTask(state, taskEnvironmentId);
-  return task.taskId;
+  return task.id;
 }
 
+
+export function getToolbox(state, taskEnvironmentId) {
+  // TODO: implement
+  const taskId = getTaskId(state, taskEnvironmentId);
+  if (taskId === undefined) {
+    return [];
+  }
+  const categoryId = getCategoryId(state, taskId);
+  const toolboxId = getToolboxId(state, categoryId);
+  const toolbox = state.toolboxes[toolboxId];
+  return toolbox.blocks;
+}
 
 export function getEditorSessionId(state, taskEnvironmentId) {
   const taskEnvironment = getTaskEnvironment(state, taskEnvironmentId);

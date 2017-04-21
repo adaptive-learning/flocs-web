@@ -8,7 +8,6 @@ export default function NextTaskButton({ task }) {
   let visibility = 'hidden';
   let taskId = '';
   let url = '#';
-  console.log('task is', task);
   if (task !== null) {
     visibility = true;
     taskId = task.taskId;
