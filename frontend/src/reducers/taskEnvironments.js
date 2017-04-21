@@ -1,5 +1,6 @@
 import { CREATE_TASK_ENVIRONMENT,
          SET_TASK,
+         START_TASK_FULFILLED,
          SET_TASK_SESSION,
          CHANGE_SETTING,
          CHANGE_CODE,
@@ -21,6 +22,8 @@ export default function reduceTaskEnvironments(state = {}, action) {
   switch (action.type) {
     case CREATE_TASK_ENVIRONMENT:
       return createTaskEnvironment(state, action.payload.taskEnvironmentId);
+    case START_TASK_FULFILLED:
+      return updateTaskEnvironment(state, setTaskSessionId, action.payload);
     case SET_TASK:
       return updateTaskEnvironment(state, setTask, action.payload);
     case SET_TASK_SESSION:
@@ -68,6 +71,7 @@ const emptyTask = {
 // export const initialTaskEnvironment = {
 const initialTaskEnvironment = {
   task: emptyTask,
+  taskSessionId: null,
   editorType: 'blockly',
   editorSessionId: 0,
   roboAst: { head: 'start', body: [] },
@@ -100,10 +104,19 @@ function updateEntity(entities, id, updateFn, args) {
 }
 
 
+function setTaskSessionId(taskEnvironment, { taskSessionId }) {
+  return {
+    ...taskEnvironment,
+    taskSessionId,
+  };
+}
+
+
 function setTask(taskEnvironment, { task }) {
   const taskWithDefaults = addDefaults(task);
   return {
     ...taskEnvironment,
+    taskSessionId: null,
     editorSessionId: taskEnvironment.editorSessionId + 1,
     task: taskWithDefaults,
     roboAst: { head: 'start', body: [] },

@@ -7,7 +7,9 @@ import { FETCH_STATIC_DATA,
          FETCH_PRACTICE_OVERVIEW,
          UPDATE_STUDENT,
          START_SESSION,
-         START_TASK } from '../action-types';
+         START_TASK,
+         SOLVE_TASK,
+         SEE_INSTRUCTION } from '../action-types';
 
 
 export function fetchStaticData() {
@@ -40,11 +42,42 @@ export function startSession() {
 }
 
 
-export function startTask(taskId) {
+// TODO: factor out non-api (taskEnvironment) part
+export function startTask(taskId, taskEnvironmentId) {
   return dispatch => {
+    const data = { 'task-id': taskId };
     const action = {
       type: START_TASK,
-      payload: postAction('start-task', {'task-id': taskId}).then(parseStartTaskResponse),
+      payload: postAction('start-task', data)
+        .then(parseStartTaskResponse)
+        .then(payload => ({ ...payload, taskEnvironmentId })),
+    };
+    return dispatch(action);
+  };
+}
+
+
+// TODO: factor out non-api (taskEnvironment) part
+export function solveTask(taskSessionId, taskEnvironmentId) {
+  return dispatch => {
+    const data = { 'task-session-id': taskSessionId };
+    const action = {
+      type: SOLVE_TASK,
+      payload: postAction('solve-task', data)
+        .then(parseSolveTaskResponse)
+        .then(payload => ({ ...payload, taskEnvironmentId })),
+    };
+    return dispatch(action).then(() => dispatch(updateStudent()));
+  };
+}
+
+
+export function seeInstruction(instructionId) {
+  return dispatch => {
+    const data = { 'instruction-id': instructionId };
+    const action = {
+      type: SEE_INSTRUCTION,
+      payload: postAction('see-instruction', data),
     };
     return dispatch(action);
   };
@@ -74,6 +107,12 @@ function parseStartTaskResponse(response) {
   return {
     taskSessionId: data['task_session_id'],
   };
+}
+
+
+function parseSolveTaskResponse(_response) {
+  // const data = response.data.data;  // response data -> action data
+  return {};
 }
 
 

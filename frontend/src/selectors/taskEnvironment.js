@@ -19,6 +19,11 @@ export function getTask(state, taskEnvironmentId) {
 }
 
 
+export function getTaskSessionId(state, taskEnvironmentId) {
+  return getTaskEnvironment(state, taskEnvironmentId).taskSessionId;
+}
+
+
 export function getTaskId(state, taskEnvironmentId) {
   const task = getTask(state, taskEnvironmentId);
   return task.id;

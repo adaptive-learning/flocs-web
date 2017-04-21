@@ -13,6 +13,7 @@ import { CREATE_TASK_ENVIRONMENT,
          CHANGE_GAME_PANEL_WIDTH,
          SET_EDITOR_TYPE } from '../action-types';
 import { getTaskId,
+         getTaskSessionId,
          getRoboAst,
          getCode,
          getActionsLimit,
@@ -23,7 +24,7 @@ import { getColor, getPosition, isSolved, isDead, getGameStage } from '../select
 import { interpretRoboAst, interpretRoboCode, InterpreterError } from '../core/roboCodeInterpreter';
 import { parseTaskSourceText } from '../core/taskSourceParser';
 import { downloadTextFile, loadTextFile } from '../utils/files';
-import { startTask } from '../actions/api';
+import { startTask, solveTask } from '../actions/api';
 
 
 export function createTaskEnvironment(taskEnvironmentId) {
@@ -37,7 +38,17 @@ export function createTaskEnvironment(taskEnvironmentId) {
 export function startTaskInTaskEnvironment(taskEnvironmentId, taskId) {
   return (dispatch => {
     dispatch(setTaskById(taskEnvironmentId, taskId));
-    return dispatch(startTask(taskId));
+    // TODO: force sequential order to make sure task is started only after set
+    // in task environment (to avoid potential taskSessionId resetting)
+    return dispatch(startTask(taskId, taskEnvironmentId));
+  });
+}
+
+
+export function solveTaskInTaskEnvironment(taskEnvironmentId) {
+  return ((dispatch, getState) => {
+    const taskSessionId = getTaskSessionId(getState(), taskEnvironmentId);
+    return dispatch(solveTask(taskSessionId, taskEnvironmentId));
   });
 }
 

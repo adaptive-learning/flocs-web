@@ -23,7 +23,7 @@
       "dot-notation": 0,
       "no-mixed-operators": 0,
       "no-use-before-define": [1, "nofunc"],
-      "no-unused-vars": [1, {"varsIgnorePattern": "^_"}],
+      "no-unused-vars": [1, { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
       "no-underscore-dangle": 0,
       "no-alert": 0,
       "no-console": 0,
