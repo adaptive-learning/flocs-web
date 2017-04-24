@@ -17,20 +17,20 @@ function getProps(state, props) {
 @connect(getProps, { startTaskInTaskEnvironment, solveTaskInTaskEnvironment })
 export default class PracticeContainer extends React.Component {
   componentWillMount() {
-    this.startTask();
+    this.startTask(this.props.taskId);
   }
 
   componentWillReceiveProps(props) {
     if (!this.props.solved && props.solved) {
       this.solveTask();
     }
-    if (props.taskId !== this.props.taskId) {
-      this.startTask();
+    if (this.props.taskId !== props.taskId) {
+      this.startTask(props.taskId);
     }
   }
 
-  startTask() {
-    this.props.startTaskInTaskEnvironment(this.props.taskEnvironmentId, this.props.taskId);
+  startTask(taskId) {
+    this.props.startTaskInTaskEnvironment(this.props.taskEnvironmentId, taskId);
   }
 
   solveTask() {
