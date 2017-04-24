@@ -82,3 +82,22 @@ class FlocsWebViewsTests(TestCase):
         seen_instruction_ids = list(instruction.instruction_id
                                     for instruction in student.seen_instructions.all())
         self.assertEqual(seen_instruction_ids, ['block.shoot'])
+
+
+    def test_solve_task(self):
+        # start session
+        response = self.client.post(
+            '/api/actions/',
+            {'type': 'start-session', 'data': '{}'})
+        student_id = response.data['data']['student_id']
+        # start solving a task
+        response = self.client.post(
+            '/api/actions/',
+            {'type': 'start-task', 'data': json.dumps({'task_id': 'one-step-forward'})})
+        task_session_id = response.data['data']['task_session_id']
+        # solve the task
+        response = self.client.post(
+            '/api/students/{pk}/solve_task/'.format(pk=student_id),
+            {'task-session-id': str(task_session_id)})
+        # check diff
+        self.assertNotEqual(response.data['recommendation'], 'one-step-forward')

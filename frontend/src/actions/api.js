@@ -59,15 +59,16 @@ export function startTask(taskId, taskEnvironmentId) {
 
 // TODO: factor out non-api (taskEnvironment) part
 export function solveTask(taskSessionId, taskEnvironmentId) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const solveTaskUrl = getSolveTaskUrl(getState());
     const data = { 'task-session-id': taskSessionId };
     const action = {
       type: SOLVE_TASK,
-      payload: postAction('solve-task', data)
+      payload: axios.post(solveTaskUrl, data)
         .then(parseSolveTaskResponse)
         .then(payload => ({ ...payload, taskEnvironmentId })),
     };
-    return dispatch(action).then(() => dispatch(updateStudent()));
+    return dispatch(action);
   };
 }
 
@@ -110,9 +111,11 @@ function parseStartTaskResponse(response) {
 }
 
 
-function parseSolveTaskResponse(_response) {
-  // const data = response.data.data;  // response data -> action data
-  return {};
+function parseSolveTaskResponse(response) {
+  const data = response.data;
+  return {
+    recommendation: data['recommendation'],
+  };
 }
 
 
@@ -142,6 +145,10 @@ function getPracticeOverviewUrl(state) {
   return state.student.practiceOverviewUrl;
 }
 
+function getSolveTaskUrl(state) {
+  return state.student.solveTaskUrl;
+}
+
 
 function parseStudentResponse(response) {
   const { data } = response;
@@ -149,6 +156,7 @@ function parseStudentResponse(response) {
     credits: data['credits'],
     seenInstructions: data['seen_instructions'],
     practiceOverviewUrl: data['practice_overview'],
+    solveTaskUrl: data['solve_task'],
   };
 }
 

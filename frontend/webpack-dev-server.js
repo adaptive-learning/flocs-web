@@ -7,6 +7,7 @@ new WebpackDevServer(webpack(config), {
   hot: true,
   inline: true,
   progress: true,
+  stats: 'errors-only',
   color: true,
   historyApiFallback: true
 }).listen(3000, '0.0.0.0', function (err, result) {

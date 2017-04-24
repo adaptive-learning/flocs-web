@@ -2,10 +2,12 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
-from flocs.extractors import get_practice_overview
+from flocs.actions import SolveTask
+from flocs.extractors import get_practice_overview, get_recommendation
 from flocsweb.store import open_django_store
 from .serializers import StudentSerializer, TaskSessionSerializer
 from .serializers import PracticeOverviewSerializer
+from .serializers import SolveTaskDiffSerializer
 from .models import Student, TaskSession
 from .permissions import IsAdminOrOwnerPostAnyone
 
@@ -33,6 +35,24 @@ class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
         with open_django_store(request=request) as store:
             overview = get_practice_overview(store.state, student_id=pk)
         serializer = PracticeOverviewSerializer(overview)
+        return Response(serializer.data)
+
+    @detail_route(methods=['post'])
+    def solve_task(self, request, pk=None):
+        with open_django_store(request=request) as store:
+            intent = SolveTask(task_session_id=request.data['task-session-id'])
+            store.add(intent)
+        # NOTE: current db store implementation doesn't allow to read
+        # uncommited changes, so we need to commit and re-open the with-block
+        # before computing changes... (TODO: fix it)
+        with open_django_store(request=request) as store:
+            diff = {
+                'level': 0,
+                'credits': 0,
+                'active_credits': 0,
+                'recommendation': get_recommendation(store.state, student_id=pk),
+            }
+        serializer = SolveTaskDiffSerializer(diff)
         return Response(serializer.data)
 
 

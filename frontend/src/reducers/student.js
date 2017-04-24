@@ -14,6 +14,7 @@ export default function reduceStudent(state = {}, action) {
         ...state,
         credits: action.payload.credits,
         practiceOverviewUrl: action.payload.practiceOverviewUrl,
+        solveTaskUrl: action.payload.solveTaskUrl,
       };
     default:
       return state;

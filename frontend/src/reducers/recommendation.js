@@ -1,4 +1,5 @@
-import { FETCH_PRACTICE_OVERVIEW_FULFILLED } from '../action-types';
+import { FETCH_PRACTICE_OVERVIEW_FULFILLED,
+         SOLVE_TASK_FULFILLED } from '../action-types';
 
 const initial = {
   available: false,
@@ -7,6 +8,8 @@ const initial = {
 export default function reduceRecommendation(state = initial, action) {
   switch (action.type) {
     case FETCH_PRACTICE_OVERVIEW_FULFILLED:
+      return parseRecommendation(action.payload.recommendation);
+    case SOLVE_TASK_FULFILLED:
       return parseRecommendation(action.payload.recommendation);
     default:
       return state;

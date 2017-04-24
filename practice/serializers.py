@@ -27,6 +27,10 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
         view_name='student-practice-overview',
         read_only=True)
 
+    solve_task = serializers.HyperlinkedIdentityField(
+        view_name='student-solve-task',
+        read_only=True)
+
     class Meta:
         model = Student
 
@@ -53,4 +57,11 @@ class PracticeOverviewSerializer(serializers.Serializer):
     active_credits = serializers.IntegerField()
     instructions = StudentInstructionSerializer(many=True)
     tasks = StudentTaskSerializer(many=True)
+    recommendation = RecommendationSerializer()
+
+
+class SolveTaskDiffSerializer(serializers.Serializer):
+    level = serializers.IntegerField()
+    credits = serializers.IntegerField()
+    active_credits = serializers.IntegerField()
     recommendation = RecommendationSerializer()
