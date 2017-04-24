@@ -1,10 +1,10 @@
 /* eslint-disable quote-props, max-len */
 export default {
   'I understand': 'Rozumím',
-  'Overview': 'Přehled',
+  'Intro': 'Intro',
   'Run': 'Spusť program',
   'Task': 'Úkol',
-  'Tasks': 'Úkoly',
+  'Tasks': 'Přehled úloh',
   'Task Editor': 'Editor úloh',
   'Practice': 'Trénink',
   'Previous': 'Předchozí',

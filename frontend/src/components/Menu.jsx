@@ -33,10 +33,10 @@ export default class Menu extends React.Component {
         */}
         <MaterialMenu value={this.props.mode} autoWidth={false} width={this.props.muiTheme.drawer.width}>
           <MenuItem
-            value="overview"
+            value="intro"
             containerElement={<Link to="/" />}
           >
-            <Text id="Overview" />
+            <Text id="Intro" />
           </MenuItem>
           <MenuItem
             value="task"
