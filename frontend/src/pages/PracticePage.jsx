@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PracticeContainer from '../containers/PracticeContainer';
+import { practicePageTaskEnvironmentId } from '../selectors/taskEnvironment';
 
 
 function getProps(state, props) {
@@ -23,7 +24,7 @@ export default class PracticePage extends React.Component {
         }}
       >
         <PracticeContainer
-          taskEnvironmentId="practice-page"
+          taskEnvironmentId={practicePageTaskEnvironmentId}
           taskId={this.props.taskId}
         />
       </div>

@@ -5,6 +5,8 @@ import { initialTaskEnvironment } from '../reducers/taskEnvironments';
 import { getCategoryId } from '../selectors/task';
 import { getToolboxId } from '../selectors/category';
 
+export const practicePageTaskEnvironmentId = 'practice-page';
+
 export function getTaskEnvironment(state, taskEnvironmentId) {
   const taskEnvironment = state.taskEnvironments[taskEnvironmentId];
   if (taskEnvironment === undefined) {
@@ -21,6 +23,11 @@ export function getTask(state, taskEnvironmentId) {
 
 export function getTaskSessionId(state, taskEnvironmentId) {
   return getTaskEnvironment(state, taskEnvironmentId).taskSessionId;
+}
+
+
+export function getPracticePageTaskId(state) {
+  return getTaskId(state, practicePageTaskEnvironmentId);
 }
 
 
