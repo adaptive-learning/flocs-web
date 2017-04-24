@@ -10,6 +10,7 @@ export default {
   'Previous': 'Předchozí',
 
   'not tackled': 'neřešeno',
+  'recommended': 'doporučujeme',
 
   'task.arrow': 'Šipka',
   'task.beware-of-asteroid': 'Pozor na asteroid',

@@ -8,7 +8,7 @@ import { theme } from '../theme';
 import { translate } from '../localization';
 
 
-export default function TaskTable({ urlBase, tasksInCategories }) {
+export default function TaskTable({ urlBase, tasksInCategories, recommendation }) {
   return (
     <div>
       { tasksInCategories.map(({ category, tasks }) =>
@@ -17,6 +17,7 @@ export default function TaskTable({ urlBase, tasksInCategories }) {
           urlBase={urlBase}
           category={category}
           tasks={tasks}
+          recommendation={recommendation}
         />)
       }
     </div>
@@ -26,6 +27,7 @@ export default function TaskTable({ urlBase, tasksInCategories }) {
 TaskTable.propTypes = {
   urlBase: PropTypes.string,
   tasksInCategories: PropTypes.array.isRequired,
+  recommendation: PropTypes.object.isRequired,
 };
 
 TaskTable.defaultProps = {
@@ -33,10 +35,28 @@ TaskTable.defaultProps = {
 };
 
 
-function CategoryTasks({ category, tasks, urlBase }) {
+function CategoryTasks({ category, tasks, urlBase, recommendation }) {
   if (tasks.length === 0) {
     return null;
   }
+
+  const chooseBackgroundColor = task => {
+    if (task.id === recommendation.task) {
+      return theme.palette.accent2Color;
+    }
+    if (task.solved) {
+      return theme.palette.successColor;
+    }
+    return theme.palette.primary3Color;
+  };
+
+  const getSubtitle = task => {
+    if (task.id === recommendation.task) {
+      return translate('recommended');
+    }
+    return formatSolvingTime(task.time);
+  };
+
   return (
     <Card style={{ margin: 10 }}>
       <CardTitle
@@ -56,12 +76,11 @@ function CategoryTasks({ category, tasks, urlBase }) {
             <Link key={task.id} to={`${urlBase}${task.id}`}>
               <GridTile
                 title={<TaskName taskId={task.id} />}
-                subtitle={formatSolvingTime(task.time)}
+                subtitle={getSubtitle(task)}
               >
                 <div
                   style={{
-                    backgroundColor:
-                      (task.solved) ? theme.palette.successColor : theme.palette.primary3Color,
+                    backgroundColor: chooseBackgroundColor(task),
                     width: '100%',
                     height: '100%',
                   }}
@@ -80,6 +99,7 @@ CategoryTasks.propTypes = {
   category: PropTypes.object.isRequired,
   tasks: PropTypes.array.isRequired,
   urlBase: PropTypes.string,
+  recommendation: PropTypes.object.isRequired,
 };
 
 

@@ -9,6 +9,7 @@ function mapStateToProps(state) {
   return {
     tasks: state.tasks,
     categories: state.categories,
+    recommendation: state.recommendation,
   };
 }
 
@@ -38,7 +39,11 @@ export default class TasksTableContainer extends React.Component {
     };
     return (
       <div style={longPageContentStyle}>
-        <TasksTable tasksInCategories={tasksInCategories} urlBase="/task/" />
+        <TasksTable
+          tasksInCategories={tasksInCategories}
+          urlBase="/task/"
+          recommendation={this.props.recommendation}
+        />
       </div>
     );
   }
