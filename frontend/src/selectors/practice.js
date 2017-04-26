@@ -1,4 +1,5 @@
 import { getPracticePageTaskId } from '../selectors/taskEnvironment';
+import { getMode } from '../selectors/app';
 
 
 export function getRecommendation(state) {
@@ -13,7 +14,7 @@ export function getRecommendedTask(state) {
   if (!available) {
     return null;
   }
-  if (state.menu.mode === 'task' && getPracticePageTaskId(state) === taskId) {
+  if (getMode(state) === 'task' && getPracticePageTaskId(state) === taskId) {
     return null;
   }
   const url = `/task/${taskId}`;

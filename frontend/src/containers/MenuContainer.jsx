@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { setOpenMenu } from '../actions/menu';
 import Menu from '../components/Menu';
 import { getRecommendedTask } from '../selectors/practice';
+import { getMode } from '../selectors/app';
 
 
 @connect(state => ({
-  mode: state.menu.mode,
+  mode: getMode(state),
   open: state.menu.open,
   recommendedTask: getRecommendedTask(state)
 }), {
