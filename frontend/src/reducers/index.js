@@ -10,12 +10,12 @@ import reduceTasks from './tasks';
 import reduceToolboxes from './toolboxes';
 import reduceStudent from './student';
 import reduceRecommendation from './recommendation';
+import reduceMenu from './menu';
 
 
 import reduceTaskEnvironments from './taskEnvironments';
 import reduceTaskEditor from './taskEditor';
 import { taskSessionReducer } from './taskSessionReducer';
-import menuReducer from './menu';
 
 
 export const reducers = combineReducers({
@@ -28,11 +28,11 @@ export const reducers = combineReducers({
   toolboxes: reduceToolboxes,
   student: reduceStudent,
   recommendation: reduceRecommendation,
+  menu: reduceMenu,
 
   taskEnvironments: reduceTaskEnvironments,
   taskEditor: reduceTaskEditor,
   taskSession: taskSessionReducer,
-  menu: menuReducer,
   intl: intlReducer,
   routing: routerReducer,
 });

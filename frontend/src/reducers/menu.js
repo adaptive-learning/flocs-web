@@ -4,7 +4,7 @@ const initialState = {
   open: false,
 };
 
-export default function menuReducer(state = initialState, action) {
+export default function reduceMenu(state = initialState, action) {
   switch (action.type) {
     case 'MENU.SET_OPEN':
       return {
