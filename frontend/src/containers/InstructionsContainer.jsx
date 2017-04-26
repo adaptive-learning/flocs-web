@@ -14,7 +14,7 @@ import { getScheduledInstructions } from '../selectors/instructions';
 const getProps = (state) => ({
   activeInstructionIndex: state.instructions.activeIndex,
   scheduledInstructions: getScheduledInstructions(state),
-  showInstructionsButton: inMode(state, 'task'),
+  showInstructionsButton: inMode(state, 'task') && getScheduledInstructions(state).length > 0,
 });
 const actionCreators = { showInstructions, seeInstruction };
 
