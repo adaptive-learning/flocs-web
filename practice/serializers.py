@@ -23,10 +23,10 @@ class TaskSessionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
+    seen_instructions = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     practice_overview = serializers.HyperlinkedIdentityField(
         view_name='student-practice-overview',
         read_only=True)
-
     solve_task = serializers.HyperlinkedIdentityField(
         view_name='student-solve-task',
         read_only=True)
