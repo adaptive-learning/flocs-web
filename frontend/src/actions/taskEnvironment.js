@@ -21,6 +21,7 @@ import { getTaskId,
          getTaskSourceText,
          isInterpreting } from '../selectors/taskEnvironment';
 import { getColor, getPosition, isSolved, isDead, getGameStage } from '../selectors/gameState';
+import { getToolbox } from '../selectors/task';
 import { interpretRoboAst, interpretRoboCode, InterpreterError } from '../core/roboCodeInterpreter';
 import { parseTaskSourceText } from '../core/taskSourceParser';
 import { downloadTextFile, loadTextFile } from '../utils/files';
@@ -71,9 +72,14 @@ export function setTask(taskEnvironmentId, task) {
 
 export function setTaskById(taskEnvironmentId, taskId) {
   // TODO: store only taskId in task environment to avoid redundant data in
-  // store
+  // store (requires nontrivial changes)
   return ((dispatch, getState) => {
-    const task = getState().tasks[taskId];
+    const state = getState();
+    // inject toolbox needed for some reducers
+    const task = {
+      ...state.tasks[taskId],
+      toolbox: getToolbox(state, taskId),
+    };
     return dispatch(setTask(taskEnvironmentId, task));
   });
 }
