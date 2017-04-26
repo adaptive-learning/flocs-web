@@ -2,16 +2,23 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import createPromiseMiddleware from 'redux-promise-middleware';
 import createLoggerMiddleware from 'redux-logger';
+import axiosDefaults from 'axios/lib/defaults';
 import rootReducer from './reducers';
 import { getLocalizationSetting } from './localization';
 import { initGlobalBlockly } from './core/blockly';
 import { initGlobalTheme } from './theme';
 
 
-
 export function globalConfiguration() {
+  initGlobalAxios();
   initGlobalTheme();
   initGlobalBlockly();
+}
+
+
+function initGlobalAxios() {
+  axiosDefaults.xsrfCookieName = 'csrftoken';
+  axiosDefaults.xsrfHeaderName = 'X-CSRFToken';
 }
 
 
