@@ -4,8 +4,9 @@ import { routerReducer } from 'react-router-redux';
 import reduceApp from './app';
 import reduceBlocks from './blocks';
 import reduceCategories from './categories';
-import reduceTasks from './tasks';
 import reduceInstructions from './instructions';
+import reduceLevels from './levels';
+import reduceTasks from './tasks';
 import reduceToolboxes from './toolboxes';
 import reduceStudent from './student';
 import reduceRecommendation from './recommendation';
@@ -21,10 +22,10 @@ export const reducers = combineReducers({
   app: reduceApp,
   blocks: reduceBlocks,
   categories: reduceCategories,
-  tasks: reduceTasks,
   instructions: reduceInstructions,
+  levels: reduceLevels,
+  tasks: reduceTasks,
   toolboxes: reduceToolboxes,
-  // TODO: reducers for other entities
   student: reduceStudent,
   recommendation: reduceRecommendation,
 
