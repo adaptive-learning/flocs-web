@@ -45,11 +45,11 @@ export default function reduceInstructions(state = initial, action) {
       if (action.payload.taskEnvironmentId !== practicePageTaskEnvironmentId) {
         return state;
       }
-      const relevantInstructions = getRelevantInstructions(action.payload.task);
+      const scheduled = getRelevantUnseenInstructions(action.payload.task, state.seen);
       return {
         ...state,
-        activeIndex: (relevantInstructions.length > 0) ? 0 : null,
-        scheduled: relevantInstructions,
+        scheduled,
+        activeIndex: (scheduled.length > 0) ? 0 : null,
       };
     }
     case SEE_INSTRUCTION_PENDING: {
@@ -64,6 +64,7 @@ export default function reduceInstructions(state = initial, action) {
         ...state,
         activeIndex: nextIndex,
         seeingInstructionLock: true,
+        seen: [...state.seen, action.payload.instructionId],
       };
     }
     case SEE_INSTRUCTION_FULFILLED: {
@@ -219,9 +220,15 @@ const ordering = [
 ];
 
 
-function getRelevantInstructions(task) {
+function getRelevantUnseenInstructions(task, seen) {
   // return ['env.snapping', 'action-limit'];
-  // TODO: filter out seen instructions
+  const instructions = getRelevantInstructions(task);
+  const unseen = instructions.filter(instruction => seen.indexOf(instruction) < 0);
+  return unseen;
+}
+
+
+function getRelevantInstructions(task) {
   return ordering.filter(instruction => containsInstruction(task, task.toolbox, instruction));
 }
 
