@@ -1,5 +1,5 @@
-import { SHOW_INSTRUCTIONS,
-         SEEN_INSTRUCTION } from '../action-types';
+import { SHOW_INSTRUCTIONS } from '../action-types';
+import { seeInstruction as reportSeenInstruction } from '../actions/api';
 
 export function showInstructions() {
   return {
@@ -8,11 +8,6 @@ export function showInstructions() {
   };
 }
 
-
-export function seenInstruction(instructionId) {
-  return {
-    type: SEEN_INSTRUCTION,
-    payload: { instructionId },
-  };
-  // TODO: report seen instruction
+export function seeInstruction(instructionId) {
+  return reportSeenInstruction(instructionId);
 }

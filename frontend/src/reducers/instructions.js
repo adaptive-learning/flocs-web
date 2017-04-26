@@ -1,21 +1,19 @@
 import {
   FETCH_STATIC_DATA_FULFILLED,
   UPDATE_STUDENT_FULFILLED,
-  // SET_TASK,
+  SET_TASK,
+  SEE_INSTRUCTION_PENDING,
   // SHOW_INSTRUCTIONS,
-  // SEEN_INSTRUCTION
   } from '../action-types';
-// import { getInstructions } from '../core/instructions';
+import { getRelevantInstructions } from '../selectors/instructions';
 
 
 const initial = {
   byId: {},
   all: [],
   seen: [],
-
-  activeInstructionIndex: null,
-  scheduledInstructions: [],
-  allInstructions: [],
+  scheduled: [],
+  activeIndex: null,
 };
 
 
@@ -35,12 +33,18 @@ export default function reduceInstructions(state = initial, action) {
         seen: action.payload.seenInstructions,
       };
     }
-    // case SET_TASK:
-    //   return {
-    //     ...state,
-    //     allInstructions: getInstructions(action.payload.task),
-    //     scheduledInstructions: getInstructions(action.payload.task),
-    //   };
+    case SET_TASK: {
+      const relevantInstructions = getRelevantInstructions(state, action.payload.task);
+      return {
+        ...state,
+        activeIndex: (relevantInstructions.length > 0) ? 0 : null,
+        scheduled: relevantInstructions,
+      };
+    }
+    case SEE_INSTRUCTION_PENDING: {
+      console.log('see instruction pending', action.payload);
+      return state;
+    }
     // case SHOW_INSTRUCTIONS: {
     //   return {
     //     ...state,

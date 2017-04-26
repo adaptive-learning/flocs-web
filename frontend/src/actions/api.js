@@ -78,7 +78,10 @@ export function seeInstruction(instructionId) {
     const data = { 'instruction-id': instructionId };
     const action = {
       type: SEE_INSTRUCTION,
-      payload: postAction('see-instruction', data),
+      payload: {
+        promise: postAction('see-instruction', data),
+        data: { instructionId },
+      },
     };
     return dispatch(action);
   };

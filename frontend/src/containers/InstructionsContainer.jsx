@@ -6,21 +6,17 @@ import IconButton from 'material-ui/IconButton';
 import Joyride from 'react-joyride';
 import 'react-joyride/lib/react-joyride-compiled.css';
 import { translate } from '../localization';
-import { showInstructions, seenInstruction } from '../actions/instructions';
+import { showInstructions, seeInstruction } from '../actions/instructions';
+import { inMode } from '../selectors/app';
+import { getScheduledInstructions } from '../selectors/instructions';
 
-
-// TODO: move to selectors
-function getScheduledInstructions(state) {
-  const scheduledInstructionIds = state.instructionLayer.scheduledInstructions;
-  const instructions = scheduledInstructionIds.map(id => state.instructions[id]);
-  return instructions;
-}
 
 const getProps = (state) => ({
-  activeInstructionIndex: state.instructionLayer.activeInstructionIndex,
+  activeInstructionIndex: state.instructions.activeIndex,
   scheduledInstructions: getScheduledInstructions(state),
+  showInstructionsButton: inMode(state, 'task'),
 });
-const actionCreators = { showInstructions, seenInstruction };
+const actionCreators = { showInstructions, seeInstruction };
 
 @connect(getProps, actionCreators)
 @muiThemeable()
@@ -30,7 +26,7 @@ class InstructionsContainer extends React.Component {
     scheduledInstructions: PropTypes.array,
     activeInstructionIndex: PropTypes.number,
     showInstructions: PropTypes.func,
-    seenInstruction: PropTypes.func,
+    seeInstruction: PropTypes.func,
   };
 
   constructor(props) {
@@ -41,7 +37,7 @@ class InstructionsContainer extends React.Component {
         this.props.showInstructions();
       }
     };
-    this.seenInstruction = props.seenInstruction.bind(this);
+    this.seeInstruction = props.seeInstruction.bind(this);
     this.handleJoyrideChange = this.handleJoyrideChange.bind(this);
     this.setInstructions(props.scheduledInstructions);
   }
@@ -58,7 +54,7 @@ class InstructionsContainer extends React.Component {
 
   setInstructions(instructions) {
     this.steps = instructions.map(instruction => ({
-      text: translate(`instruction.${instruction.instructionId}`),
+      text: translate(`instruction.${instruction.id}`),
       selector: instruction.selector,  // '.instructionable-spaceworld',
       position: instruction.position, // 'bottom-left',
       type: 'hover',
@@ -75,14 +71,43 @@ class InstructionsContainer extends React.Component {
 
   handleJoyrideChange({ type, index }) {
     switch (type) {
-      case 'step:after':
-        this.seenInstruction(index);
+      case 'step:after': {
+        const instructionId = this.props.scheduledInstructions[index].id;
+        this.seeInstruction(instructionId);
+        break;
+      }
       // no default
     }
   }
 
-  render() {
+  renderShowInstructionsButton() {
+    if (!this.props.showInstructionsButton) {
+      return null;
+    }
     const blocklyTrashcanColor = '#576065';
+    return (
+      <IconButton
+        onClick={this.showInstructions}
+        style={{
+          position: 'fixed',
+          bottom: 31,
+          right: 110,
+          zIndex: 100,
+          width: 60,
+          height: 60,
+          padding: 0,
+        }}
+        iconStyle={{
+          width: 60,
+          height: 60,
+        }}
+      >
+        <HelpIcon color={blocklyTrashcanColor} hoverColor="#fff" />
+      </IconButton>
+    );
+  }
+
+  render() {
     const active = this.props.activeInstructionIndex != null;
     return (
       <div>
@@ -104,24 +129,7 @@ class InstructionsContainer extends React.Component {
           }}
           callback={this.handleJoyrideChange}
         />
-        <IconButton
-          onClick={this.showInstructions}
-          style={{
-            position: 'fixed',
-            bottom: 31,
-            right: 110,
-            zIndex: 100,
-            width: 60,
-            height: 60,
-            padding: 0,
-          }}
-          iconStyle={{
-            width: 60,
-            height: 60,
-          }}
-        >
-          <HelpIcon color={blocklyTrashcanColor} hoverColor="#fff" />
-        </IconButton>
+        { this.renderShowInstructionsButton() }
       </div>
     );
   }

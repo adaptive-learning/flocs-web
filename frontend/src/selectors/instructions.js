@@ -21,8 +21,16 @@ const ordering = [
 ];
 
 
-export function getInstructions(task) {
+export function getScheduledInstructions(state) {
+  const scheduledIds = state.instructions.scheduled;
+  const instructions = scheduledIds.map(id => state.instructions.byId[id]);
+  return instructions;
+}
+
+
+export function getRelevantInstructions(state, task) {
   // return ['env.snapping', 'action-limit'];
+  // TODO: filter out seen instructions
   return ordering.filter(instruction => containsInstruction(task, instruction));
 }
 
@@ -47,8 +55,9 @@ function containsInstruction(task, instruction) {
       return task.setting.energy != null;
     case 'action-limit':
       return task.setting.actionsLimit != null;
-  // TODO: use solution to filter block instructions
+    // TODO: use toolbox to filter block instructions
     case 'block.fly':
+      return true;
     case 'block.shoot':
     case 'block.repeat':
     case 'block.while':
@@ -56,7 +65,7 @@ function containsInstruction(task, instruction) {
     case 'block.position':
     case 'block.if':
     case 'block.if-else':
-      return true;
+      return false;
     default:
       throw new Error(`Missing containsInstruction definition for ${instruction}`);
   }
