@@ -3,9 +3,11 @@ import {
   UPDATE_STUDENT_FULFILLED,
   SET_TASK,
   SEE_INSTRUCTION_PENDING,
-  // SHOW_INSTRUCTIONS,
+  SEE_INSTRUCTION_FULFILLED,
+  SHOW_INSTRUCTIONS,
   } from '../action-types';
 import { getRelevantInstructions } from '../selectors/instructions';
+import { practicePageTaskEnvironmentId } from '../selectors/taskEnvironment';
 
 
 const initial = {
@@ -14,6 +16,13 @@ const initial = {
   seen: [],
   scheduled: [],
   activeIndex: null,
+
+  // the following lock is just a hack to overcome the following bug: if the
+  // student clicks on "show instructions" button and then presses Enters
+  // (instead of clicking) then the last Enter on the last scheduled
+  // instruction also fires "show instruction" action again (I don't know why,
+  // and I wasn't able to avoid this).
+  seeingInstructionLock: false,
 };
 
 
@@ -34,6 +43,9 @@ export default function reduceInstructions(state = initial, action) {
       };
     }
     case SET_TASK: {
+      if (action.payload.taskEnvironmentId !== practicePageTaskEnvironmentId) {
+        return state;
+      }
       const relevantInstructions = getRelevantInstructions(state, action.payload.task);
       return {
         ...state,
@@ -42,25 +54,40 @@ export default function reduceInstructions(state = initial, action) {
       };
     }
     case SEE_INSTRUCTION_PENDING: {
-      console.log('see instruction pending', action.payload);
-      return state;
+      if (action.payload.instructionId !== state.scheduled[state.activeIndex]) {
+        return state;
+      }
+      let nextIndex = state.activeIndex + 1;
+      if (nextIndex >= state.scheduled.length) {
+        nextIndex = null;
+      }
+      return {
+        ...state,
+        activeIndex: nextIndex,
+        seeingInstructionLock: true,
+      };
     }
-    // case SHOW_INSTRUCTIONS: {
-    //   return {
-    //     ...state,
-    //     activeInstructionIndex: state.activeInstructionIndex ? state.activeInstructionIndex : 0,
-    //   };
-    // }
-    // case SEEN_INSTRUCTION: {
-    //   let nextInstructionIndex = action.payload.index + 1;
-    //   if (nextInstructionIndex >= state.scheduledInstructions.length) {
-    //     nextInstructionIndex = null;
-    //   }
-    //   return {
-    //     ...state,
-    //     activeInstructionIndex: nextInstructionIndex,
-    //   };
-    // }
+    case SEE_INSTRUCTION_FULFILLED: {
+      return {
+        ...state,
+        seeingInstructionLock: false,
+      };
+    }
+    case SHOW_INSTRUCTIONS: {
+      if (state.activeIndex !== null) {
+        return state;
+      }
+      if (state.scheduled.length === 0) {
+        return state;
+      }
+      if (state.seeingInstructionLock) {
+        return state;
+      }
+      return {
+        ...state,
+        activeIndex: 0,
+      };
+    }
   }
   return state;
 }
