@@ -12,7 +12,7 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
-import 'brace/theme/solarized_light';
+import 'brace/theme/solarized_dark';
 import 'brace/keybinding/vim';
 import '../core/spaceWorldHighlighter';
 
@@ -94,7 +94,7 @@ function SettingEditor({
         value={spaceWorldText}
         onChange={onChange}
         mode="spaceworld"
-        theme="solarized_light"
+        theme="solarized_dark"
         fontSize={18}
         keyboardHandler={vimMode ? 'vim' : null}
         annotations={annotations}

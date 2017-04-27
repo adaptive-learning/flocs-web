@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import AceEditor from 'react-ace';
 
-import 'brace/theme/solarized_light';
+import 'brace/theme/solarized_dark';
 import '../core/roboCodeHighlighter';
 
 
@@ -19,7 +19,7 @@ export default class CodeEditor extends React.Component {
         value={this.props.code}
         onChange={this.props.onChange}
         mode="robocode"
-        theme="solarized_light"
+        theme="solarized_dark"
         fontSize={18}
         focus={true}
         editorProps={{ $blockScrolling: true }}
