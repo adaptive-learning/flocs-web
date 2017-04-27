@@ -31,7 +31,15 @@ export default class Menu extends React.Component {
         <MenuItem>Sign up</MenuItem>
         <Divider />
         */}
-        <MaterialMenu value={this.props.mode} autoWidth={false} width={this.props.muiTheme.drawer.width}>
+        <MaterialMenu
+          value={this.props.mode}
+          autoWidth={false}
+          width={this.props.muiTheme.drawer.width}
+          disableAutoFocus={true}
+        >
+        { /* Note that disabling auto focus on menu is important to avoid
+        material-ui bug of menu steeling focus to text fields when typing, see
+        https://github.com/callemall/material-ui/issues/4387 */ }
           <MenuItem
             value="intro"
             containerElement={<Link to="/" />}
