@@ -3,7 +3,7 @@ import ReactBlocklyComponent from 'react-blockly-component';
 import { blocklyXmlToRoboAst } from '../core/blockly';
 import { generateBlocklyXml } from '../core/blocklyXmlGenerator';
 import { completeToolbox } from '../core/toolbox';
-import { countActions } from '../core/roboCodeSyntaxChecker';
+import { countStatements } from '../core/roboCodeSyntaxChecker';
 
 
 const workspaceConfiguration = {
@@ -73,11 +73,10 @@ export default class BlocklyEditor extends React.Component {
       return; // blockly hasn't been loaded yet
     }
     const disable = (this.props.actionsLimit !== null)
-                    && (countActions(roboAst) >= this.props.actionsLimit);
+                    && (countStatements(roboAst) >= this.props.actionsLimit);
     for (const block of this.blocklyWorkspace.flyout_.workspace_.getAllBlocks()) {
       const type = block.type;
-      // TODO: dry enumeration of actions
-      if (type === 'fly' || type === 'left' || type === 'right' || type === 'shoot') {
+      if (['fly', 'left', 'right', 'shoot', 'if', 'if-else', 'repeat', 'while'].includes(type)) {
         if (disable) {
           this.blocklyWorkspace.flyout_.permanentlyDisabled_.push(block);
           block.setDisabled(true);

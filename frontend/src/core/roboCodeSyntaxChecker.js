@@ -22,12 +22,18 @@ export function getSyntaxCheckInfo(roboAst) {
 
 export function countActions(roboAst) {
   const nodes = getAllNodes(roboAst);
-  // TODO: use in-set instead of 4 comparisions
-  const actionNodes = nodes.filter(node => node.head === 'fly'
-                                   || node.head === 'left'
-                                   || node.head === 'right'
-                                   || node.head === 'shoot');
+  const actionTypes = ['fly', 'left', 'right', 'shoot'];
+  const actionNodes = nodes.filter(node => actionTypes.includes(node.head));
   const count = actionNodes.length;
+  return count;
+}
+
+
+export function countStatements(roboAst) {
+  const nodes = getAllNodes(roboAst);
+  const statementTypes = ['fly', 'left', 'right', 'shoot', 'if', 'repeat', 'while'];
+  const statementNodes = nodes.filter(node => statementTypes.includes(node.head));
+  const count = statementNodes.length;
   return count;
 }
 

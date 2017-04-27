@@ -1,4 +1,4 @@
-import { countActions } from '../core/roboCodeSyntaxChecker';
+import { countStatements } from '../core/roboCodeSyntaxChecker';
 import { generateSpaceWorldText } from '../core/spaceWorldDescription';
 import { stripIndentation } from '../utils/text';
 import { initialTaskEnvironment } from '../reducers/taskEnvironments';
@@ -59,7 +59,7 @@ export function getActionsLimit(state, taskEnvironmentId) {
   const task = getTask(state, taskEnvironmentId);
   const limit = task.setting.actionsLimit;
   const roboAst = getRoboAst(state, taskEnvironmentId);
-  const used = countActions(roboAst);
+  const used = countStatements(roboAst);
   return { used, limit };
 }
 
