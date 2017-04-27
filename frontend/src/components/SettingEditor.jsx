@@ -7,13 +7,17 @@ import Divider from 'material-ui/Divider';
 import IconDescription from 'material-ui/svg-icons/action/description';
 import IconUpload from 'material-ui/svg-icons/content/unarchive';
 import IconDownload from 'material-ui/svg-icons/content/move-to-inbox';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import 'brace/theme/solarized_light';
 import 'brace/keybinding/vim';
 import '../core/spaceWorldHighlighter';
 
 
-export default function SettingEditor({
+function SettingEditor({
   spaceWorldText,
   isValid,
   onChange,
@@ -31,6 +35,7 @@ export default function SettingEditor({
   onExport,
   blocklyEditorType,
   onEditorTypeChange,
+  muiTheme,
 }) {
   const annotations = [];
   if (!isValid) {
@@ -38,48 +43,48 @@ export default function SettingEditor({
   }
 
   return (
-    <div style={{ overflowX: 'hidden' }}>
+    <div style={{ overflowX: 'hidden', backgroundColor: muiTheme.palette.canvasColor }}>
       <div style={{ display: 'table' }}>
         <div style={{ display: 'table-row' }}>
-          <span style={{ display: 'table-cell' }}>
-            taskId:
-          </span>
-          <input
-            style={{ display: 'table-cell' }}
-            type="text"
+          <TextField
+            id="setting-editor-task-id"
+            floatingLabelText="Task Name"
             value={taskId}
             onChange={onTaskIdChange}
           />
         </div>
         <div style={{ display: 'table-row' }}>
-          <span style={{ display: 'table-cell' }}>
-            category:
-          </span>
-          <input
-            style={{ display: 'table-cell' }}
-            type="text"
+          <SelectField
+            floatingLabelText="Category"
             value={category}
             onChange={onCategoryChange}
-          />
+          >
+            <MenuItem value={'uncategorized'} primaryText="uncategorized" />
+            <MenuItem value={'moves'} primaryText="L1 Moves" />
+            <MenuItem value={'world'} primaryText="L2 World" />
+            <MenuItem value={'repeat'} primaryText="L3 Repeat" />
+            <MenuItem value={'while'} primaryText="L4 While" />
+            <MenuItem value={'loops'} primaryText="L5 Loops" />
+            <MenuItem value={'if'} primaryText="L6 If" />
+            <MenuItem value={'comparing'} primaryText="L7 Comparing" />
+            <MenuItem value={'if-else'} primaryText="L8 If-else" />
+            <MenuItem value={'final-challenge'} primaryText="L9 Final challenge" />
+          </SelectField>
         </div>
         <div style={{ display: 'table-row' }}>
-          <span style={{ display: 'table-cell' }}>
-            energy:
-          </span>
-          <input
-            style={{ display: 'table-cell' }}
-            type="text"
+          <TextField
+            id="setting-editor-energy"
+            floatingLabelText="Energy"
+            floatingLabelFixed={true}
             value={energy || ''}
             onChange={onEnergyChange}
           />
         </div>
         <div style={{ display: 'table-row' }}>
-          <span style={{ display: 'table-cell' }}>
-            actionsLimit:
-          </span>
-          <input
-            style={{ display: 'table-cell' }}
-            type="text"
+          <TextField
+            id="setting-editor-actions-limit"
+            floatingLabelText="Actions Limit"
+            floatingLabelFixed={true}
             value={actionsLimit || ''}
             onChange={onActionsLimitChange}
           />
@@ -149,4 +154,8 @@ SettingEditor.propTypes = {
   onExport: PropTypes.func.isRequired,
   blocklyEditorType: PropTypes.bool.isRequired,
   onEditorTypeChange: PropTypes.func.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
+
+
+export default muiThemeable()(SettingEditor);

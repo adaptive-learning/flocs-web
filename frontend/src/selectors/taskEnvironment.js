@@ -2,7 +2,6 @@ import { countActions } from '../core/roboCodeSyntaxChecker';
 import { generateSpaceWorldText } from '../core/spaceWorldDescription';
 import { stripIndentation } from '../utils/text';
 import { initialTaskEnvironment } from '../reducers/taskEnvironments';
-import { getCategoryId } from '../selectors/task';
 import { getToolboxId } from '../selectors/category';
 
 export const practicePageTaskEnvironmentId = 'practice-page';
@@ -38,12 +37,13 @@ export function getTaskId(state, taskEnvironmentId) {
 
 
 export function getToolbox(state, taskEnvironmentId) {
-  // TODO: implement
-  const taskId = getTaskId(state, taskEnvironmentId);
-  if (taskId === undefined) {
+  // using task version stored in the environment to make it work in task
+  // editor as well
+  const task = getTask(state, taskEnvironmentId);
+  if (task === undefined) {
     return [];
   }
-  const categoryId = getCategoryId(state, taskId);
+  const categoryId = task.category;
   const toolboxId = getToolboxId(state, categoryId);
   const toolbox = state.toolboxes[toolboxId];
   return toolbox.blocks;

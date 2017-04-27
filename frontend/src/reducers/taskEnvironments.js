@@ -58,7 +58,7 @@ export default function reduceTaskEnvironments(state = {}, action) {
 
 // TODO: freeze?
 const emptyTask = {
-  taskId: '',
+  id: '',
   setting: {
     fields: [[]],
     actionsLimit: null,
@@ -147,7 +147,7 @@ function addDefaults(task) {
 
 function changeSetting(taskEnvironment, { taskSource }) {
   const { task, invalidSpaceWorldText } = taskEnvironment;
-  const { taskId, categoryId, energy, actionsLimit, spaceWorldText } = taskSource;
+  const { id, category, energy, actionsLimit, spaceWorldText } = taskSource;
   let newInvalidSpaceWorldText = invalidSpaceWorldText;
   let newFields = null;
   if (spaceWorldText !== undefined) {
@@ -160,8 +160,8 @@ function changeSetting(taskEnvironment, { taskSource }) {
     }
   }
   const updatedTask = {
-    taskId: (taskId !== undefined) ? taskId : task.taskId,
-    categoryId: (categoryId !== undefined) ? categoryId : task.categoryId,
+    id: (id !== undefined) ? id : task.id,
+    category: (category !== undefined) ? category : task.category,
     setting: {
       fields: (newFields !== null) ? newFields : task.setting.fields,
       energy: (energy !== undefined) ? energy : task.setting.energy,

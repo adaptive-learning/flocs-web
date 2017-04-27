@@ -23,16 +23,16 @@ class SettingEditorWrapper extends React.Component {
     };
 
     this.handleTaskIdChange = event => {
-      const taskId = event.target.value;
-      this.props.changeSetting(this.props.taskEnvironmentId, { taskId });
+      const id = event.target.value;
+      this.props.changeSetting(this.props.taskEnvironmentId, { id });
     };
 
-    this.handleCategoryChange = event => {
-      let categoryId = event.target.value;
-      if (categoryId.length === 0) {
-        categoryId = null;
+    this.handleCategoryChange = (event, index, value) => {
+      let category = value;
+      if (category.length === 0) {
+        category = null;
       }
-      this.props.changeSetting(this.props.taskEnvironmentId, { categoryId });
+      this.props.changeSetting(this.props.taskEnvironmentId, { category });
     };
 
     this.handleEnergyChange = event => {
@@ -67,7 +67,7 @@ class SettingEditorWrapper extends React.Component {
         onChange={this.handleChangeSetting}
         taskId={this.props.taskId}
         onTaskIdChange={this.handleTaskIdChange}
-        category={this.props.categoryId || ''}
+        category={this.props.category || ''}
         onCategoryChange={this.handleCategoryChange}
         energy={this.props.energy}
         onEnergyChange={this.handleEnergyChange}
@@ -90,7 +90,7 @@ SettingEditorWrapper.propTypes = {
   isValid: PropTypes.bool.isRequired,
   changeSetting: PropTypes.func.isRequired,
   taskId: PropTypes.string.isRequired,
-  categoryId: PropTypes.string,
+  category: PropTypes.string,
   energy: PropTypes.number,
   actionsLimit: PropTypes.number,
   vimMode: PropTypes.bool.isRequired,
@@ -103,7 +103,7 @@ SettingEditorWrapper.propTypes = {
 
 function mapStateToProps(state, props) {
   const { taskEnvironmentId } = props;
-  const { taskId, categoryId, setting } = getTask(state, taskEnvironmentId);
+  const { id, category, setting } = getTask(state, taskEnvironmentId);
   const { energy, actionsLimit } = setting;
   const spaceWorldText = getSpaceWorldText(state, taskEnvironmentId);
   const isValid = isSpaceWorldTextValid(state, taskEnvironmentId);
@@ -111,8 +111,8 @@ function mapStateToProps(state, props) {
   const vimMode = isVimModeEnabled(state);
   return {
     taskEnvironmentId,
-    taskId,
-    categoryId,
+    taskId: id,
+    category,
     energy,
     actionsLimit,
     spaceWorldText,
