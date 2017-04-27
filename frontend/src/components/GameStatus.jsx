@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import TaskName from './TaskName';
 import Icon from './Icon';
 
-export default function GameStatus({ taskId, solved, dead, diamonds, energy, actions }) {
+export default function GameStatus({ taskId, solved, dead, diamonds, energy, length }) {
   return (
     <span style={{ display: 'block' }}>
       <span style={{ display: 'block' }}>
@@ -21,9 +21,9 @@ export default function GameStatus({ taskId, solved, dead, diamonds, energy, act
             <Icon name="energy" /> {energy.current}/{energy.full}&nbsp;&nbsp;
           </span>
         }
-        { actions.limit !== null &&
+        { length.limit !== null &&
           <span className="instructionable-length-limit">
-            <Icon name="actions" /> {actions.used}/{actions.limit}&nbsp;&nbsp;
+            <Icon name="length" /> {length.used}/{length.limit}&nbsp;&nbsp;
           </span>
         }
       </span>
@@ -35,7 +35,7 @@ GameStatus.propTypes = {
   taskId: PropTypes.string.isRequired,
   diamonds: PropTypes.object.isRequired,
   energy: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired,
+  length: PropTypes.object.isRequired,
   solved: PropTypes.bool,
   dead: PropTypes.bool,
 };

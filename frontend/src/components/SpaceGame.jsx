@@ -42,7 +42,7 @@ export default function SpaceGame({
         taskId={taskId}
         diamonds={diamonds}
         energy={energy}
-        actions={lengthLimit}
+        length={lengthLimit}
         solved={stage === 'solved'}
         dead={stage === 'dead'}
       />
