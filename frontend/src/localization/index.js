@@ -34,7 +34,18 @@ export function getLocalizationSetting() {
 // temporary hack to allow easily localizing non-component messages in 3rd
 // party librarires (Blockly), TODO: unhack
 const { intl } = new IntlProvider(getLocalizationSetting(), {}).getChildContext();
+
 export function translate(id, values = {}) {
   return intl.formatMessage({ id, values });
 }
+
+export function possiblyTranslate(id, fallback) {
+  const locale = getLocale();
+  const messages = allMessages[locale];
+  if (id in messages) {
+    return translate(id);
+  }
+  return fallback;
+}
+
 export { Text };
