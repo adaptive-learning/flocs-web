@@ -44,8 +44,8 @@ function SettingEditor({
 
   return (
     <div style={{ overflowX: 'hidden', backgroundColor: muiTheme.palette.canvasColor }}>
-      <div style={{ display: 'table' }}>
-        <div style={{ display: 'table-row' }}>
+      <div style={{ marginLeft: 5, marginBottom: 10 }}>
+        <div>
           <TextField
             id="setting-editor-task-id"
             floatingLabelText="Task Name"
@@ -53,7 +53,7 @@ function SettingEditor({
             onChange={onTaskIdChange}
           />
         </div>
-        <div style={{ display: 'table-row' }}>
+        <div>
           <SelectField
             floatingLabelText="Category"
             value={category}
@@ -71,7 +71,7 @@ function SettingEditor({
             <MenuItem value={'final-challenge'} primaryText="L9 Final challenge" />
           </SelectField>
         </div>
-        <div style={{ display: 'table-row' }}>
+        <div>
           <TextField
             id="setting-editor-energy"
             floatingLabelText="Energy"
@@ -80,7 +80,7 @@ function SettingEditor({
             onChange={onEnergyChange}
           />
         </div>
-        <div style={{ display: 'table-row' }}>
+        <div>
           <TextField
             id="setting-editor-actions-limit"
             floatingLabelText="Actions Limit"
