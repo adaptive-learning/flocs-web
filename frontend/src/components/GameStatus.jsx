@@ -22,7 +22,7 @@ export default function GameStatus({ taskId, solved, dead, diamonds, energy, act
           </span>
         }
         { actions.limit !== null &&
-          <span className="instructionable-action-limit">
+          <span className="instructionable-length-limit">
             <Icon name="actions" /> {actions.used}/{actions.limit}&nbsp;&nbsp;
           </span>
         }

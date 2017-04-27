@@ -101,7 +101,7 @@ export default {
   'instruction.object.asteroid': 'Pokud raketka narazí do asteroidu, tak se rozbije.',
   'instruction.object.meteoroid': 'Pokud raketka narazí do meteoroidu, tak se rozbije. Naštěstí jsou meteoroidy malé a raketka je tak může rozstřelit.',
   'instruction.object.wormhole': 'Pokud raketka vletí do červí díry, okamžitě se objeví v druhé červí díře.',
-  'instruction.action-limit': 'Ve svém programu můžeš použít pouze omezený počet akcí. Akce jsou modré bloky - let a střelba.',
+  'instruction.length-limit': 'Tohle je ukazatel délky programu. Raketka má omezenou paměť, tvůj program proto nesmí být příliš dlouhý.',
   'instruction.diamonds-status': 'Tohle je počítadlo diamantů. Zobrazuje, kolik diamantů raketka posbírala a kolik jich musí posbírat celkem.',
   'instruction.energy-status': 'Tohle je ukazatel energie. Každý výstřel odebere raketce 1 jednotku energie.',
   'instruction.block.fly': 'Příkaz pro let o jedno políčko vpřed.',

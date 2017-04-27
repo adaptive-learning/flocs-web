@@ -134,8 +134,8 @@ const viewData = {
     selector: '.instructionable-energy-status',
     position: 'bottom-left',
   },
-  'action-limit': {
-    selector: '.instructionable-action-limit',
+  'length-limit': {
+    selector: '.instructionable-length-limit',
     position: 'bottom-left',
   },
   'block.fly': {
@@ -208,7 +208,7 @@ const ordering = [
   'object.wormhole',
   'diamonds-status',
   'energy-status',
-  'action-limit',
+  'length-limit',
   'block.fly',
   'block.shoot',
   'block.repeat',
@@ -221,7 +221,7 @@ const ordering = [
 
 
 function getRelevantUnseenInstructions(task, seen) {
-  // return ['env.snapping', 'action-limit'];
+  // return ['env.snapping', 'length-limit'];
   const instructions = getRelevantInstructions(task);
   const unseen = instructions.filter(instruction => seen.indexOf(instruction) < 0);
   return unseen;
@@ -251,9 +251,9 @@ function containsInstruction(task, toolbox, instruction) {
       return containsObject(task, 'D');
     case 'energy-status':
       return task.setting.energy != null;
-    case 'action-limit':
+    case 'length-limit':
       return task.setting.actionsLimit != null;
-    // TODO: use toolbox to filter block instructions
+      // return task.setting.length != null;
     case 'block.fly':
     case 'block.shoot':
     case 'block.repeat':
