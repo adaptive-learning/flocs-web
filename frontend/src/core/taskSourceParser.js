@@ -9,8 +9,8 @@ import { parseSpaceWorld } from './spaceWorldDescription';
 export function parseTaskSourceText(sourceText) {
   const chunkedTaskSource = pegTaskSourceParser.parse(sourceText);
   const task = {
-    taskId: chunkedTaskSource.taskId,
-    categoryId: chunkedTaskSource.category || 'uncategorized',
+    id: chunkedTaskSource.taskId,
+    category: chunkedTaskSource.category || 'uncategorized',
     setting: {
       ...chunkedTaskSource.setting,
       fields: parseSpaceWorld(chunkedTaskSource.setting.fields),
