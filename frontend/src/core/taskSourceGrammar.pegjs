@@ -16,7 +16,7 @@
  * |b |b |bS|b |b |
  * ```
  * - energy: 2
- * - actionsLimit: 1
+ * - length: 2
  *
  * ## Solution
  *

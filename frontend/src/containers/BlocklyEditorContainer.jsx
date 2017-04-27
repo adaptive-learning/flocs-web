@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import BlocklyEditor from '../components/BlocklyEditor';
-import { getRoboAst, getEditorSessionId, getActionsLimit, getToolbox } from '../selectors/taskEnvironment';
+import { getRoboAst, getEditorSessionId, getLengthLimit, getToolbox } from '../selectors/taskEnvironment';
 import { changeRoboAst } from '../actions/taskEnvironment';
 import { expandBlocks } from '../core/toolbox';
 
@@ -22,7 +22,7 @@ class BlocklyEditorWrapper extends React.Component {
         ref={ref => { this.blocklyEditor = ref; }}
         roboAst={this.props.roboAst}
         toolboxBlocks={expandBlocks(this.props.toolbox)}
-        actionsLimit={this.props.actionsLimit}
+        lengthLimit={this.props.lengthLimit}
         editorSessionId={this.props.editorSessionId}
         onChange={this.changeRoboAst}
       />
@@ -35,7 +35,7 @@ BlocklyEditorWrapper.propTypes = {
   toolbox: PropTypes.array.isRequired,
   editorSessionId: PropTypes.number,
   roboAst: PropTypes.object.isRequired,
-  actionsLimit: PropTypes.number,
+  lengthLimit: PropTypes.number,
   changeRoboAst: PropTypes.func.isRequired,
 };
 
@@ -43,9 +43,9 @@ function mapStateToProps(state, props) {
   const { taskEnvironmentId } = props;
   const roboAst = getRoboAst(state, taskEnvironmentId);
   const editorSessionId = getEditorSessionId(state, taskEnvironmentId);
-  const { limit: actionsLimit } = getActionsLimit(state, taskEnvironmentId);
+  const { limit: lengthLimit } = getLengthLimit(state, taskEnvironmentId);
   const toolbox = getToolbox(state, taskEnvironmentId);
-  return { taskEnvironmentId, toolbox, roboAst, actionsLimit, editorSessionId };
+  return { taskEnvironmentId, toolbox, roboAst, lengthLimit, editorSessionId };
 }
 
 

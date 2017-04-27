@@ -42,11 +42,11 @@ class SettingEditorWrapper extends React.Component {
       this.props.changeSetting(this.props.taskEnvironmentId, { energy });
     };
 
-    this.handleActionsLimitChange = event => {
-      const actionsLimitString = event.target.value;
-      const actionsLimitNumber = parseInt(actionsLimitString, 10);
-      const actionsLimit = isNaN(actionsLimitNumber) ? null : actionsLimitNumber;
-      this.props.changeSetting(this.props.taskEnvironmentId, { actionsLimit });
+    this.handleLengthLimitChange = event => {
+      const lengthLimitString = event.target.value;
+      const lengthLimitNumber = parseInt(lengthLimitString, 10);
+      const length = isNaN(lengthLimitNumber) ? null : lengthLimitNumber;
+      this.props.changeSetting(this.props.taskEnvironmentId, { length });
     };
 
     this.handleEditorTypeChange = () => {
@@ -71,8 +71,8 @@ class SettingEditorWrapper extends React.Component {
         onCategoryChange={this.handleCategoryChange}
         energy={this.props.energy}
         onEnergyChange={this.handleEnergyChange}
-        actionsLimit={this.props.actionsLimit}
-        onActionsLimitChange={this.handleActionsLimitChange}
+        lengthLimit={this.props.lengthLimit}
+        onLengthLimitChange={this.handleLengthLimitChange}
         vimMode={this.props.vimMode}
         onSwitchMode={this.handleSwitchMode}
         onImport={this.importTask}
@@ -92,7 +92,7 @@ SettingEditorWrapper.propTypes = {
   taskId: PropTypes.string.isRequired,
   category: PropTypes.string,
   energy: PropTypes.number,
-  actionsLimit: PropTypes.number,
+  lengthLimit: PropTypes.number,
   vimMode: PropTypes.bool.isRequired,
   switchVimMode: PropTypes.func.isRequired,
   importTask: PropTypes.func.isRequired,
@@ -104,7 +104,7 @@ SettingEditorWrapper.propTypes = {
 function mapStateToProps(state, props) {
   const { taskEnvironmentId } = props;
   const { id, category, setting } = getTask(state, taskEnvironmentId);
-  const { energy, actionsLimit } = setting;
+  const { energy, length } = setting;
   const spaceWorldText = getSpaceWorldText(state, taskEnvironmentId);
   const isValid = isSpaceWorldTextValid(state, taskEnvironmentId);
   const editorType = getEditorType(state, taskEnvironmentId);
@@ -114,7 +114,7 @@ function mapStateToProps(state, props) {
     taskId: id,
     category,
     energy,
-    actionsLimit,
+    lengthLimit: length,
     spaceWorldText,
     isValid,
     vimMode,

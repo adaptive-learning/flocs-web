@@ -55,9 +55,9 @@ export function getEditorSessionId(state, taskEnvironmentId) {
 }
 
 
-export function getActionsLimit(state, taskEnvironmentId) {
+export function getLengthLimit(state, taskEnvironmentId) {
   const task = getTask(state, taskEnvironmentId);
-  const limit = task.setting.actionsLimit;
+  const limit = task.setting.length;
   const roboAst = getRoboAst(state, taskEnvironmentId);
   const used = countStatements(roboAst);
   return { used, limit };
@@ -69,7 +69,7 @@ export function getTaskSourceText(state, taskEnvironmentId) {
     throw Error('Invalid task setting');
   }
   const { id, category, setting } = getTask(state, taskEnvironmentId);
-  const { energy, actionsLimit } = setting;
+  const { energy, length } = setting;
   const spaceWorldText = getSpaceWorldText(state, taskEnvironmentId);
   const solution = getCode(state, taskEnvironmentId);
 
@@ -83,7 +83,7 @@ export function getTaskSourceText(state, taskEnvironmentId) {
     ${spaceWorldText}
     \`\`\`
     ${energy !== null ? `- energy: ${energy}` : ''}
-    ${actionsLimit !== null ? `- actionsLimit: ${actionsLimit}` : ''}
+    ${length !== null ? `- length: ${length}` : ''}
 
     ## Solution
 

@@ -16,7 +16,7 @@ import { getTaskId,
          getTaskSessionId,
          getRoboAst,
          getCode,
-         getActionsLimit,
+         getLengthLimit,
          getEditorType,
          getTaskSourceText,
          isInterpreting } from '../selectors/taskEnvironment';
@@ -146,7 +146,7 @@ export function taskAttempted(taskEnvironmentId) {
 
 export function runProgram(taskEnvironmentId) {
   return (dispatch, getState) => {
-    const actions = getActionsLimit(getState(), taskEnvironmentId);
+    const actions = getLengthLimit(getState(), taskEnvironmentId);
     if (actions.limit !== null && actions.used > actions.limit) {
       const message = `Violated actions limit: ${actions.used}/${actions.limit}`;
       alert(message);

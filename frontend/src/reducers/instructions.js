@@ -252,8 +252,7 @@ function containsInstruction(task, toolbox, instruction) {
     case 'energy-status':
       return task.setting.energy != null;
     case 'length-limit':
-      return task.setting.actionsLimit != null;
-      // return task.setting.length != null;
+      return task.setting.length != null;
     case 'block.fly':
     case 'block.shoot':
     case 'block.repeat':

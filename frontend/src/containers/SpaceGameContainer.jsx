@@ -6,7 +6,7 @@ import { createTaskEnvironment,
          resetGame,
          doActionMove } from '../actions/taskEnvironment';
 import { getGameState } from '../selectors/gameState';
-import { getTaskId, getActionsLimit, getGamePanelWidth } from '../selectors/taskEnvironment';
+import { getTaskId, getLengthLimit, getGamePanelWidth } from '../selectors/taskEnvironment';
 
 
 class SpaceGameWrapper extends React.Component {
@@ -43,7 +43,7 @@ class SpaceGameWrapper extends React.Component {
       <SpaceGame
         taskId={this.props.taskId}
         gameState={this.props.gameState}
-        actionsLimit={this.props.actionsLimit}
+        lengthLimit={this.props.lengthLimit}
         width={this.props.width}
         controls={this.props.controls}
         onControlClicked={this.handleControlClicked}
@@ -58,7 +58,7 @@ SpaceGameWrapper.propTypes = {
   taskId: PropTypes.string,
   controls: PropTypes.array,
   gameState: PropTypes.object.isRequired,
-  actionsLimit: PropTypes.object.isRequired,
+  lengthLimit: PropTypes.object.isRequired,
   width: PropTypes.number.isRequired,
   runProgram: PropTypes.func.isRequired,
   resetGame: PropTypes.func.isRequired,
@@ -69,10 +69,10 @@ SpaceGameWrapper.propTypes = {
 function mapStateToProps(state, props) {
   const { taskEnvironmentId, controls } = props;
   const gameState = getGameState(state, taskEnvironmentId);
-  const actionsLimit = getActionsLimit(state, taskEnvironmentId);
+  const lengthLimit = getLengthLimit(state, taskEnvironmentId);
   const taskId = getTaskId(state, taskEnvironmentId);
   const width = getGamePanelWidth(state, taskEnvironmentId);
-  return { taskEnvironmentId, taskId, gameState, actionsLimit, width, controls };
+  return { taskEnvironmentId, taskId, gameState, lengthLimit, width, controls };
 }
 
 

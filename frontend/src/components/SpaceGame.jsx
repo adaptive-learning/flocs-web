@@ -7,7 +7,7 @@ import GameControls from './GameControls';
 export default function SpaceGame({
     taskId,
     gameState,
-    actionsLimit,
+    lengthLimit,
     width,
     controls,
     onControlClicked,
@@ -42,7 +42,7 @@ export default function SpaceGame({
         taskId={taskId}
         diamonds={diamonds}
         energy={energy}
-        actions={actionsLimit}
+        actions={lengthLimit}
         solved={stage === 'solved'}
         dead={stage === 'dead'}
       />
@@ -58,7 +58,7 @@ export default function SpaceGame({
 SpaceGame.propTypes = {
   taskId: PropTypes.string,
   gameState: PropTypes.object.isRequired,
-  actionsLimit: PropTypes.object,
+  lengthLimit: PropTypes.object,
   onControlClicked: PropTypes.func,
   controls: PropTypes.array,
   width: PropTypes.number,
@@ -66,7 +66,7 @@ SpaceGame.propTypes = {
 
 SpaceGame.defaultProps = {
   taskId: 'nameless-task',
-  actionsLimit: { limit: null },
+  lengthLimit: { limit: null },
   controls: [],
   width: 280,
 };

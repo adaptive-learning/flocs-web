@@ -61,7 +61,7 @@ const emptyTask = {
   id: '',
   setting: {
     fields: [[]],
-    actionsLimit: null,
+    length: null,
     energy: null,
   },
 };
@@ -132,7 +132,7 @@ function setTask(taskEnvironment, { task }) {
 function addDefaults(task) {
   // TODO: better way to specify defaults?
   const setting = {
-    actionsLimit: null,
+    length: null,
     energy: null,
     ...task.setting,
   };
@@ -147,7 +147,7 @@ function addDefaults(task) {
 
 function changeSetting(taskEnvironment, { taskSource }) {
   const { task, invalidSpaceWorldText } = taskEnvironment;
-  const { id, category, energy, actionsLimit, spaceWorldText } = taskSource;
+  const { id, category, energy, length, spaceWorldText } = taskSource;
   let newInvalidSpaceWorldText = invalidSpaceWorldText;
   let newFields = null;
   if (spaceWorldText !== undefined) {
@@ -165,7 +165,7 @@ function changeSetting(taskEnvironment, { taskSource }) {
     setting: {
       fields: (newFields !== null) ? newFields : task.setting.fields,
       energy: (energy !== undefined) ? energy : task.setting.energy,
-      actionsLimit: (actionsLimit !== undefined) ? actionsLimit : task.setting.actionsLimit,
+      length: (length !== undefined) ? length : task.setting.length,
     },
   };
   const updatedTaskWithDefaults = addDefaults(updatedTask);

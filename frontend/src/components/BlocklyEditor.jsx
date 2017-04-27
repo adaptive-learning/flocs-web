@@ -31,7 +31,7 @@ export default class BlocklyEditor extends React.Component {
       this.setRoboAst(this.props.roboAst);
       this.registerInstructables();
     }
-    this.checkActionsLimit(this.props.roboAst);
+    this.checkLengthLimit(this.props.roboAst);
   }
 
   setRoboAst(roboAst) {
@@ -68,12 +68,12 @@ export default class BlocklyEditor extends React.Component {
   }
 
   // TODO: unhack
-  checkActionsLimit(roboAst) {
+  checkLengthLimit(roboAst) {
     if (this.blocklyEditor == null) {
       return; // blockly hasn't been loaded yet
     }
-    const disable = (this.props.actionsLimit !== null)
-                    && (countStatements(roboAst) >= this.props.actionsLimit);
+    const disable = (this.props.lengthLimit !== null)
+                    && (countStatements(roboAst) >= this.props.lengthLimit);
     for (const block of this.blocklyWorkspace.flyout_.workspace_.getAllBlocks()) {
       const type = block.type;
       if (['fly', 'left', 'right', 'shoot', 'if', 'if-else', 'repeat', 'while'].includes(type)) {
@@ -111,7 +111,7 @@ export default class BlocklyEditor extends React.Component {
     const xmlDidChange = newXml => {
       const roboAst = blocklyXmlToRoboAst(newXml);
       this.props.onChange(roboAst);
-      this.checkActionsLimit(roboAst);
+      this.checkLengthLimit(roboAst);
     };
     return (
       <div
@@ -143,7 +143,7 @@ BlocklyEditor.propTypes = {
   roboAst: PropTypes.object,
   onChange: PropTypes.func,
   editorSessionId: PropTypes.number,
-  actionsLimit: PropTypes.number,
+  lengthLimit: PropTypes.number,
 };
 
 BlocklyEditor.defaultProps = {
@@ -151,5 +151,5 @@ BlocklyEditor.defaultProps = {
   roboAst: { head: 'start', body: [] },
   onChange: null,
   editorSessionId: 0,
-  actionsLimit: null,
+  lengthLimit: null,
 };

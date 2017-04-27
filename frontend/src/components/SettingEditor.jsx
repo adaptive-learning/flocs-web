@@ -27,8 +27,8 @@ function SettingEditor({
   onCategoryChange,
   energy,
   onEnergyChange,
-  actionsLimit,
-  onActionsLimitChange,
+  lengthLimit,
+  onLengthLimitChange,
   vimMode,
   onSwitchMode,
   onImport,
@@ -82,11 +82,11 @@ function SettingEditor({
         </div>
         <div>
           <TextField
-            id="setting-editor-actions-limit"
-            floatingLabelText="Actions Limit"
+            id="setting-editor-length-limit"
+            floatingLabelText="Length Limit"
             floatingLabelFixed={true}
-            value={actionsLimit || ''}
-            onChange={onActionsLimitChange}
+            value={lengthLimit || ''}
+            onChange={onLengthLimitChange}
           />
         </div>
       </div>
@@ -146,8 +146,8 @@ SettingEditor.propTypes = {
   onCategoryChange: PropTypes.func.isRequired,
   energy: PropTypes.number,
   onEnergyChange: PropTypes.func.isRequired,
-  actionsLimit: PropTypes.number,
-  onActionsLimitChange: PropTypes.func.isRequired,
+  lengthLimit: PropTypes.number,
+  onLengthLimitChange: PropTypes.func.isRequired,
   vimMode: PropTypes.bool.isRequired,
   onSwitchMode: PropTypes.func.isRequired,
   onImport: PropTypes.func.isRequired,
