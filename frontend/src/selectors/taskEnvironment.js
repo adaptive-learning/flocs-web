@@ -40,7 +40,7 @@ export function getToolbox(state, taskEnvironmentId) {
   // using task version stored in the environment to make it work in task
   // editor as well
   const task = getTask(state, taskEnvironmentId);
-  if (task === undefined) {
+  if (task === undefined || task.category === undefined) {
     return [];
   }
   const categoryId = task.category;
