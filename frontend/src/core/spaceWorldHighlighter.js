@@ -55,7 +55,7 @@ ace.define('ace/mode/spaceworld_highlight_rules',
             regex: 'y',
           }, {
             token: colorTokens.black,
-            regex: '(S|D|A|M|W)',
+            regex: '(S|D|A|M|W|X|Y|Z)',
           }, {
           }, {
             token: colorTokens.gray,

@@ -19,6 +19,9 @@ export const gameObjects = {
   meteoroid: 'M',
   diamond: 'D',
   wormhole: 'W',
+  wormhole2: 'X',
+  wormhole3: 'Y',
+  wormhole4: 'Z',
 };
 
 

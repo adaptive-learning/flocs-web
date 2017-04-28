@@ -213,16 +213,16 @@ function evolveWorld(fields) {
   const objects = fields[spaceshipPosition[0]][spaceshipPosition[1]][1];
   let newFields = fields;
   for (const object of objects) {
-    if (object === 'W') {
-      newFields = applyWormholeEffect(fields, spaceshipPosition);
+    if ('WXYZ'.includes(object)) {
+      newFields = applyWormholeEffect(fields, spaceshipPosition, object);
     }
   }
   return newFields;
 }
 
 
-function applyWormholeEffect(fields, position) {
-  const wormholePositions = getWormholePositions(fields);
+function applyWormholeEffect(fields, position, wormholeChar = 'W') {
+  const wormholePositions = getPositionsWithObject(fields, wormholeChar);
   const newSpaceshipPosition = selectNewPosition(wormholePositions, position);
   const newFields = fields.map((row, i) => row.map((field, j) => {
     if (i === position[0] && j === position[1]) {
@@ -372,13 +372,13 @@ function findSpaceshipPosition(fields) {
 }
 
 
-function getWormholePositions(fields) {
+function getPositionsWithObject(fields, searchedObject) {
   // TODO: rewrite: unnest fields -> simple filter + don't use magic literals
   const positions = [];
   for (let i = 0; i < fields.length; i++) {
     for (let j = 0; j < fields[i].length; j++) {
       const objects = fields[i][j][1];
-      if (objects.some(obj => obj === 'W')) {
+      if (objects.some(obj => obj === searchedObject)) {
         positions.push([i, j]);
       }
     }
