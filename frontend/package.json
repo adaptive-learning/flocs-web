@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@kadira/storybook": "^2.21.0",
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.14.0",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.5",
@@ -78,6 +79,7 @@
     "build": "npm run clean && webpack",
     "start": "npm run build && node webpack-dev-server.js",
     "storybook": "start-storybook --dont-track -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "parse-task": "babel-node ./tools/parseTask.js"
   }
 }
