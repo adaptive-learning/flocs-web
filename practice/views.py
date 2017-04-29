@@ -1,8 +1,9 @@
+from uuid import UUID
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
-from flocs.actions import SolveTask
+from flocs.actions import EditProgram, RunProgram, SolveTask
 from flocs.extractors import get_practice_overview, get_recommendation
 from flocsweb.store import open_django_store
 from .serializers import StudentSerializer, TaskSessionSerializer
@@ -40,7 +41,8 @@ class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
     @detail_route(methods=['post'])
     def solve_task(self, request, pk=None):
         with open_django_store(request=request) as store:
-            intent = SolveTask(task_session_id=request.data['task-session-id'])
+            intent = SolveTask(
+                task_session_id=UUID(request.data['task-session-id']))
             store.add(intent)
         # NOTE: current db store implementation doesn't allow to read
         # uncommited changes, so we need to commit and re-open the with-block
@@ -54,6 +56,29 @@ class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
             }
         serializer = SolveTaskDiffSerializer(diff)
         return Response(serializer.data)
+
+    @detail_route(methods=['post'])
+    def edit_program(self, request, pk=None):
+        del pk  # TODO: check that student matches request.user (?)
+        with open_django_store(request=request) as store:
+            intent = EditProgram(
+                task_session_id=UUID(request.data['task-session-id']),
+                program=request.data['program'],
+            )
+            store.add(intent)
+        return Response()
+
+    @detail_route(methods=['post'])
+    def run_program(self, request, pk=None):
+        del pk  # TODO: check that student matches request.user (?)
+        with open_django_store(request=request) as store:
+            intent = RunProgram(
+                task_session_id=UUID(request.data['task-session-id']),
+                program=request.data['program'],
+                correct=request.data['correct'],
+            )
+            store.add(intent)
+        return Response()
 
 
 class TaskSessionsViewSet(viewsets.ModelViewSet):

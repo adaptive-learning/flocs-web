@@ -13,6 +13,7 @@ model_mapping = {
     entities.Student: practice.models.Student,
     entities.Session: practice.models.Session,
     entities.TaskSession: practice.models.TaskSession,
+    entities.ProgramSnapshot: practice.models.ProgramSnapshot,
     entities.SeenInstruction: practice.models.SeenInstruction,
     entities.Action: Action,
 }

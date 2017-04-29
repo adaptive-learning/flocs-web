@@ -25,7 +25,7 @@ import { getToolbox } from '../selectors/task';
 import { interpretRoboAst, interpretRoboCode, InterpreterError } from '../core/roboCodeInterpreter';
 import { parseTaskSourceText } from '../core/taskSourceParser';
 import { downloadTextFile, loadTextFile } from '../utils/files';
-import { startTask, solveTask } from '../actions/api';
+import { startTask, solveTask, reportProgramExecution, reportProgramEdit } from '../actions/api';
 
 
 export function createTaskEnvironment(taskEnvironmentId) {
@@ -121,9 +121,12 @@ export function changeCode(taskEnvironmentId, code) {
 
 
 export function changeRoboAst(taskEnvironmentId, roboAst) {
-  return {
-    type: CHANGE_ROBO_AST,
-    payload: { taskEnvironmentId, roboAst },
+  return (dispatch, getState) => {
+    reportProgramEditInTaskEnvironment(dispatch, getState(), taskEnvironmentId, roboAst);
+    return dispatch({
+      type: CHANGE_ROBO_AST,
+      payload: { taskEnvironmentId, roboAst },
+    });
   };
 }
 
@@ -174,10 +177,33 @@ export function runProgram(taskEnvironmentId) {
     const interpretingPromise = startingInterpretation()
       .then(interpret)
       .catch(handleInterpreterError)
-      .then(() => dispatch(taskAttempted(taskEnvironmentId)));
+      .then(() => dispatch(taskAttempted(taskEnvironmentId)))
+      .then(() => reportProgramExecutionInTaskEnvironment(dispatch, getState(), taskEnvironmentId));
     return interpretingPromise;
   };
 }
+
+
+function reportProgramExecutionInTaskEnvironment(dispatch, state, taskEnvironmentId) {
+  const taskSessionId = getTaskSessionId(state, taskEnvironmentId);
+  if (taskSessionId == null) {
+    return;
+  }
+  const ast = getRoboAst(state, taskEnvironmentId);
+  const solved = isSolved(state, taskEnvironmentId);
+  dispatch(reportProgramExecution(taskSessionId, ast, solved));
+}
+
+
+function reportProgramEditInTaskEnvironment(dispatch, state, taskEnvironmentId, newAst) {
+  const taskSessionId = getTaskSessionId(state, taskEnvironmentId);
+  if (taskSessionId == null) {
+    return;
+  }
+  const oldAst = getRoboAst(state, taskEnvironmentId);
+  dispatch(reportProgramEdit(taskSessionId, oldAst, newAst));
+}
+
 
 function handleInterpreterError(error) {
   if (error instanceof InterpreterError) {

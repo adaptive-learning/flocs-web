@@ -1,7 +1,6 @@
 /**
  * Api for communication with the backend
  */
-
 import axios from 'axios';
 import { FETCH_STATIC_DATA,
          FETCH_PRACTICE_OVERVIEW,
@@ -10,6 +9,7 @@ import { FETCH_STATIC_DATA,
          START_TASK,
          SOLVE_TASK,
          SEE_INSTRUCTION } from '../action-types';
+import { generateMiniRoboCode } from '../core/miniRoboCodeGenerator';
 
 
 export function fetchStaticData() {
@@ -67,6 +67,47 @@ export function solveTask(taskSessionId, taskEnvironmentId) {
       payload: axios.post(solveTaskUrl, data)
         .then(parseSolveTaskResponse)
         .then(payload => ({ ...payload, taskEnvironmentId })),
+    };
+    return dispatch(action);
+  };
+}
+
+
+export function reportProgramEdit(taskSessionId, oldAst, newAst) {
+  return (dispatch, getState) => {
+    const editProgramUrl = getReportProgramEditUrl(getState());
+    const oldMiniCode = generateMiniRoboCode(oldAst);
+    const newMiniCode = generateMiniRoboCode(newAst);
+    console.log('reporting program edit with', taskSessionId, oldMiniCode, 'NEW', newMiniCode);
+    if (oldMiniCode === newMiniCode) {
+      return;
+    }
+    const data = {
+      'task-session-id': taskSessionId,
+      'program': newMiniCode,
+    };
+    const action = {
+      type: 'REPORT_PROGRAM_EDIT',
+      payload: axios.post(editProgramUrl, data),
+    };
+    dispatch(action);
+  };
+}
+
+
+export function reportProgramExecution(taskSessionId, program, solved) {
+  return (dispatch, getState) => {
+    const runProgramUrl = getReportProgramExecutionUrl(getState());
+    const shortProgram = generateMiniRoboCode(program);
+    console.log('reporting program exectuion with', taskSessionId, shortProgram, solved);
+    const data = {
+      'task-session-id': taskSessionId,
+      'program': shortProgram,
+      'correct': solved,
+    };
+    const action = {
+      type: 'REPORT_PROGRAM_EXECUTION',
+      payload: axios.post(runProgramUrl, data),
     };
     return dispatch(action);
   };
@@ -152,6 +193,13 @@ function getSolveTaskUrl(state) {
   return state.student.solveTaskUrl;
 }
 
+function getReportProgramExecutionUrl(state) {
+  return state.student.reportProgramExecutionUrl;
+}
+
+function getReportProgramEditUrl(state) {
+  return state.student.reportProgramEditUrl;
+}
 
 function parseStudentResponse(response) {
   const { data } = response;
@@ -160,6 +208,8 @@ function parseStudentResponse(response) {
     seenInstructions: data['seen_instructions'],
     practiceOverviewUrl: data['practice_overview'],
     solveTaskUrl: data['solve_task'],
+    reportProgramEditUrl: data['edit_program'],
+    reportProgramExecutionUrl: data['run_program'],
   };
 }
 

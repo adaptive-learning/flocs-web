@@ -27,6 +27,12 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
     practice_overview = serializers.HyperlinkedIdentityField(
         view_name='student-practice-overview',
         read_only=True)
+    edit_program = serializers.HyperlinkedIdentityField(
+        view_name='student-edit-program',
+        read_only=True)
+    run_program = serializers.HyperlinkedIdentityField(
+        view_name='student-run-program',
+        read_only=True)
     solve_task = serializers.HyperlinkedIdentityField(
         view_name='student-solve-task',
         read_only=True)
