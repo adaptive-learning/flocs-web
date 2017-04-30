@@ -2,8 +2,7 @@
 		dependencies backend-dependencies frontend-dependencies \
 		test test-backend test-frontend \
 		check check-backend check-frontend \
-		db-setup db-migrate db-load-data admin \
-		export-data-to-csv
+		db-setup db-migrate db-load-data db-export admin
 
 # -----------------------------------------------------------
 
@@ -71,6 +70,9 @@ admin:
 
 db-load-data:
 	python manage.py load_static_data
+
+db-export:
+	python manage.py export_data
 
 # -----------------------------------------------------------
 
