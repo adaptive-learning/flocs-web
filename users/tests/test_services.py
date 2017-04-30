@@ -2,7 +2,7 @@ from django.test import TestCase
 from lazysignup.models import LazyUser
 from lazysignup.templatetags.lazysignup_tags import is_lazy_user
 from lazysignup.utils import is_lazy_user
-from .services import create_or_convert
+from users.services import create_or_convert
 
 
 class UserTests(TestCase):
