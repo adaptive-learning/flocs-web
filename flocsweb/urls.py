@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api/.*/$', 'flocsweb.views.wrong_api_call'),
     url(r'^accounts/profile', 'flocsweb.views.redirect_home'),
+    url(r'^social/', include('social_django.urls', namespace='social')),
     url(r'^([^a].*)?$', 'flocsweb.views.frontend_app'),
 ]

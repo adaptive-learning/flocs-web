@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 from lazysignup.utils import is_lazy_user
-from social.apps.django_app.default.models import UserSocialAuth
+from social_django.models import UserSocialAuth
 from users.services import create_or_convert
 
 
