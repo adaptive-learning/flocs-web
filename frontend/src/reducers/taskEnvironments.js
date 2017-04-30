@@ -1,4 +1,5 @@
 import { CREATE_TASK_ENVIRONMENT,
+         CLOSE_TASK_COMPLETION_DIALOG,
          SET_TASK,
          START_TASK_FULFILLED,
          SET_TASK_SESSION,
@@ -12,7 +13,8 @@ import { CREATE_TASK_ENVIRONMENT,
          INTERPRETATION_STARTED,
          TASK_ATTEMPTED,
          CHANGE_GAME_PANEL_WIDTH,
-         SET_EDITOR_TYPE } from '../action-types';
+         SET_EDITOR_TYPE,
+         SOLVE_TASK_FULFILLED } from '../action-types';
 import { parseSpaceWorld } from '../core/spaceWorldDescription';
 import { parseRoboCode, RoboCodeSyntaxError } from '../core/roboCodeParser';
 import { generateRoboCode } from '../core/roboCodeGenerator';
@@ -22,6 +24,8 @@ export default function reduceTaskEnvironments(state = {}, action) {
   switch (action.type) {
     case CREATE_TASK_ENVIRONMENT:
       return createTaskEnvironment(state, action.payload.taskEnvironmentId);
+    case CLOSE_TASK_COMPLETION_DIALOG:
+      return updateTaskEnvironment(state, closeTaskCompletionDialog, action.payload);
     case START_TASK_FULFILLED:
       return updateTaskEnvironment(state, setTaskSessionId, action.payload);
     case SET_TASK:
@@ -50,6 +54,8 @@ export default function reduceTaskEnvironments(state = {}, action) {
       return updateTaskEnvironment(state, changeGamePanelWidth, action.payload);
     case SET_EDITOR_TYPE:
       return updateTaskEnvironment(state, setEditorType, action.payload);
+    case SOLVE_TASK_FULFILLED:
+      return updateTaskEnvironment(state, solveTask, action.payload);
     default:
       return state;
   }
@@ -81,6 +87,7 @@ const initialTaskEnvironment = {
   pastActions: [],
   currentAction: null,
   gamePanelWidth: 280,
+  isTaskCompletionDialogOpen: false,
 };
 
 
@@ -125,6 +132,7 @@ function setTask(taskEnvironment, { task }) {
     pastActions: [],
     currentAction: null,
     interpreting: false,
+    isTaskCompletionDialogOpen: false,
   };
 }
 
@@ -255,6 +263,16 @@ function changeGamePanelWidth(taskEnvironment, { gamePanelWidth }) {
 
 function setEditorType(taskEnvironment, { editorType }) {
   return { ...taskEnvironment, editorType };
+}
+
+
+function solveTask(taskEnvironment) {
+  return { ...taskEnvironment, isTaskCompletionDialogOpen: true };
+}
+
+
+function closeTaskCompletionDialog(taskEnvironment) {
+  return { ...taskEnvironment, isTaskCompletionDialogOpen: false };
 }
 
 export { initialTaskEnvironment };

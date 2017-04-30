@@ -159,6 +159,12 @@ export function isInterpreting(state, taskEnvironmentId) {
 }
 
 
+export function isTaskCompletionDialogOpen(state, taskEnvironmentId) {
+  const taskEnvironment = getTaskEnvironment(state, taskEnvironmentId);
+  return taskEnvironment.isTaskCompletionDialogOpen;
+}
+
+
 // FIXME: not a selector function, should be somewhere else
 export function getInitialFieldsFromTaskEnvironment(taskEnvironment) {
   return taskEnvironment.task.setting.fields;

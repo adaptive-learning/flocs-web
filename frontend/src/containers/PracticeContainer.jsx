@@ -2,20 +2,27 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import TaskEnvironmentContainer from './TaskEnvironmentContainer';
 import { isSolved } from '../selectors/gameState';
-import { startTaskInTaskEnvironment, solveTaskInTaskEnvironment } from '../actions/taskEnvironment';
+import { isTaskCompletionDialogOpen } from '../selectors/taskEnvironment';
+import { startTaskInTaskEnvironment, solveTaskInTaskEnvironment, closeTaskCompletionDialog } from '../actions/taskEnvironment';
 import CompleteTaskModal from '../components/CompleteTaskModal';
 
 function getProps(state, props) {
   return {
     taskEnvironmentId: props.taskEnvironmentId,
     taskId: props.taskId,
-    taskCompletionDialogPosition: props.taskCompletionDialogPosition,
     solved: isSolved(state, props.taskEnvironmentId),
+    taskCompletionDialogPosition: props.taskCompletionDialogPosition,
+    isTaskCompletionDialogOpen: isTaskCompletionDialogOpen(state, props.taskEnvironmentId),
   };
 }
 
-@connect(getProps, { startTaskInTaskEnvironment, solveTaskInTaskEnvironment })
+@connect(getProps, { startTaskInTaskEnvironment, solveTaskInTaskEnvironment, closeTaskCompletionDialog })
 export default class PracticeContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.closeTaskCompletionDialog = this.props.closeTaskCompletionDialog.bind(this, this.props.taskEnvironmentId);
+  }
+
   componentWillMount() {
     this.startTask(this.props.taskId);
   }
@@ -44,8 +51,9 @@ export default class PracticeContainer extends React.Component {
           <TaskEnvironmentContainer taskEnvironmentId={this.props.taskEnvironmentId} />
         </div>
         <CompleteTaskModal
-          open={this.props.solved}
+          open={this.props.isTaskCompletionDialogOpen}
           position={this.props.taskCompletionDialogPosition}
+          handleClose={this.closeTaskCompletionDialog}
         />
       </div>
     );

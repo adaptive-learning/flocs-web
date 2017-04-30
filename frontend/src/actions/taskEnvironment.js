@@ -1,4 +1,5 @@
 import { CREATE_TASK_ENVIRONMENT,
+         CLOSE_TASK_COMPLETION_DIALOG,
          SET_TASK,
          SET_TASK_SESSION,
          CHANGE_SETTING,
@@ -294,4 +295,10 @@ export function setEditorType(taskEnvironmentId, editorType) {
   };
 }
 
-export const hello = 'ahoj';
+
+export function closeTaskCompletionDialog(taskEnvironmentId) {
+  return {
+    type: CLOSE_TASK_COMPLETION_DIALOG,
+    payload: { taskEnvironmentId },
+  };
+}

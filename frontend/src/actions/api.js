@@ -78,7 +78,6 @@ export function reportProgramEdit(taskSessionId, oldAst, newAst) {
     const editProgramUrl = getReportProgramEditUrl(getState());
     const oldMiniCode = generateMiniRoboCode(oldAst);
     const newMiniCode = generateMiniRoboCode(newAst);
-    console.log('reporting program edit with', taskSessionId, oldMiniCode, 'NEW', newMiniCode);
     if (oldMiniCode === newMiniCode) {
       return;
     }
@@ -99,7 +98,6 @@ export function reportProgramExecution(taskSessionId, program, solved) {
   return (dispatch, getState) => {
     const runProgramUrl = getReportProgramExecutionUrl(getState());
     const shortProgram = generateMiniRoboCode(program);
-    console.log('reporting program exectuion with', taskSessionId, shortProgram, solved);
     const data = {
       'task-session-id': taskSessionId,
       'program': shortProgram,
