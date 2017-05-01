@@ -9,7 +9,7 @@ def remove_current_user(backend, uid, user=None, *args, **kwargs):
     social authentication started. Normal users are logged out. Lazy users are
     kept, if and only if social account has not yet been used.
     """
-    extra_login = user is not None
+    extra_login = False
     request = backend.strategy.request
     provider = backend.name
     social = backend.strategy.storage.user.get_social_auth(provider, uid)
@@ -22,17 +22,14 @@ def remove_current_user(backend, uid, user=None, *args, **kwargs):
             else:
                 logout(request)
             user = None
+            extra_login = True
     else:
-        if user:
-            if is_lazy_user(user):
+        if user and is_lazy_user(user):
                 delete_lazy_user(user)
-            else:
-                logout(request)
-                user = None
 
     if session_next:
         backend.strategy.session_set('next', session_next)
-    return {'user': user, 'force_login': extra_login, 'backend':backend}
+    return {'user': user, 'extra_login': extra_login, 'backend': backend}
 
 
 def force_login(backend, user=None, extra_login=False, *args, **kwargs):
@@ -41,12 +38,9 @@ def force_login(backend, user=None, extra_login=False, *args, **kwargs):
     login, this function will force log in of the social user if required.
     """
     if extra_login:
-        session_next = backend.strategy.session_get('next')
         # backed is especially needed in cases where lazy users are converted
         # to social ones, otherwise they are still treated as lazy
         user.backend = '{0}.{1}'.format(backend.__module__,
                                         backend.__class__.__name__)
         login(backend.strategy.request, user)
-        if next:
-            backend.strategy.session_set('next', session_next)
     return None

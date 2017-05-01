@@ -1,12 +1,11 @@
 from django.test import TestCase
 from lazysignup.models import LazyUser
-from lazysignup.templatetags.lazysignup_tags import is_lazy_user
 from lazysignup.utils import is_lazy_user
 from users.services import create_or_convert
 
 
 class UserTests(TestCase):
-    def test_create_or_conver(self):
+    def test_create_or_convert(self):
         user, username = LazyUser.objects.create_lazy_user()
         email = 'a@b.cz'
         first_name = 'Petr'
