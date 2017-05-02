@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import TasksTable from '../components/TasksTable';
 import { fetchPraticeOverview } from '../actions/api';
+import { isLoaded } from '../selectors/app';
 
 
 function mapStateToProps(state) {
@@ -10,6 +11,7 @@ function mapStateToProps(state) {
     tasks: state.tasks,
     categories: state.categories,
     recommendation: state.recommendation,
+    isLoaded: isLoaded(state),
   };
 }
 
@@ -17,8 +19,16 @@ function mapStateToProps(state) {
 @connect(mapStateToProps, { fetchPraticeOverview })
 @muiThemeable()
 export default class TasksTableContainer extends React.Component {
-  componentWillMount() {
-    this.props.fetchPraticeOverview();
+  componentDidMount() {
+    if (this.props.isLoaded) {
+      this.props.fetchPraticeOverview();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isLoaded && this.props.isLoaded) {
+      this.props.fetchPraticeOverview();
+    }
   }
 
   render() {
