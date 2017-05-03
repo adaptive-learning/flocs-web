@@ -11,7 +11,7 @@ import { CREATE_TASK_ENVIRONMENT,
          MOVE,
          EVOLVE_WORLD,
          INTERPRETATION_STARTED,
-         TASK_ATTEMPTED,
+         INTERPRETATION_FINISHED,
          CHANGE_GAME_PANEL_WIDTH,
          SET_EDITOR_TYPE,
          SOLVE_TASK_FULFILLED } from '../action-types';
@@ -48,7 +48,7 @@ export default function reduceTaskEnvironments(state = {}, action) {
       return updateTaskEnvironment(state, changeRoboAst, action.payload);
     case INTERPRETATION_STARTED:
       return updateTaskEnvironment(state, startInterpretation, action.payload);
-    case TASK_ATTEMPTED:
+    case INTERPRETATION_FINISHED:
       return updateTaskEnvironment(state, endInterpretation, action.payload);
     case CHANGE_GAME_PANEL_WIDTH:
       return updateTaskEnvironment(state, changeGamePanelWidth, action.payload);

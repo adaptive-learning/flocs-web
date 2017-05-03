@@ -10,7 +10,7 @@ import { CREATE_TASK_ENVIRONMENT,
          MOVE,
          EVOLVE_WORLD,
          INTERPRETATION_STARTED,
-         TASK_ATTEMPTED,
+         INTERPRETATION_FINISHED,
          CHANGE_GAME_PANEL_WIDTH,
          SET_EDITOR_TYPE } from '../action-types';
 import { getTaskId,
@@ -133,9 +133,9 @@ export function changeSetting(taskEnvironmentId, taskSource) {
 }
 
 
-export function taskAttempted(taskEnvironmentId) {
+function interpretationFinished(taskEnvironmentId) {
   return {
-    type: TASK_ATTEMPTED,
+    type: INTERPRETATION_FINISHED,
     payload: { taskEnvironmentId },
   };
 }
@@ -171,7 +171,7 @@ export function runProgram(taskEnvironmentId) {
     const interpretingPromise = startingInterpretation()
       .then(interpret)
       .catch(handleInterpreterError)
-      .then(() => dispatch(taskAttempted(taskEnvironmentId)))
+      .then(() => dispatch(interpretationFinished(taskEnvironmentId)))
       .then(() => reportProgramExecutionInTaskEnvironment(dispatch, getState(), taskEnvironmentId));
     return interpretingPromise;
   };
