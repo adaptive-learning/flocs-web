@@ -26,7 +26,7 @@ import { getToolbox } from '../selectors/task';
 import { interpretRoboAst, interpretRoboCode, InterpreterError } from '../core/roboCodeInterpreter';
 import { parseTaskSourceText } from '../core/taskSourceParser';
 import { downloadTextFile, loadTextFile } from '../utils/files';
-import { startTask, solveTask, reportProgramExecution, reportProgramEdit } from '../actions/api';
+import { startTask, reportProgramExecution, reportProgramEdit } from '../actions/api';
 
 
 export function createTaskEnvironment(taskEnvironmentId) {
@@ -46,13 +46,6 @@ export function startTaskInTaskEnvironment(taskEnvironmentId, taskId) {
   });
 }
 
-
-export function solveTaskInTaskEnvironment(taskEnvironmentId) {
-  return ((dispatch, getState) => {
-    const taskSessionId = getTaskSessionId(getState(), taskEnvironmentId);
-    return dispatch(solveTask(taskSessionId, taskEnvironmentId));
-  });
-}
 
 export function setTaskSession(taskEnvironmentId, taskSession) {
   return {
@@ -192,7 +185,7 @@ function reportProgramExecutionInTaskEnvironment(dispatch, state, taskEnvironmen
   }
   const ast = getRoboAst(state, taskEnvironmentId);
   const solved = isSolved(state, taskEnvironmentId);
-  dispatch(reportProgramExecution(taskSessionId, ast, solved));
+  dispatch(reportProgramExecution(taskSessionId, ast, solved, taskEnvironmentId));
 }
 
 

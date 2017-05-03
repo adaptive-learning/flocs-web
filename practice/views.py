@@ -8,7 +8,7 @@ from flocs.extractors import get_practice_overview, get_recommendation
 from flocsweb.store import open_django_store
 from .serializers import StudentSerializer, TaskSessionSerializer
 from .serializers import PracticeOverviewSerializer
-from .serializers import SolveTaskDiffSerializer
+from .serializers import ProgramExecutionReportSerializer
 from .models import Student, TaskSession
 from .permissions import IsAdminOrOwnerPostAnyone
 
@@ -39,7 +39,49 @@ class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
     @detail_route(methods=['post'])
-    def solve_task(self, request, pk=None):
+    def edit_program(self, request, pk=None):
+        del pk  # TODO: check that student matches request.user (?)
+        with open_django_store(request=request) as store:
+            intent = EditProgram(
+                task_session_id=UUID(request.data['task-session-id']),
+                program=request.data['program'],
+            )
+            store.add(intent)
+        return Response()
+
+    @detail_route(methods=['post'])
+    def run_program(self, request, pk=None):
+        # TODO: check that student matches request.user (?)
+        task_session_id = UUID(request.data['task-session-id'])
+        program = request.data['program']
+        correct = request.data['correct']
+        with open_django_store(request=request) as store:
+            intent = RunProgram(
+                task_session_id=task_session_id,
+                program=program,
+                correct=correct,
+            )
+            store.add(intent)
+        report = {'correct': correct}
+        if correct:
+            with open_django_store(request=request) as store:
+                solve_task_intent = SolveTask(task_session_id=task_session_id)
+                store.add(solve_task_intent)
+                # commit required to computed recommendation for new state
+                # (due to limitation of current db entity map implementation)
+                #store.commit()
+            with open_django_store(request=request) as store:
+                report['recommendation'] = get_recommendation(store.state, student_id=pk)
+                report['progress'] = {
+                    'level': 0,
+                    'credits': 0,
+                    'active_credits': 0,
+                }
+        serializer = ProgramExecutionReportSerializer(report)
+        return Response(serializer.data)
+
+    @detail_route(methods=['post'])
+    def run_program_and_solve_task(self, request, pk=None):
         with open_django_store(request=request) as store:
             intent = SolveTask(
                 task_session_id=UUID(request.data['task-session-id']))
@@ -57,28 +99,6 @@ class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = SolveTaskDiffSerializer(diff)
         return Response(serializer.data)
 
-    @detail_route(methods=['post'])
-    def edit_program(self, request, pk=None):
-        del pk  # TODO: check that student matches request.user (?)
-        with open_django_store(request=request) as store:
-            intent = EditProgram(
-                task_session_id=UUID(request.data['task-session-id']),
-                program=request.data['program'],
-            )
-            store.add(intent)
-        return Response()
-
-    @detail_route(methods=['post'])
-    def run_program(self, request, pk=None):
-        del pk  # TODO: check that student matches request.user (?)
-        with open_django_store(request=request) as store:
-            intent = RunProgram(
-                task_session_id=UUID(request.data['task-session-id']),
-                program=request.data['program'],
-                correct=request.data['correct'],
-            )
-            store.add(intent)
-        return Response()
 
 
 class TaskSessionsViewSet(viewsets.ModelViewSet):

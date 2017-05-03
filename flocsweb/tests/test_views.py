@@ -97,7 +97,14 @@ class FlocsWebViewsTests(TestCase):
         task_session_id = response.data['data']['task_session_id']
         # solve the task
         response = self.client.post(
-            '/api/students/{pk}/solve_task/'.format(pk=student_id),
-            {'task-session-id': str(task_session_id)})
-        # check diff
+            '/api/students/{pk}/run_program/'.format(pk=student_id),
+            {
+                'task-session-id': str(task_session_id),
+                'correct': True,
+                'program': '',
+            }
+        )
+        # check response
+        self.assertEqual(response.data['correct'], True)
+        self.assertIsNotNone(response.data['progress'])
         self.assertNotEqual(response.data['recommendation'], 'one-step-forward')

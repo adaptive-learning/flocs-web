@@ -57,22 +57,6 @@ export function startTask(taskId, taskEnvironmentId) {
 }
 
 
-// TODO: factor out non-api (taskEnvironment) part
-export function solveTask(taskSessionId, taskEnvironmentId) {
-  return (dispatch, getState) => {
-    const solveTaskUrl = getSolveTaskUrl(getState());
-    const data = { 'task-session-id': taskSessionId };
-    const action = {
-      type: SOLVE_TASK,
-      payload: axios.post(solveTaskUrl, data)
-        .then(parseSolveTaskResponse)
-        .then(payload => ({ ...payload, taskEnvironmentId })),
-    };
-    return dispatch(action);
-  };
-}
-
-
 export function reportProgramEdit(taskSessionId, oldAst, newAst) {
   return (dispatch, getState) => {
     const editProgramUrl = getReportProgramEditUrl(getState());
@@ -94,7 +78,8 @@ export function reportProgramEdit(taskSessionId, oldAst, newAst) {
 }
 
 
-export function reportProgramExecution(taskSessionId, program, solved) {
+// TODO: factor out non-api (taskEnvironment) part
+export function reportProgramExecution(taskSessionId, program, solved, taskEnvironmentId) {
   return (dispatch, getState) => {
     const runProgramUrl = getReportProgramExecutionUrl(getState());
     const shortProgram = generateMiniRoboCode(program);
@@ -103,10 +88,20 @@ export function reportProgramExecution(taskSessionId, program, solved) {
       'program': shortProgram,
       'correct': solved,
     };
+    if (solved) {
+      const action = {
+        type: SOLVE_TASK,
+        payload: axios.post(runProgramUrl, data)
+          .then(parseSolveTaskResponse)
+          .then(payload => ({ ...payload, taskEnvironmentId })),
+      };
+      return dispatch(action);
+    }
     const action = {
-      type: 'REPORT_PROGRAM_EXECUTION',
+      type: 'REPORT_INCORRECT_PROGRAM_EXECUTION',
       payload: axios.post(runProgramUrl, data),
     };
+    // TODO: maybe it's not even needed to dispatch any action for incorrect runs?
     return dispatch(action);
   };
 }
@@ -205,7 +200,6 @@ function parseStudentResponse(response) {
     credits: data['credits'],
     seenInstructions: data['seen_instructions'],
     practiceOverviewUrl: data['practice_overview'],
-    solveTaskUrl: data['solve_task'],
     reportProgramEditUrl: data['edit_program'],
     reportProgramExecutionUrl: data['run_program'],
   };
