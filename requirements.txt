@@ -10,7 +10,7 @@ django-modeltranslation==0.10.2
 django-select-multiple-field==0.4.2
 django-webpack-loader==0.3.3
 djangorestframework==3.4.3
-flocs==0.0.13
+flocs==0.0.14
 ipython==5.0.0
 ipython-genutils==0.1.0
 isort==4.2.5
