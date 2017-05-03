@@ -171,8 +171,10 @@ export function runProgram(taskEnvironmentId) {
     const interpretingPromise = startingInterpretation()
       .then(interpret)
       .catch(handleInterpreterError)
-      .then(() => dispatch(interpretationFinished(taskEnvironmentId)))
-      .then(() => reportProgramExecutionInTaskEnvironment(dispatch, getState(), taskEnvironmentId));
+      .then(() => {
+        dispatch(interpretationFinished(taskEnvironmentId));
+        reportProgramExecutionInTaskEnvironment(dispatch, getState(), taskEnvironmentId);
+      });
     return interpretingPromise;
   };
 }
