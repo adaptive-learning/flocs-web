@@ -31,8 +31,18 @@ class PersistenceHooks(Store.Hooks):
         self.request_context = request_context
 
     def post_commit(self, state, diff):
-        for entity_name, _entity_id, entity in diff:
-            model_mapping[entity_name].import_entity(entity=entity, **self.request_context)
+        # enforce correct order of entities to avoid integrity constraint violations
+        order = [
+            entities.Student,
+            entities.Session,
+            entities.TaskSession,
+            entities.ProgramSnapshot,
+            entities.SeenInstruction,
+            entities.Action,
+        ]
+        sorted_diff = sorted(diff, key=lambda d: order.index(d[0]))
+        for entity_class, _entity_id, entity in sorted_diff:
+            model_mapping[entity_class].import_entity(entity=entity, **self.request_context)
 
 
 def open_django_store(request=None):
