@@ -1,6 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
+import LevelBar from '../components/LevelBar';
 
 
 export default class CompleteTaskModal extends React.Component {
@@ -29,8 +30,9 @@ export default class CompleteTaskModal extends React.Component {
         open={this.props.open}
         onRequestClose={this.props.handleClose}
         contentStyle={{ textAlign: 'center' }}
-        actionsContainerStyle={{ textAlign: 'center' }}
+        actionsContainerStyle={{ textAlign: 'center', paddingBottom: 20 }}
       >
+        <LevelBar {...this.props.levelInfo} />
       </Dialog>
     );
   }

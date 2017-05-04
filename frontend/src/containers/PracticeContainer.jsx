@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import TaskEnvironmentContainer from './TaskEnvironmentContainer';
 import { isSolved } from '../selectors/gameState';
 import { isTaskCompletionDialogOpen } from '../selectors/taskEnvironment';
+import { getLevelInfo } from '../selectors/student';
 import { startTaskInTaskEnvironment, closeTaskCompletionDialog } from '../actions/taskEnvironment';
 import CompleteTaskModal from '../components/CompleteTaskModal';
 
@@ -13,6 +14,7 @@ function getProps(state, props) {
     solved: isSolved(state, props.taskEnvironmentId),
     taskCompletionDialogPosition: props.taskCompletionDialogPosition,
     isTaskCompletionDialogOpen: isTaskCompletionDialogOpen(state, props.taskEnvironmentId),
+    levelInfo: getLevelInfo(state),
   };
 }
 
@@ -50,6 +52,7 @@ export default class PracticeContainer extends React.Component {
           open={this.props.isTaskCompletionDialogOpen}
           position={this.props.taskCompletionDialogPosition}
           handleClose={this.closeTaskCompletionDialog}
+          levelInfo={this.props.levelInfo}
         />
       </div>
     );
