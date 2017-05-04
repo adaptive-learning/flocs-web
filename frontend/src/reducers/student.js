@@ -12,7 +12,9 @@ export default function reduceStudent(state = {}, action) {
     case UPDATE_STUDENT_FULFILLED:
       return {
         ...state,
+        level: action.payload.level,
         credits: action.payload.credits,
+        activeCredits: action.payload.activeCredits,
         practiceOverviewUrl: action.payload.practiceOverviewUrl,
         reportProgramEditUrl: action.payload.reportProgramEditUrl,
         reportProgramExecutionUrl: action.payload.reportProgramExecutionUrl,

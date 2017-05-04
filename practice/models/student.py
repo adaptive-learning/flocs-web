@@ -1,8 +1,8 @@
+from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import User
-from flocsweb.mixins import ImportExportMixin
 from flocs import entities
-from uuid import uuid4
+from flocsweb.mixins import ImportExportMixin
 from tasks.models import Instruction
 
 

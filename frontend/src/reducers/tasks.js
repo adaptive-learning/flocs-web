@@ -33,7 +33,7 @@ function parseTask(data) {
     id: data['task_id'],
     category: data['category'],
     setting: jsonToObject(data.setting),
-    solution: jsonToObject(data.setting),
+    // solution: jsonToObject(data.solution), // TODO: requires to fix json fields first
   };
   return task;
 }

@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from flocs.extractors import get_level, get_active_credits
+from flocsweb.store import db_state
 from .models import Student, TaskSession
 
 
@@ -23,7 +25,10 @@ class TaskSessionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
+    level = serializers.SerializerMethodField()
+    active_credits = serializers.SerializerMethodField()
     seen_instructions = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
     practice_overview = serializers.HyperlinkedIdentityField(
         view_name='student-practice-overview',
         read_only=True)
@@ -36,6 +41,12 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Student
+
+    def get_active_credits(self, student):
+        return get_active_credits(db_state, student_id=student.student_id)
+
+    def get_level(self, student):
+        return get_level(db_state, student_id=student.student_id).level_id
 
 
 class StudentInstructionSerializer(serializers.Serializer):

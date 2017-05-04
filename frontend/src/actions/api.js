@@ -198,6 +198,8 @@ function parseStudentResponse(response) {
   const { data } = response;
   return {
     credits: data['credits'],
+    activeCredits: data['active_credits'],
+    level: data['level'],
     seenInstructions: data['seen_instructions'],
     practiceOverviewUrl: data['practice_overview'],
     reportProgramEditUrl: data['edit_program'],

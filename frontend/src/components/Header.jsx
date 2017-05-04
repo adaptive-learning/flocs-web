@@ -1,7 +1,9 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import logo from 'images/logo.png'
+import LevelBar from '../components/LevelBar';
 
 
 @muiThemeable()
@@ -17,15 +19,23 @@ export default class Header extends React.Component {
         }}
       />
     );
+    const { level, activeCredits, maxCredits } = this.props.levelInfo;
+    const toolbar = (
+      <Toolbar style={{ backgroundColor: 'transparent', color: 'white' }}>
+        <ToolbarGroup>
+          <LevelBar mini {...this.props.levelInfo} />
+        </ToolbarGroup>
+      </Toolbar>
+    );
     return (
       <AppBar
         title={logoImg}
-        iconClassNameRight="muidocs-icon-navigation-expand-more"
         style={{
           backgroundColor: this.props.muiTheme.palette.primary1Color,
           margin: 0,
         }}
         onLeftIconButtonTouchTap={this.props.onMenuIconTouchTap}
+        iconElementRight={toolbar}
       />
     );
   }
