@@ -80,26 +80,6 @@ class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = ProgramExecutionReportSerializer(report)
         return Response(serializer.data)
 
-    @detail_route(methods=['post'])
-    def run_program_and_solve_task(self, request, pk=None):
-        with open_django_store(request=request) as store:
-            intent = SolveTask(
-                task_session_id=UUID(request.data['task-session-id']))
-            store.add(intent)
-        # NOTE: current db store implementation doesn't allow to read
-        # uncommited changes, so we need to commit and re-open the with-block
-        # before computing changes... (TODO: fix it)
-        with open_django_store(request=request) as store:
-            diff = {
-                'level': 0,
-                'credits': 0,
-                'active_credits': 0,
-                'recommendation': get_recommendation(store.state, student_id=pk),
-            }
-        serializer = SolveTaskDiffSerializer(diff)
-        return Response(serializer.data)
-
-
 
 class TaskSessionsViewSet(viewsets.ModelViewSet):
     """
