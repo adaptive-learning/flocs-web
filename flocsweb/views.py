@@ -1,6 +1,8 @@
-from json import loads
+from django.conf import global_settings, settings
+from django.contrib.sessions.models import Session
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
+from json import loads
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 from rest_framework import viewsets
@@ -28,7 +30,17 @@ def redirect_home(request):
 
 @ensure_csrf_cookie
 def frontend_app(request, *_):
-    return render(request, 'index.html')
+    response = render(request, 'index.html')
+    # In case there is an invalid or otherwise corrupted session id cookie sent
+    # from the user, delete the cookie right away. If we ignore invalid
+    # session ids, it causes unpredictable problems when running parallel
+    # requests from the frontend app as each response will instruct the browser
+    # to set a new session id resulting in a race condition.
+    if request.session.session_key and not Session.objects.filter(pk=request.session.session_key).exists():
+        cookie_name = settings.SESSION_COOKIE_NAME if hasattr(settings, 'SESSION_COOKIE_NAME') \
+            else global_settings.SESSION_COOKIE_NAME
+        response.delete_cookie(cookie_name)
+    return response
 
 
 class ActionsViewSet(mixins.CreateModelMixin,
