@@ -5,6 +5,7 @@ from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from flocs.actions import EditProgram, RunProgram, SolveTask
 from flocs.extractors import get_practice_overview, get_recommendation
+from flocs.extractors import get_level, get_active_credits
 from flocsweb.store import open_django_store
 from .serializers import StudentSerializer, TaskSessionSerializer
 from .serializers import PracticeOverviewSerializer
@@ -73,10 +74,9 @@ class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
             with open_django_store(request=request) as store:
                 report['recommendation'] = get_recommendation(store.state, student_id=pk)
                 report['progress'] = {
-                    # fake data for testing purposes
-                    'level': 2,
-                    'credits': 7,
-                    'active_credits': 3,
+                    'level': get_level(store.state, student_id=pk).level_id,
+                    'credits': Student.objects.get(pk=pk).credits,
+                    'active_credits': get_active_credits(store.state, student_id=pk)
                 }
         serializer = ProgramExecutionReportSerializer(report)
         return Response(serializer.data)
