@@ -1,7 +1,7 @@
-export function getLevelInfo(state) {
+export function getLevelStatus(state) {
   const level = state.student.level;
   const activeCredits = state.student.activeCredits;
-  const nextLevel = state.levels[level + 1] || state.levels[level];
-  const maxCredits = nextLevel.credits;
+  // current level specify number of credits the student needs to level up
+  const maxCredits = state.levels[level].credits;
   return { level, activeCredits, maxCredits };
 }

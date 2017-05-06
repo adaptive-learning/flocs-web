@@ -73,9 +73,10 @@ class StudentsViewSet(viewsets.ReadOnlyModelViewSet):
             with open_django_store(request=request) as store:
                 report['recommendation'] = get_recommendation(store.state, student_id=pk)
                 report['progress'] = {
-                    'level': 0,
-                    'credits': 0,
-                    'active_credits': 0,
+                    # fake data for testing purposes
+                    'level': 2,
+                    'credits': 7,
+                    'active_credits': 3,
                 }
         serializer = ProgramExecutionReportSerializer(report)
         return Response(serializer.data)

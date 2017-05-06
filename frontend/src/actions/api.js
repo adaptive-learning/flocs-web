@@ -152,6 +152,16 @@ function parseSolveTaskResponse(response) {
   const data = response.data;
   return {
     recommendation: data['recommendation'],
+    progress: parseProgress(data['progress']),
+  };
+}
+
+
+function parseProgress(data) {
+  return {
+    level: data['level'],
+    credits: data['credits'],
+    activeCredits: data['active_credits'],
   };
 }
 

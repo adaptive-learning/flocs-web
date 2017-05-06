@@ -2,10 +2,12 @@ import React, { PropTypes } from 'react';
 import { Line as ProgressBar } from 'rc-progress';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
+
 const propTypes = {
   level: PropTypes.number.isRequired,
   activeCredits: PropTypes.number.isRequired,
   maxCredits: PropTypes.number.isRequired,
+  percent: PropTypes.number,  // if not set, it's computed from active and max credits
   mini: PropTypes.bool,
 };
 
@@ -16,7 +18,6 @@ const defaultProps = {
 @muiThemeable()
 export default class LevelBar extends React.Component {
   render() {
-    const percent = 100 * this.props.activeCredits / this.props.maxCredits;
     const styleDefault = {
       display: 'inline-block',
       width: 250,
@@ -31,6 +32,10 @@ export default class LevelBar extends React.Component {
       lineHeight: '9px',
       textAlign: 'center',
     };
+    let percent = this.props.percent;
+    if (percent === undefined || percent === null) {
+      percent = Math.floor(100 * this.props.activeCredits / this.props.maxCredits);
+    }
     if (this.props.mini) {
       return (
         <span>
@@ -68,6 +73,7 @@ export default class LevelBar extends React.Component {
     );
   }
 }
+
 
 LevelBar.propTypes = propTypes;
 LevelBar.defaultProps = defaultProps;
