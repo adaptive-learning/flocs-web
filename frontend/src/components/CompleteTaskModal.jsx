@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
@@ -79,7 +80,10 @@ export default class CompleteTaskModal extends React.Component {
     } else if (this.state.animating) {
       actions = [this.renderContinueButton(false)];
     } else {
-      actions = [<NextTaskButtonContainer />];
+      actions = [
+        <NextTaskButtonContainer />,
+        <Link to="/tasks"><RaisedButton label="Přehled úloh" style={{ marginLeft: 10 }} /></Link>
+      ];
     }
     return (
       <Dialog
