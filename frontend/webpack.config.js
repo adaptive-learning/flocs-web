@@ -40,7 +40,7 @@ module.exports = {
             },
 
             // Images
-            { test: /\.(png)$/,  loader: "url-loader?limit=8000&name=/images/[name].[ext]" },
+            { test: /\.(png|jpg)$/,  loader: "url-loader?limit=8000&name=/images/[name].[ext]" },
             { test: /\.woff|woff2$/,  loader: "url-loader?limit=10000&mimetype=application/font-woff&name=/fonts/[name].[ext]" },
             { test: /\.ttf|eot|svg$/,    loader: "file-loader" }
         ]

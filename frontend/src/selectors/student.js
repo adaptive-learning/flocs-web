@@ -5,3 +5,8 @@ export function getLevelStatus(state) {
   const maxCredits = state.levels[level].credits;
   return { level, activeCredits, maxCredits };
 }
+
+
+export function isNewStudent(state) {
+  return state.student.credits === 0;
+}

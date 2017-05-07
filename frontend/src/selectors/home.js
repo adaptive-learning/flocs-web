@@ -1,7 +1,13 @@
 import { isSolved } from '../selectors/gameState';
 
-const spaceWorldDemoEnvironmentName = 'home-commands';
+const spaceWorldDemoEnvironmentId = 'home-commands';
+const programDemoEnvironmentId = 'home-program';
 
 export function isSpaceWorldDemoSolved(state) {
-  return isSolved(state, spaceWorldDemoEnvironmentName);
+  return isSolved(state, spaceWorldDemoEnvironmentId);
+}
+
+
+export function isProgramDemoSolved(state) {
+  return isSolved(state, programDemoEnvironmentId);
 }

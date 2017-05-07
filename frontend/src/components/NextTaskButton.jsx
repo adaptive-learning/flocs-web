@@ -1,25 +1,34 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
+import TaskIcon from 'material-ui/svg-icons/av/play-arrow';
 import TaskName from './TaskName';
 
 
 export default function NextTaskButton({ task }) {
-  let visibility = 'hidden';
-  let taskId = '';
-  let url = '#';
-  if (task !== null) {
-    visibility = true;
-    taskId = task.taskId;
-    url = task.url;
+  const style = {
+    minWidth: 200,
+    display: 'inline-block',
+  };
+  if (task === null) {
+    return (
+      <RaisedButton
+        icon={<TaskIcon />}
+        style={style}
+        label="?"
+        disabled={true}
+      />
+    );
   }
   return (
-    <span style={{ visibility, display: 'inline-block' }}>
-      <div> Doporučená úloha:</div>
-      <Link to={url}>
-        <RaisedButton label={<TaskName taskId={taskId} />} primary={true} />
-      </Link>
-    </span>
+    <Link to={task.url}>
+      <RaisedButton
+        icon={<TaskIcon />}
+        style={style}
+        label={<span style={{ position: 'relative', top: 1 }}><TaskName taskId={task.taskId} /></span>}
+        primary={true}
+      />
+    </Link>
   );
 }
 
