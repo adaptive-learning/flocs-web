@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Home from '../components/Home';
 import { setTaskById } from '../actions/taskEnvironment';
+import { isSpaceWorldDemoSolved } from '../selectors/home';
 
 
 const propTypes = {
@@ -10,8 +11,8 @@ const propTypes = {
 };
 
 
-@connect(store => ({
-  recommendation: store.recommendation,  // TODO: remove if not needed
+@connect(state => ({
+  spaceWorldDemoSolved: isSpaceWorldDemoSolved(state),
 }), { setTaskById })
 export default class HomeContainer extends React.Component {
   componentDidMount() {
@@ -21,7 +22,7 @@ export default class HomeContainer extends React.Component {
 
   render() {
     return (
-      <Home recommendation={this.props.recommendation} />
+      <Home spaceWorldDemoSolved={this.props.spaceWorldDemoSolved} />
     );
   }
 }

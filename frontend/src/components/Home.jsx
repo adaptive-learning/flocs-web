@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router'
 import muiThemeable from 'material-ui/styles/muiThemeable';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import Scroll from 'react-scroll';
 import SpaceGameContainer from '../containers/SpaceGameContainer';
 import TaskEnvironmentContainer from '../containers/TaskEnvironmentContainer';
 import NextTaskButtonContainer from '../containers/NextTaskButtonContainer';
@@ -16,30 +19,43 @@ export default class Home extends React.Component {
           <div style={slideContentStyle}>
             <h2>Prozkoumej tajemný vesmír</h2>
             <h2>a posbírej všechny diamanty</h2>
-            <SpaceGameContainer
-              taskEnvironmentId="home-commands"
-              controls={['fly', 'left', 'right', 'reset']}
-            />
-          </div>
-        </section>
-
-        <section style={{...slideStyle, backgroundColor: this.props.muiTheme.palette.primary1Color }} >
-          <div style={slideContentStyle}>
-            <h2>Nauč se ovládat vesmírnou loď</h2>
-            <h2>pomocí počítačových programů</h2>
-            <div
-              style={{
-                position: 'relative',
-                height: 350,
-                width: 800,
-                margin: '0 auto',
-                border: '2px solid #777'
-              }}
-            >
-              <TaskEnvironmentContainer taskEnvironmentId="home-program" />
+            <div>
+              <SpaceGameContainer
+                taskEnvironmentId="home-commands"
+                controls={['fly', 'left', 'right', 'reset']}
+              />
+            </div>
+            <div style={{ minHeight: 90, paddingTop: 25 }}>
+            { this.props.spaceWorldDemoSolved &&
+              <Scroll.Link to="intro-slide-2" smooth={true} duration={500}>
+                <FloatingActionButton secondary={true}>
+                  <ArrowDown />
+                </FloatingActionButton>
+              </Scroll.Link>
+            }
             </div>
           </div>
         </section>
+
+        <Scroll.Element name="intro-slide-2">
+          <section style={{...slideStyle, backgroundColor: this.props.muiTheme.palette.primary1Color }} >
+            <div style={slideContentStyle}>
+              <h2>Nauč se ovládat vesmírnou loď</h2>
+              <h2>pomocí počítačových programů</h2>
+              <div
+                style={{
+                  position: 'relative',
+                  height: 350,
+                  width: 800,
+                  margin: '0 auto',
+                  border: '2px solid #777'
+                }}
+              >
+                <TaskEnvironmentContainer taskEnvironmentId="home-program" />
+              </div>
+            </div>
+          </section>
+        </Scroll.Element>
 
         <section
           style={{
