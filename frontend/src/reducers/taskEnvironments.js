@@ -1,3 +1,4 @@
+import { LOCATION_CHANGE } from 'react-router-redux';
 import { CREATE_TASK_ENVIRONMENT,
          CLOSE_TASK_COMPLETION_DIALOG,
          SET_TASK,
@@ -18,6 +19,7 @@ import { CREATE_TASK_ENVIRONMENT,
 import { parseSpaceWorld } from '../core/spaceWorldDescription';
 import { parseRoboCode, RoboCodeSyntaxError } from '../core/roboCodeParser';
 import { generateRoboCode } from '../core/roboCodeGenerator';
+import { practicePageTaskEnvironmentId } from '../selectors/taskEnvironment';
 
 
 export default function reduceTaskEnvironments(state = {}, action) {
@@ -26,6 +28,11 @@ export default function reduceTaskEnvironments(state = {}, action) {
       return createTaskEnvironment(state, action.payload.taskEnvironmentId);
     case CLOSE_TASK_COMPLETION_DIALOG:
       return updateTaskEnvironment(state, closeTaskCompletionDialog, action.payload);
+    case LOCATION_CHANGE:
+      // make sure that task completion modal is closed when leave the practice
+      // page e.g. by clicking on "tasks overview" button
+      return updateTaskEnvironment(state, closeTaskCompletionDialog,
+        { taskEnvironmentId: practicePageTaskEnvironmentId });
     case START_TASK_FULFILLED:
       return updateTaskEnvironment(state, setTaskSessionId, action.payload);
     case SET_TASK:
