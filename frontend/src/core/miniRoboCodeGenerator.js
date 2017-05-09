@@ -4,6 +4,7 @@ export function generateMiniRoboCode(roboAst) {
     throw new Error(`Unexpected root of roboAst: ${head}`);
   }
   const roboCode = (body.length > 0) ? generateBody(body) : '';
+  console.log('generated', roboCode);
   return roboCode;
 }
 
@@ -31,13 +32,13 @@ function generateStatement({ statement }) {
 function generateSimpleStatement({ head }) {
   switch (head) {
     case 'fly':
-      return '↑';
+      return 'f';
     case 'left':
-      return '↖';
+      return 'l';
     case 'right':
-      return '↗';
+      return 'r';
     case 'shoot':
-      return '*';
+      return 's';
     default:
       throw new Error(`Unknown statement: ${head}`);
   }
@@ -46,7 +47,7 @@ function generateSimpleStatement({ head }) {
 
 function generateRepeatLoop({ count, body }) {
   const bodyCode = generateBody(body);
-  const code = `${count}x{${bodyCode}}`;
+  const code = `R${count}{${bodyCode}}`;
   return code;
 }
 
@@ -54,7 +55,7 @@ function generateRepeatLoop({ count, body }) {
 function generateWhileLoop({ test, body }) {
   const testCode = generateTest(test);
   const bodyCode = generateBody(body);
-  const code = `⟳${testCode}{${bodyCode}}`;
+  const code = `W${testCode}{${bodyCode}}`;
   return code;
 }
 
@@ -63,7 +64,7 @@ function generateIfStatement({ test, body, orelse }) {
   const testCode = generateTest(test);
   const bodyCode = generateBody(body);
   const orelseCode = orelse ? generateOrelseBlock(orelse) : '';
-  const code = `?${testCode}{${bodyCode}}${orelseCode}`;
+  const code = `I${testCode}{${bodyCode}}${orelseCode}`;
   return code;
 }
 
@@ -102,9 +103,9 @@ function generateTest(node) {
   }
   switch (node.head) {
     case 'and':
-      return generateCompoundTest('∧', node.left, node.right);
+      return generateCompoundTest('a', node.left, node.right);
     case 'or':
-      return generateCompoundTest('∨', node.left, node.right);
+      return generateCompoundTest('o', node.left, node.right);
     default:
       return generateSimpleTest(node);
   }
@@ -135,11 +136,7 @@ function generateComparator(value) {
     case '==':
       return '=';
     case '!=':
-      return '≠';
-    case '>=':
-      return '≥';
-    case '<=':
-      return '≤';
+      return '!=';
     default:
       return value;
   }
