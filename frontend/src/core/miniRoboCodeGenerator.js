@@ -4,7 +4,6 @@ export function generateMiniRoboCode(roboAst) {
     throw new Error(`Unexpected root of roboAst: ${head}`);
   }
   const roboCode = (body.length > 0) ? generateBody(body) : '';
-  console.log('generated', roboCode);
   return roboCode;
 }
 
