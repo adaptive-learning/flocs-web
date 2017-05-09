@@ -32,8 +32,6 @@ class FlocsWebViewsTests(TestCase):
         self.assertEqual(response2.data['data'], response.data['data'])
 
     def test_recommendation(self):
-        """Recommendation should not change if the current task was not solved
-        """
         # start session
         response = self.client.post(
             '/api/actions/',
@@ -49,11 +47,11 @@ class FlocsWebViewsTests(TestCase):
             '/api/actions/',
             {'type': 'start-task', 'data': json.dumps({'task_id': task_id})})
         task_session_id = response.data['data']['task_session_id']
-        # request recommendation - should be same as the first one
+        # request another recommendation (can be different from the first one)
         response = self.client.get(
             '/api/students/{pk}/practice_overview/'.format(pk=student_id))
         task_id2 = response.data['recommendation']['task_id']
-        self.assertEqual(task_id, task_id2)
+        self.assertIsNotNone(task_id2)
         # solve the task
         response = self.client.post(
             '/api/actions/',

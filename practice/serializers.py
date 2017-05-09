@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from flocs.extractors import get_level, get_active_credits
+from flocs.student_extractors import get_student_level, get_active_credits
 from flocsweb.store import db_state
 from .models import Student, TaskSession
 
@@ -46,7 +46,7 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
         return get_active_credits(db_state, student_id=student.student_id)
 
     def get_level(self, student):
-        return get_level(db_state, student_id=student.student_id).level_id
+        return get_student_level(db_state, student_id=student.student_id).level_id
 
 
 class StudentInstructionSerializer(serializers.Serializer):
