@@ -99,6 +99,7 @@ export default {
   'instruction.env.toolbox': 'Tohle je sada příkazů k ovládání vesmírné lodi. Příkazy můžeš ve svém programu používat opakovaně.',
   'instruction.env.snapping': 'Tady vytváříš svůj program. Všimni si, že bloky mají malé zobáčky, kterými je lze zapojovat do sebe. Raketka bude vykonávat pouze příkazy zapojené pod startovní blok.',
   'instruction.env.controls': 'Program spustíš kliknutím na toto tlačítko.',
+  'instruction.env.task-editor': 'Editor úloh je určen pouze pro hackery. Pokud vytvoříte nějakou pěknou úlohu, tak nám ji určitě pošlete!',
   'instruction.object.diamond': 'Raketka musí po cestě posbírat všechny diamanty.',
   'instruction.object.asteroid': 'Pokud raketka narazí do asteroidu, tak se rozbije.',
   'instruction.object.meteoroid': 'Pokud raketka narazí do meteoroidu, tak se rozbije. Naštěstí jsou meteoroidy malé a raketka je tak může rozstřelit.',

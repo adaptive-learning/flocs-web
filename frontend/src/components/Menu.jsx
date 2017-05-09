@@ -3,6 +3,7 @@ import Drawer from 'material-ui/Drawer';
 import { Menu as MaterialMenu } from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
+import Subheader from 'material-ui/Subheader';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { Link } from 'react-router';
 import Text from '../localization/Text';
@@ -58,6 +59,8 @@ export default class Menu extends React.Component {
           >
             <Text id="Tasks" />
           </MenuItem>
+          <Divider />
+          <Subheader>Pro hackery</Subheader>
           <MenuItem
             value="task-editor"
             containerElement={<Link to="/task-editor" />}

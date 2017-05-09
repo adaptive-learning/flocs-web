@@ -43,7 +43,10 @@ function SettingEditor({
   }
 
   return (
-    <div style={{ overflowX: 'hidden', backgroundColor: muiTheme.palette.canvasColor }}>
+    <div
+      className="instructionable-env-task-editor"
+      style={{ overflowX: 'hidden', backgroundColor: muiTheme.palette.canvasColor }}
+    >
       <div style={{ marginLeft: 5, marginBottom: 10 }}>
         <div>
           <TextField

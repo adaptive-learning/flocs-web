@@ -1,3 +1,4 @@
+import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   FETCH_STATIC_DATA_FULFILLED,
   UPDATE_STUDENT_FULFILLED,
@@ -43,6 +44,17 @@ export default function reduceInstructions(state = initial, action) {
         scheduled,
         activeIndex: (scheduled.length > 0) ? 0 : null,
       };
+    }
+    case LOCATION_CHANGE: {
+      if (action.payload.pathname === '/task-editor') {
+        const scheduled = state.seen.includes('env.task-editor') ? [] : ['env.task-editor'];
+        return {
+          ...state,
+          scheduled,
+          activeIndex: (scheduled.length > 0) ? 0 : null,
+        };
+      }
+      return state;
     }
     case SEE_INSTRUCTION_PENDING: {
       if (action.payload.instructionId !== state.scheduled[state.activeIndex]) {
@@ -151,6 +163,10 @@ const viewData = {
   'block.if-else': {
     selector: '.instructionable-block-if-else',
     position: 'bottom-left',
+  },
+  'env.task-editor': {
+    selector: '.instructionable-env-task-editor',
+    position: 'left',
   },
 };
 
