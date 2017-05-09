@@ -87,7 +87,7 @@ class InstructionsContainer extends React.Component {
     const blocklyTrashcanColor = '#576065';
     return (
       <IconButton
-        onClick={this.showInstructions}
+        onTouchTap={this.showInstructions}
         style={{
           position: 'fixed',
           bottom: 31,

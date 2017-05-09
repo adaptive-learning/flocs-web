@@ -3,7 +3,6 @@ import {
   UPDATE_STUDENT_FULFILLED,
   SET_TASK,
   SEE_INSTRUCTION_PENDING,
-  SEE_INSTRUCTION_FULFILLED,
   SHOW_INSTRUCTIONS,
   } from '../action-types';
 import { practicePageTaskEnvironmentId } from '../selectors/taskEnvironment';
@@ -15,13 +14,6 @@ const initial = {
   seen: [],
   scheduled: [],
   activeIndex: null,
-
-  // the following lock is just a hack to overcome the following bug: if the
-  // student clicks on "show instructions" button and then presses Enters
-  // (instead of clicking) then the last Enter on the last scheduled
-  // instruction also fires "show instruction" action again (I don't know why,
-  // and I wasn't able to avoid this).
-  seeingInstructionLock: false,
 };
 
 
@@ -63,14 +55,7 @@ export default function reduceInstructions(state = initial, action) {
       return {
         ...state,
         activeIndex: nextIndex,
-        seeingInstructionLock: true,
         seen: [...state.seen, action.payload.instructionId],
-      };
-    }
-    case SEE_INSTRUCTION_FULFILLED: {
-      return {
-        ...state,
-        seeingInstructionLock: false,
       };
     }
     case SHOW_INSTRUCTIONS: {
@@ -78,9 +63,6 @@ export default function reduceInstructions(state = initial, action) {
         return state;
       }
       if (state.scheduled.length === 0) {
-        return state;
-      }
-      if (state.seeingInstructionLock) {
         return state;
       }
       return {
