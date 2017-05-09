@@ -1,9 +1,13 @@
 /**
- * Global styles needed for flocs-visual-components
+ * Global styles
  */
 
 * {
   box-sizing: border-box;
+}
+
+h2 {
+  font-weight: 500;
 }
 
 /* ---- Blockly  ----- */

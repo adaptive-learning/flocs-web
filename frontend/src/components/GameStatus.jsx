@@ -3,8 +3,19 @@ import TaskName from './TaskName';
 import Icon from './Icon';
 
 export default function GameStatus({ taskId, solved, dead, diamonds, energy, length }) {
+  const counterStyle = {
+    paddingRight: 4,
+    marginRight: 6,
+  };
   return (
-    <span style={{ display: 'block' }}>
+    <span
+      style={{
+        display: 'block',
+        fontSize: 20,
+        marginLeft: 2,
+        marginTop: 1,
+      }}
+    >
       <span style={{ display: 'block' }}>
         <TaskName taskId={taskId} />
         {solved && <span style={{ float: 'right' }}>&#10003;</span>}
@@ -12,18 +23,30 @@ export default function GameStatus({ taskId, solved, dead, diamonds, energy, len
       </span>
       <span style={{ display: 'block' }}>
         { diamonds.total > 0 &&
-          <span className="instructionable-diamonds-status">
-            <Icon name="diamond" /> {diamonds.taken}/{diamonds.total}&nbsp;&nbsp;
+          <span
+            className="instructionable-diamonds-status"
+            style={counterStyle}
+          >
+            <Icon name="diamond" style={{ marginRight: 2 }} />
+            {diamonds.taken}/{diamonds.total}
           </span>
         }
         { energy.full !== null &&
-          <span className="instructionable-energy-status">
-            <Icon name="energy" /> {energy.current}/{energy.full}&nbsp;&nbsp;
+          <span
+            className="instructionable-energy-status"
+            style={counterStyle}
+          >
+            <Icon name="energy" style={{ marginRight: 2 }} />
+            {energy.current}/{energy.full}
           </span>
         }
         { length.limit !== null &&
-          <span className="instructionable-length-limit">
-            <Icon name="length" /> {length.used}/{length.limit}&nbsp;&nbsp;
+          <span
+            className="instructionable-length-limit"
+            style={counterStyle}
+          >
+            <Icon name="length" style={{ marginRight: 2 }} />
+            {length.used}/{length.limit}
           </span>
         }
       </span>
