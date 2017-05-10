@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import TaskEnvironmentContainer from './TaskEnvironmentContainer';
-import { isSolved } from '../selectors/gameState';
+import { isSolved, getFailReason } from '../selectors/gameState';
 import { isTaskCompletionDialogOpen } from '../selectors/taskEnvironment';
 import { getLevelStatus } from '../selectors/practice';
-import { startTaskInTaskEnvironment, closeTaskCompletionDialog } from '../actions/taskEnvironment';
+import { startTaskInTaskEnvironment, closeTaskCompletionDialog, resetGame } from '../actions/taskEnvironment';
 import { showLevelProgress } from '../actions/practice';
 import CompleteTaskModal from '../components/CompleteTaskModal';
+import TaskFailedModal from '../components/TaskFailedModal';
 
 function getProps(state, props) {
   return {
@@ -16,14 +17,24 @@ function getProps(state, props) {
     taskCompletionDialogPosition: props.taskCompletionDialogPosition,
     isTaskCompletionDialogOpen: isTaskCompletionDialogOpen(state, props.taskEnvironmentId),
     levelStatus: getLevelStatus(state),
+    failReason: getFailReason(state, props.taskEnvironmentId),
   };
 }
 
-@connect(getProps, { startTaskInTaskEnvironment, closeTaskCompletionDialog, showLevelProgress })
+
+const actionCreators = {
+  startTaskInTaskEnvironment,
+  closeTaskCompletionDialog,
+  showLevelProgress,
+  resetGame,
+};
+
+@connect(getProps, actionCreators)
 export default class PracticeContainer extends React.Component {
   constructor(props) {
     super(props);
     this.closeTaskCompletionDialog = this.props.closeTaskCompletionDialog.bind(this, this.props.taskEnvironmentId);
+    this.resetGame = this.props.resetGame.bind(this, this.props.taskEnvironmentId);
   }
 
   componentWillMount() {
@@ -55,6 +66,11 @@ export default class PracticeContainer extends React.Component {
           handleClose={this.closeTaskCompletionDialog}
           levelStatus={this.props.levelStatus}
           showLevelProgress={this.props.showLevelProgress}
+        />
+        <TaskFailedModal
+          open={this.props.failReason !== null}
+          reason={this.props.failReason}
+          resetGame={this.resetGame}
         />
       </div>
     );

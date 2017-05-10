@@ -3,11 +3,12 @@ import {
   amber500, amber700, amber100,
   cyan500, cyan700, cyan100,
   green700,
-  fullWhite,
+  white, fullWhite,
 } from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
 
-
+// for defaults, meaning and customization, see:
+// https://github.com/callemall/material-ui/blob/master/src/styles/getMuiTheme.js
 const theme = {
   themeName: 'Flocs Theme',
   fontFamily: 'Roboto, sans-serif',
@@ -36,6 +37,10 @@ const theme = {
   toggle: {
     thumbOffColor: grey400,
     trackOffColor: grey600,
+  },
+  dialog: {
+    bodyFontSize: 18,
+    bodyColor: white,
   },
 };
 

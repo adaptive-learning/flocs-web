@@ -101,6 +101,13 @@ export default {
   'category.final-challenge': 'Závěrečná výzva',
   'category.uncategorized': 'Nezařazené úlohy',
 
+  'fail-reason.crashed-last-row': 'Raketka musí v cílové rovince zastavit',
+  'fail-reason.crashed-edge': 'Raketka vyletěla z vesmírné dráhy a rozbila se',
+  'fail-reason.crashed-meteoroid': 'Raketka narazila do meteoroidu a rozbila se',
+  'fail-reason.crashed-asteoroid': 'Raketka narazila do asteoroidu a rozbila se',
+  'fail-reason.last-row-not-reached': 'Raketka musí doledět do cílové rovinky',
+  'fail-reason.missing-diamonds': 'Raketka musí posbírat všechny diamanty',
+
   'instruction.env.space-world': 'Tvým úkolem je dostat vesmírnou loď na druhou stranu vesmírného světa.',
   'instruction.env.toolbox': 'Tohle je sada příkazů k ovládání vesmírné lodi. Příkazy můžeš ve svém programu používat opakovaně.',
   'instruction.env.snapping': 'Tady vytváříš svůj program. Všimni si, že bloky mají malé zobáčky, kterými je lze zapojovat do sebe. Raketka bude vykonávat pouze příkazy zapojené pod startovní blok.',

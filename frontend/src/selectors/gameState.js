@@ -24,6 +24,34 @@ export function isSolved(state, taskEnvironmentId) {
 }
 
 
+export function getFailReason(state, taskEnvironmentId) {
+  const { fields, spaceship, diamonds, stage } = getGameState(state, taskEnvironmentId);
+  if (stage === 'dead') {
+    if (beyondLastRow(fields, spaceship)) {
+      return 'crashed-last-row';
+    }
+    if (beyondEdges(fields, spaceship)) {
+      return 'crashed-edge';
+    }
+    if (onAsteoroid(fields, spaceship)) {
+      return 'crashed-asteoroid';
+    }
+    if (onMeteoroid(fields, spaceship)) {
+      return 'crashed-meteoroid';
+    }
+  }
+  if (stage === 'stopped') {
+    if (!lastRowReached(spaceship)) {
+      return 'last-row-not-reached';
+    }
+    if (diamonds.taken < diamonds.total) {
+      return 'missing-diamonds';
+    }
+  }
+  return null;
+}
+
+
 export function isDead(state, taskEnvironmentId) {
   return getGameStage(state, taskEnvironmentId) === 'dead';
 }
@@ -414,11 +442,38 @@ function outsideWorld(fields, position) {
 }
 
 
+function beyondLastRow(fields, position) {
+  const [y, x] = position;
+  return y < 0;
+}
+
+
+function beyondEdges(fields, position) {
+  const [y, x] = position;
+  const [minX, maxX] = [0, fields[0].length - 1];
+  return (x < minX || x > maxX);
+}
+
+
 function onRock(fields, position) {
   const rockObjects = new Set(['M', 'A']);  // TODO: factor out to common world description?)
   const [y, x] = position;
   const objects = fields[y][x][1];
   return objects.some(object => rockObjects.has(object));
+}
+
+
+function onAsteoroid(fields, position) {
+  const [y, x] = position;
+  const objects = fields[y][x][1];
+  return objects.includes('A');
+}
+
+
+function onMeteoroid(fields, position) {
+  const [y, x] = position;
+  const objects = fields[y][x][1];
+  return objects.includes('M');
 }
 
 
