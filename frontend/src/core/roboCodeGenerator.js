@@ -11,10 +11,11 @@ export function generateRoboCode(roboAst) {
 
 
 function generateBody(nodes, indent = 4) {
-  const lines = (nodes.length === 0) ? ['pass'] : nodes.map(generateStatement);
+  const statementCodes = (nodes.length === 0) ? ['pass'] : nodes.map(generateStatement);
+  const lines = [].concat(...statementCodes.map(c => c.split('\n')));
   const indentedLines = lines.map(line => ' '.repeat(indent) + line);
-  const bodyCode = indentedLines.join('\n');
-  return bodyCode;
+  const code = indentedLines.join('\n');
+  return code;
 }
 
 
