@@ -1,9 +1,16 @@
 import React, { PropTypes } from 'react';
+import ReactGA from 'react-ga';
 import { Provider } from 'react-intl-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import { configureStore } from './config';
 import FlocsThemeProvider from './theme/FlocsThemeProvider';
+
+
+function logPageView() {
+  ReactGA.set({ page: window.location.pathname + window.location.search });
+  ReactGA.pageview(window.location.pathname + window.location.search);
+}
 
 
 /**
@@ -14,7 +21,7 @@ export default function FlocsProvider({ children, store, router }) {
   if (router) {
     const history = syncHistoryWithStore(browserHistory, store);
     routedChildren = (
-      <Router history={history}>
+      <Router history={history} onUpdate={logPageView}>
         {children}
       </Router>
     );

@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import createPromiseMiddleware from 'redux-promise-middleware';
@@ -10,9 +11,16 @@ import { initGlobalTheme } from './theme';
 
 
 export function globalConfiguration() {
+  initGoogleAnalytics();
   initGlobalAxios();
   initGlobalTheme();
   initGlobalBlockly();
+}
+
+
+function initGoogleAnalytics() {
+  const trackingId = 'UA-81667720-1';
+  ReactGA.initialize(trackingId, { debug: false, titleCase: false });
 }
 
 

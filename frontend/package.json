@@ -25,6 +25,7 @@
     "react-bootstrap": "^0.30.7",
     "react-custom-scrollbars": "^4.0.2",
     "react-dom": "^15.4.1",
+    "react-ga": "^2.2.0",
     "react-intl": "^2.2.3",
     "react-intl-redux": "^0.3.0",
     "react-joyride": "^1.10.1",
