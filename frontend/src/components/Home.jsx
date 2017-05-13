@@ -18,17 +18,17 @@ export default class Home extends React.Component {
   render() {
     return (
       <div style={longPageStyle}>
-        { !this.props.newStudent &&
-          <section
-            style={{
-              ...slideStyle,
-              height: '90vh',
-              backgroundImage: `url(/static/images/background-space.png)`,
-              backgroundSize: '500px auto',
-              backgroundColor: '#111122',
-              color: '#fff',
-            }}
-          >
+        <section
+          style={{
+            ...slideStyle,
+            height: '86vh',
+            backgroundImage: `url(/static/images/background-space.png)`,
+            backgroundSize: '500px auto',
+            backgroundColor: '#111122',
+            color: '#fff',
+          }}
+        >
+          <div style={{ display: 'table-row' }}>
             <div style={slideContentStyle}>
               <Paper
                 style={{
@@ -51,37 +51,46 @@ export default class Home extends React.Component {
                 </Link>
               </Paper>
             </div>
-          </section>
-        }
-
-        <section
-          style={{
-            ...slideStyle,
-            height: (this.props.newStudent) ? '85vh' : '100vh',
-            backgroundColor: this.props.muiTheme.palette.canvasColor,
-            color: '#fff',
-          }}
-        >
-          <div style={slideContentStyle}>
-            <h2>Prozkoumej tajemný vesmír<br />a posbírej všechny diamanty</h2>
-            <div>
-              <SpaceGameContainer
-                taskEnvironmentId="home-commands"
-                controls={['fly', 'left', 'right', 'reset']}
-              />
-            </div>
-            <p style={{ visibility: this.props.spaceWorldDemoSolved ? 'visible' : 'hidden' }}>
-              Skvěle, úloha vyřešena!
-            </p>
-            <div style={{ padding: 25 }}>
-              <Scroll.Link to="intro-slide-2" smooth={true} duration={500}>
-                <FloatingActionButton secondary={true} disabled={!this.props.spaceWorldDemoSolved}>
-                  <ArrowDown />
-                </FloatingActionButton>
-              </Scroll.Link>
-            </div>
+          </div>
+          <div style={slideFooterStyle}>
+            <Scroll.Link to="intro-slide-1" smooth={true} duration={500}>
+              <FloatingActionButton secondary={true}>
+                <ArrowDown />
+              </FloatingActionButton>
+            </Scroll.Link>
           </div>
         </section>
+
+        <Scroll.Element name="intro-slide-1">
+          <section
+            style={{
+              ...slideStyle,
+              height: '100vh',
+              backgroundColor: this.props.muiTheme.palette.canvasColor,
+              color: '#fff',
+            }}
+          >
+            <div style={slideContentStyle}>
+              <h2>Prozkoumej tajemný vesmír<br />a posbírej všechny diamanty</h2>
+              <div>
+                <SpaceGameContainer
+                  taskEnvironmentId="home-commands"
+                  controls={['fly', 'left', 'right', 'reset']}
+                />
+              </div>
+              <p style={{ visibility: this.props.spaceWorldDemoSolved ? 'visible' : 'hidden' }}>
+                Skvěle, úloha vyřešena!
+              </p>
+              <div style={{ padding: 25 }}>
+                <Scroll.Link to="intro-slide-2" smooth={true} duration={500}>
+                  <FloatingActionButton secondary={true} disabled={!this.props.spaceWorldDemoSolved}>
+                    <ArrowDown />
+                  </FloatingActionButton>
+                </Scroll.Link>
+              </div>
+            </div>
+          </section>
+        </Scroll.Element>
 
         <Scroll.Element name="intro-slide-2">
           <section style={{...slideStyle, backgroundColor: this.props.muiTheme.palette.primary1Color }} >
@@ -216,4 +225,14 @@ const slideContentStyle = {
   margin: '20px auto',
   textAlign: 'center',
   lineHeight: 1.3,
+};
+
+
+const slideFooterStyle = {
+  display: 'table-row',
+  verticalAlign: 'bottom',
+  maxWidth: 1000,
+  margin: '0 auto',
+  height: 90,
+  textAlign: 'center',
 };
