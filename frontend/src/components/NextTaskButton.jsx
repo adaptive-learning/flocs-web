@@ -13,17 +13,17 @@ export default function NextTaskButton({ task }) {
   if (task === null) {
     return (
       <RaisedButton
-        icon={<TaskIcon />}
         style={style}
-        label="?"
-        disabled={true}
+        label="..."
+        primary={true}
+        disabled={false}
       />
     );
   }
   return (
     <Link to={task.url}>
       <RaisedButton
-        icon={<TaskIcon />}
+        icon={<TaskIcon style={{ marginLeft: 8 }}/>}
         style={style}
         label={<span style={{ position: 'relative', top: 1 }}><TaskName taskId={task.taskId} /></span>}
         primary={true}
