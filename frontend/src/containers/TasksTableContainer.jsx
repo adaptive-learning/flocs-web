@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import TasksTable from '../components/TasksTable';
 import { fetchPraticeOverview } from '../actions/api';
-import { isLoaded } from '../selectors/app';
+import { isPracticeOverviewInvalidated } from '../selectors/app';
 
 
 function mapStateToProps(state) {
@@ -11,7 +11,7 @@ function mapStateToProps(state) {
     tasks: state.tasks,
     categories: state.categories,
     recommendation: state.recommendation,
-    isLoaded: isLoaded(state),
+    isPracticeOverviewInvalidated: isPracticeOverviewInvalidated(state),
   };
 }
 
@@ -19,16 +19,18 @@ function mapStateToProps(state) {
 @connect(mapStateToProps, { fetchPraticeOverview })
 @muiThemeable()
 export default class TasksTableContainer extends React.Component {
-  componentDidMount() {
-    if (this.props.isLoaded) {
+  componentWillMount() {
+    // make sure to load updated practiceOverivew on transition to this page
+    if (this.props.isPracticeOverviewInvalidated) {
       this.props.fetchPraticeOverview();
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.isLoaded && this.props.isLoaded) {
-      this.props.fetchPraticeOverview();
-    }
+    // currently, practiceOverview is loaded anyway (on all pages)
+    //if (!prevProps.isLoaded && this.props.isLoaded) {
+    //  this.props.fetchPraticeOverview();
+    //}
   }
 
   render() {

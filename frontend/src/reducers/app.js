@@ -1,5 +1,8 @@
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { FETCH_STATIC_DATA_FULFILLED,
+         FETCH_PRACTICE_OVERVIEW_FULFILLED,
+         FETCH_PRACTICE_OVERVIEW_PENDING,
+         REPORT_PROGRAM_EDIT_PENDING,
          UPDATE_STUDENT_FULFILLED } from '../action-types';
 
 
@@ -7,6 +10,8 @@ const initial = {
   mode: 'intro',
   staticDataLoaded: false,
   studentLoaded: false,
+  practiceOverviewLoaded: false,
+  practiceOverviewInvalidated: false,
 };
 
 
@@ -21,6 +26,23 @@ export default function reduceApp(state = initial, action) {
       return {
         ...state,
         studentLoaded: true,
+      };
+    case FETCH_PRACTICE_OVERVIEW_PENDING:
+      return {
+        ...state,
+        practiceOverviewLoaded: false,
+      };
+    case FETCH_PRACTICE_OVERVIEW_FULFILLED:
+      return {
+        ...state,
+        practiceOverviewLoaded: true,
+        practiceOverviewInvalidated: false,
+      };
+    case REPORT_PROGRAM_EDIT_PENDING:
+      // whenever a code is changed, solving time is updated
+      return {
+        ...state,
+        practiceOverviewInvalidated: true,
       };
     case LOCATION_CHANGE:
       return {
