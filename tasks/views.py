@@ -25,7 +25,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     This view presents task categories available in the system.
     """
     serializer_class = CategorySerializer
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().prefetch_related('tasks')
 
 
 class LevelViewSet(viewsets.ReadOnlyModelViewSet):
@@ -41,7 +41,7 @@ class ToolboxViewSet(viewsets.ReadOnlyModelViewSet):
     This view presents toolboxes available in the system.
     """
     serializer_class = ToolboxSerializer
-    queryset = Toolbox.objects.all()
+    queryset = Toolbox.objects.all().prefetch_related('blocks')
 
 
 class BlockViewSet(viewsets.ReadOnlyModelViewSet):
