@@ -71,6 +71,10 @@ export default {
   'task.zig-zag': 'Cik cak',
   'task.zig-zag-plus': 'Cik cak plus',
   'task.2diamonds-2meteorids': '2 diamanty, 2 meteoroidy',
+  'task.diamonds-in-meteoroid-cloud': 'Diamanty v mraku meteoroidů',
+  'task.edge-wormholes': 'Okrajové červí díry',
+  'task.five-diamonds': 'Pět diamantů',
+  'task.triple-slalom': 'Trojitý slalom',
 
   'blockly.start': 'start',
   'blockly.fly': 'leť',
