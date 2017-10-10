@@ -10,6 +10,7 @@ django-modeltranslation==0.10.2
 django-select-multiple-field==0.4.2
 django-webpack-loader==0.3.3
 djangorestframework==3.4.3
+-e git+https://github.com/jazzband/silk.git@6c53b4e4de5fd95395a903ac075306bfb0393795#egg=django_silk
 flocs==0.0.16
 ipython==5.0.0
 ipython-genutils==0.1.0
