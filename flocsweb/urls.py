@@ -7,6 +7,7 @@ from users import views as users_views
 from tasks import views as tasks_views
 from practice import views as practice_views
 from . import views
+from .settings import SILK
 
 
 router = DefaultRouter()
@@ -31,3 +32,6 @@ urlpatterns = [
     url(r'^social/', include('social_django.urls', namespace='social')),
     url(r'^([^a].*)?$', 'flocsweb.views.frontend_app'),
 ]
+
+if SILK:
+    urlpatterns.insert(-1, url(r'^silk/', include('silk.urls', namespace='silk')))

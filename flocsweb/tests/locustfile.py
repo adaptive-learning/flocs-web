@@ -40,7 +40,7 @@ class DoTask(TaskSet):
             '/api/students/{}/edit_program/'.format(
                 self.parent.data['student_id']),
             {"task-session-id": self.parent.data['task_session_id'],
-             "program": "↑"
+             "program": "locust"
              }
         )
 
@@ -127,7 +127,8 @@ class UserBehavior(TaskSet):
         self.log_errors(response)
         return response
 
-    def log_errors(self, response):
+    @staticmethod
+    def log_errors(response):
         if not response.ok:
             with open('request_errors.log', 'a') as f:
                 f.writelines(response.text)

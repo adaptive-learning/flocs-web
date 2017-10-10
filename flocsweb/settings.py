@@ -13,10 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import dj_database_url
 import os
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EXPORTED_DATA_DIR = os.path.join(BASE_DIR, 'exported-data')
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -25,11 +23,11 @@ EXPORTED_DATA_DIR = os.path.join(BASE_DIR, 'exported-data')
 SECRET_KEY = '34r0-rk47e3-ka+3d+@!@e+%a9qr##6duf0t(!#1sm$&zw&8!y'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
-
 ON_STAGING = os.getenv('ON_STAGING', "False") == "True"
 ON_PRODUCTION = os.getenv('ON_AL', "False") == "True" and not ON_STAGING
 DEVELOPMENT = not ON_STAGING and not ON_PRODUCTION
 DEBUG = (not ON_PRODUCTION) or (os.getenv('DJANGO_DEBUG', "False") == "True")
+SILK = os.getenv('SILK', "False") == "True"
 ALLOWED_HOSTS = [
     '.robomise.cz'
 ]
@@ -55,6 +53,9 @@ INSTALLED_APPS = [
     'flocsweb',
 ]
 
+if SILK:
+    INSTALLED_APPS.append('silk')  # Django profiling
+
 APPEND_SLASH = True
 
 MIDDLEWARE_CLASSES = [
@@ -66,6 +67,9 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if SILK:
+    MIDDLEWARE_CLASSES.append('silk.middleware.SilkyMiddleware')
 
 ROOT_URLCONF = 'flocsweb.urls'
 
@@ -89,13 +93,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'flocsweb.wsgi.application'
 
-
 # Database
 DATABASES = {
     "default": dj_database_url.config(default='sqlite:///' +
-                                      os.path.join(BASE_DIR, 'db.sqlite3'))
+                                              os.path.join(BASE_DIR, 'db.sqlite3'))
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -114,7 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 USE_I18N = True
@@ -142,11 +143,11 @@ else:
     }
 LANGUAGE_CODE = 'cs'  # fallback language
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
-#MODELTRANSLATION_TRANSLATION_FILES = (
+# MODELTRANSLATION_TRANSLATION_FILES = (
 #    'tasks.models.translation',
 #    'blocks.models.translation',
 #    'concepts.models.translation',
-#)
+# )
 
 
 # Static files (CSS, JavaScript, Images)
@@ -169,10 +170,10 @@ WEBPACK_LOADER = {
 }
 
 AUTHENTICATION_BACKENDS = (
-  'django.contrib.auth.backends.ModelBackend',
-  'social_core.backends.google.GoogleOAuth2',
-  'social_core.backends.facebook.FacebookOAuth2',
-  'lazysignup.backends.LazySignupBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'lazysignup.backends.LazySignupBackend',
 )
 
 # Python Social Auth settings
@@ -205,7 +206,6 @@ SOCIAL_AUTH_PIPELINE = (
     # Log out users if the social-account is already associated. Remove lazy
     # user if the user will be associated.
     'flocsweb.pipeline.remove_current_user',
-
 
     # Checks if the current social-account is already associated in the site.
     'social_core.pipeline.social_auth.social_user',
@@ -253,10 +253,44 @@ LOGGING = {
             'class': 'logging.StreamHandler',
         }
     },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        }
-    }
+    'loggers': dict()
 }
+
+if DEBUG:
+    LOGGING['loggers']['django.db.backends'] = {
+        'level': 'DEBUG',
+        'handlers': ['console'],
+    }
+
+# Profiling
+#  SILKY_PYTHON_PROFILER = True
+SILKY_DYNAMIC_PROFILING = [
+    {
+        'module': 'rest_framework.mixins',
+        'function': 'CreateModelMixin.create'
+    },
+    {
+        'module': 'rest_framework.mixins',
+        'function': 'ListModelMixin.list'
+    },
+    {
+        'module': 'rest_framework.mixins',
+        'function': 'RetrieveModelMixin.retrieve'
+    },
+    {
+        'module': 'rest_framework.mixins',
+        'function': 'UpdateModelMixin.update'
+    },
+    {
+        'module': 'practice.views',
+        'function': 'StudentsViewSet.practice_overview'
+    },
+    {
+        'module': 'practice.views',
+        'function': 'StudentsViewSet.edit_program'
+    },
+    {
+        'module': 'practice.views',
+        'function': 'StudentsViewSet.run_program'
+    },
+]
